@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Constants.h"
-#include <cmath>
+#include <algorithm>
 #include <cassert>
+#include <cmath>
 
 // Group definitions for doxygen
 
@@ -20,35 +21,34 @@
 
 //! Math library
 
-namespace Math
+namespace MyMath
 {
-
 //! @defgroup	Conversion	Units Conversion
 //! @ingroup	Miscellaneous
 //@{
 
 //! Converts radians to degrees.
-inline double ToDegrees( double radians )
+inline double ToDegrees(double radians)
 {
-	return radians * DEGREES_PER_RADIAN;
+    return radians * DEGREES_PER_RADIAN;
 }
 
 //! Converts radians to degrees.
-inline float ToDegrees( float radians )
+inline float ToDegrees(float radians)
 {
-	return radians * float( DEGREES_PER_RADIAN );
+    return radians * float(DEGREES_PER_RADIAN);
 }
 
 //! Converts degrees to radians.
-inline double ToRadians( double degrees )
+inline double ToRadians(double degrees)
 {
-	return degrees * RADIANS_PER_DEGREE;
+    return degrees * RADIANS_PER_DEGREE;
 }
 
 //! Converts degrees to radians.
-inline float ToRadians( float degrees )
+inline float ToRadians(float degrees)
 {
-	return degrees * float( RADIANS_PER_DEGREE );
+    return degrees * float(RADIANS_PER_DEGREE);
 }
 
 //@}
@@ -65,8 +65,8 @@ inline float ToRadians( float degrees )
 //! IsRelativelyCloseTo().
 
 //@{
-double const	DEFAULT_FLOAT_TOLERANCE		= 9.5367431640625000e-7;	// 2** -(24-4)
-double const	DEFAULT_DOUBLE_TOLERANCE	= 1.7763568394002505e-15;	// 2** -(53-4)
+double const DEFAULT_FLOAT_TOLERANCE  = 9.5367431640625000e-7;          // 2** -(24-4)
+double const DEFAULT_DOUBLE_TOLERANCE = 1.7763568394002505e-15;         // 2** -(53-4)
 //@}
 
 //! @name	Normalization Tolerances
@@ -76,8 +76,8 @@ double const	DEFAULT_DOUBLE_TOLERANCE	= 1.7763568394002505e-15;	// 2** -(53-4)
 //! relatively expensive operation.
 
 //@{
-double const	DEFAULT_FLOAT_NORMALIZED_TOLERANCE		= .0001;
-double const	DEFAULT_DOUBLE_NORMALIZED_TOLERANCE		= .0000001;
+double const DEFAULT_FLOAT_NORMALIZED_TOLERANCE  = .0001;
+double const DEFAULT_DOUBLE_NORMALIZED_TOLERANCE = .0000001;
 //@}
 
 //! @name	Orthonormalization Tolerances
@@ -86,33 +86,32 @@ double const	DEFAULT_DOUBLE_NORMALIZED_TOLERANCE		= .0000001;
 //! orthonormal, it generally must be re-orthonormalized, and orthonormalization is a very expensive operation.
 
 //@{
-double const	DEFAULT_FLOAT_ORTHONORMAL_TOLERANCE		= .001;
-double const	DEFAULT_DOUBLE_ORTHONORMAL_TOLERANCE	= .00001;
+double const DEFAULT_FLOAT_ORTHONORMAL_TOLERANCE  = .001;
+double const DEFAULT_DOUBLE_ORTHONORMAL_TOLERANCE = .00001;
 //@}
 
-
 //! Returns true if @a x is very close to 0.
-inline bool IsCloseToZero( double x, double tolerance = DEFAULT_FLOAT_TOLERANCE )
+inline bool IsCloseToZero(double x, double tolerance = DEFAULT_FLOAT_TOLERANCE)
 {
-	return ( std::fabs( x ) < tolerance );
+    return std::fabs(x) < tolerance;
 }
 
 //! Returns true if @a x is very close to @a y in absolute terms.
 //! @note	When comparing the @e squares of two values to determine if the values are close, you should change the
 //!			tolerance to 2<em>yT</em>. The actual tolerance is 2<em>yT</em> +/- <em>T</em>**2, but the +/- makes it
 //!			complicated and <em>T</em>**2 is generally negligible.
-inline bool IsCloseTo( double x, double y, double tolerance = DEFAULT_FLOAT_TOLERANCE )
+inline bool IsCloseTo(double x, double y, double tolerance = DEFAULT_FLOAT_TOLERANCE)
 {
-	return IsCloseToZero( x - y, tolerance );
+    return IsCloseToZero(x - y, tolerance);
 }
 
 //! Returns true if @a x is very close to @a y relative to the value of @a y.
 //! @note	When comparing the @e squares of two values to determine if the values are close, you should change the
 //!			tolerance to 2T. The actual tolerance is 2<em>T</em> +/- <em>T</em>**2, but the +/- makes it
 //!			complicated and <em>T</em>**2 is generally negligible.
-inline bool IsRelativelyCloseTo( double x, double y, double tolerance = DEFAULT_FLOAT_TOLERANCE )
+inline bool IsRelativelyCloseTo(double x, double y, double tolerance = DEFAULT_FLOAT_TOLERANCE)
 {
-	return IsCloseTo( x, y, tolerance * y );
+    return IsCloseTo(x, y, tolerance * y);
 }
 
 //@}
@@ -122,7 +121,7 @@ inline bool IsRelativelyCloseTo( double x, double y, double tolerance = DEFAULT_
 //@{
 
 //! Returns <i>n</i>! computed using Stirling's formula
-double Stirling( double n );
+double Stirling(double n);
 
 //! Returns the linear interpolation between two values
 //
@@ -132,21 +131,25 @@ double Stirling( double n );
 //!
 //! @return		The interpolated value
 
-inline float Lerp( float y0, float y1, float x )
+inline float Lerp(float y0, float y1, float x)
 {
-	assert( x >= 0.0f && x <= 1.0f );
-	return ( y0 + x * ( y1 - y0 ) );
+    assert(x >= 0.0f && x <= 1.0f);
+    return y0 + x * (y1 - y0);
 }
 
 //! Returns the linear interpolation between 4 values in 2D
-float Lerp2D( float z00, float z01, float z10, float z11, float x, float y );
+float Lerp2D(float z00, float z01, float z10, float z11, float x, float y);
 
 //! Returns the linear interpolation between 8 values in 3D
-float Lerp3D( float w000, float w001, float w010, float w011, float w100, float w101, float w110, float w111,
-			  float x, float y, float z );
+float Lerp3D(float w000, float w001, float w010, float w011, float w100, float w101, float w110, float w111,
+             float x, float y, float z);
 
+//! Returns a value limited to min and max values
+template <typename T>
+T limit(T const & min, T const & v, T const & max)
+{
+    return std::min(std::max(v, min), max);
+}
 
 //@}
-
-
-} // namespace Math
+} // namespace MyMath

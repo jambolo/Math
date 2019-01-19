@@ -2,24 +2,21 @@
 
                                                       Vector2i.h
 
-						                    Copyright 2004, John J. Bolton
-	--------------------------------------------------------------------------------------------------------------
+                                            Copyright 2004, John J. Bolton
+    --------------------------------------------------------------------------------------------------------------
 
-	$Header: //depot/Libraries/Math/Vector2i.h#4 $
+    $Header: //depot/Libraries/Math/Vector2i.h#4 $
 
-	$NoKeywords: $
+    $NoKeywords: $
 
- ********************************************************************************************************************/
+********************************************************************************************************************/
 
 #pragma once
 
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
+#include <iosfwd>
 
 #pragma warning( push )
-#pragma warning( disable : 4201 )	// nonstandard extension used : nameless struct/union
+#pragma warning( disable : 4201 )   // nonstandard extension used : nameless struct/union
 
 //! A 2D vector of integers.
 //
@@ -30,58 +27,58 @@ class Vector2i
 {
 public:
 
-	//! Constructor
-	Vector2i() {}
+    //! Constructor
+    Vector2i() {}
 
-	//! Constructor
-	Vector2i( int x, int y );
+    //! Constructor
+    Vector2i(int x, int y);
 
-	//! Constructor
-	Vector2i( int const v[ 2 ] );
+    //! Constructor
+    Vector2i(int const v[2]);
 
-	//! Negates the vector. Returns the result.
-	Vector2i const &	Negate();
+    //! Negates the vector. Returns the result.
+    Vector2i const & Negate();
 
-	//! Adds a vector. Returns the result.
-	Vector2i const &	Add( Vector2i const & b );
+    //! Adds a vector. Returns the result.
+    Vector2i const & Add(Vector2i const & b);
 
-	//! Subtracts a vector. Returns the result.
-	Vector2i const &	Subtract( Vector2i const & b );
+    //! Subtracts a vector. Returns the result.
+    Vector2i const & Subtract(Vector2i const & b);
 
-	//! Multiplies the vector by a scalar. Returns the result.
-	Vector2i const &	Scale( int scale );
+    //! Multiplies the vector by a scalar. Returns the result.
+    Vector2i const & Scale(int scale);
 
-	//! Adds a vector. Returns the result.
-	Vector2i const &	operator +=( Vector2i const & b );
+    //! Adds a vector. Returns the result.
+    Vector2i const & operator +=(Vector2i const & b);
 
-	//! Subtracts a vector. Returns the result.
-	Vector2i const &	operator -=( Vector2i const & b );
+    //! Subtracts a vector. Returns the result.
+    Vector2i const & operator -=(Vector2i const & b);
 
-	//! Scales the vector. Returns the result.
-	Vector2i const &	operator *=( int scale );
+    //! Scales the vector. Returns the result.
+    Vector2i const & operator *=(int scale);
 
-	//! Returns the negative.
-	Vector2i			operator -()						const;
+    //! Returns the negative.
+    Vector2i operator -()                        const;
 
-	union
-	{
-		int	m_V[ 2 ];	//!< Elements as an array {x, y}
-		struct
-		{
-			int	/** */m_X, m_Y;
-		};
-	};
+    union
+    {
+        int m_V[2];     //!< Elements as an array {x, y}
+        struct
+        {
+            int /** */ m_X, m_Y;
+        };
+    };
 
-	// Useful constants
+    // Useful constants
 
-	//! Returns [0, 0].
-	static Vector2i	Origin();
+    //! Returns [0, 0].
+    static Vector2i Origin();
 
-	//! Returns [1, 0].
-	static Vector2i	XAxis();
+    //! Returns [1, 0].
+    static Vector2i XAxis();
 
-	//! Returns [0, 1].
-	static Vector2i	YAxis();
+    //! Returns [0, 1].
+    static Vector2i YAxis();
 };
 
 #pragma warning( pop )
@@ -91,16 +88,16 @@ public:
 //@{
 
 //! Returns the sum of @a a and @a b.
-Vector2i	operator +( Vector2i const & a, Vector2i const & b );
+Vector2i operator +(Vector2i const & a, Vector2i const & b);
 
 //! Returns the difference between @a a and @a b.
-Vector2i	operator -( Vector2i const & a, Vector2i const & b );
+Vector2i operator -(Vector2i const & a, Vector2i const & b);
 
 //! Returns the result of scaling @a v by @a s.
-Vector2i	operator *( Vector2i const & v, int s );
+Vector2i operator *(Vector2i const & v, int s);
 
 //! Returns the result of scaling @a v by @a s.
-Vector2i	operator *( int s, Vector2i const & v );
+Vector2i operator *(int s, Vector2i const & v);
 
 //@}
 
@@ -109,11 +106,10 @@ Vector2i	operator *( int s, Vector2i const & v );
 //@{
 
 //! Extracts a Vector3i from a stream
-std::istream & operator >>( std::istream & in, Vector2i & v );
-
+std::istream & operator >>(std::istream & in, Vector2i & v);
 
 //! Inserts a Vector3i into a stream
-std::ostream & operator <<( std::ostream & out, Vector2i const & v );
+std::ostream & operator <<(std::ostream & out, Vector2i const & v);
 
 //@}
 
@@ -122,190 +118,107 @@ std::ostream & operator <<( std::ostream & out, Vector2i const & v );
 #include <cassert>
 #include <cmath>
 
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline Vector2i::Vector2i( int x, int y )
-	: m_X( x ), m_Y( y )
+inline Vector2i::Vector2i(int x, int y)
+    : m_X(x)
+    , m_Y(y)
 {
 }
 
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline Vector2i::Vector2i( int const v[ 2 ] )
-	: m_X( v[ 0 ] ), m_Y( v[ 1 ] )
+inline Vector2i::Vector2i(int const v[2])
+    : m_X(v[0])
+    , m_Y(v[1])
 {
 }
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
 
 inline Vector2i const & Vector2i::Negate()
 {
-	m_X = -m_X;
-	m_Y = -m_Y;
+    m_X = -m_X;
+    m_Y = -m_Y;
 
-	return *this;
+    return *this;
 }
 
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline Vector2i const & Vector2i::Add( Vector2i const & b )
+inline Vector2i const & Vector2i::Add(Vector2i const & b)
 {
-	m_X += b.m_X;
-	m_Y += b.m_Y;
+    m_X += b.m_X;
+    m_Y += b.m_Y;
 
-	return *this;
+    return *this;
 }
 
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline Vector2i const & Vector2i::Subtract( Vector2i const & b )
+inline Vector2i const & Vector2i::Subtract(Vector2i const & b)
 {
-	m_X -= b.m_X;
-	m_Y -= b.m_Y;
+    m_X -= b.m_X;
+    m_Y -= b.m_Y;
 
-	return *this;
+    return *this;
 }
 
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline Vector2i const & Vector2i::Scale( int scale )
+inline Vector2i const & Vector2i::Scale(int scale)
 {
-	m_X *= scale;
-	m_Y *= scale;
+    m_X *= scale;
+    m_Y *= scale;
 
-	return *this;
+    return *this;
 }
 
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline Vector2i const & Vector2i::operator +=( Vector2i const & b )
+inline Vector2i const & Vector2i::operator +=(Vector2i const & b)
 {
-	return Add( b );
+    return Add(b);
 }
 
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline Vector2i const & Vector2i::operator -=( Vector2i const & b )
+inline Vector2i const & Vector2i::operator -=(Vector2i const & b)
 {
-	return Subtract( b );
+    return Subtract(b);
 }
 
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline Vector2i const & Vector2i::operator *=( int scale )
+inline Vector2i const & Vector2i::operator *=(int scale)
 {
-	return Scale( scale );
+    return Scale(scale);
 }
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
 
 inline Vector2i Vector2i::operator -() const
 {
-	return Vector2i( *this ).Negate();
+    return Vector2i(*this).Negate();
 }
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
 
 inline Vector2i Vector2i::Origin()
 {
-	return Vector2i( 0, 0 );
+    return Vector2i(0, 0);
 }
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
 
 inline Vector2i Vector2i::XAxis()
 {
-	return Vector2i( 1, 0 );
+    return Vector2i(1, 0);
 }
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
 
 inline Vector2i Vector2i::YAxis()
 {
-	return Vector2i( 0, 1 );
+    return Vector2i(0, 1);
 }
 
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline Vector2i operator +( Vector2i const & a, Vector2i const & b )
+inline Vector2i operator +(Vector2i const & a, Vector2i const & b)
 {
-	return Vector2i( a ).Add( b );
+    return Vector2i(a).Add(b);
 }
 
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline Vector2i operator -( Vector2i const & a, Vector2i const & b )
+inline Vector2i operator -(Vector2i const & a, Vector2i const & b)
 {
-	return Vector2i( a ).Subtract( b );
+    return Vector2i(a).Subtract(b);
 }
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
 
 //! @note	When multiplying a vector and a scalar, the operator is commutative since the order of the operands is
 //!			only notational.
 
-inline Vector2i operator *( Vector2i const & v, int s )
+inline Vector2i operator *(Vector2i const & v, int s)
 {
-	return Vector2i( v ).Scale( s );
+    return Vector2i(v).Scale(s);
 }
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
 
 //! @note	When multiplying a vector and a scalar, the operator is commutative since the order of the operands is
 //!			only notational.
 
-inline Vector2i operator *( int s, Vector2i const & v )
+inline Vector2i operator *(int s, Vector2i const & v)
 {
-	return Vector2i( v ).Scale( s );
+    return Vector2i(v).Scale(s);
 }
