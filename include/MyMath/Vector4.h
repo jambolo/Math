@@ -1,11 +1,11 @@
 /** @file *//********************************************************************************************************
 
-                                                     Vector3.inl
+                                                      Vector4.h
 
 						                    Copyright 2003, John J. Bolton
 	--------------------------------------------------------------------------------------------------------------
 
-	$Header: //depot/Libraries/Math/Vector3.inl#14 $
+	$Header: //depot/Libraries/Math/Vector4.h#13 $
 
 	$NoKeywords: $
 
@@ -14,7 +14,159 @@
 #pragma once
 
 
-#include "Vector3.h"
+class Matrix43;
+class Matrix44;
+class Quaternion;
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+#pragma warning( push )
+#pragma warning( disable : 4201 )	// nonstandard extension used : nameless struct/union
+
+//! A 4D vector of floats.
+//
+//! @ingroup Vectors
+//!
+
+class Vector4
+{
+public:
+	
+	//! Constructor
+	Vector4() {}
+
+	//! Constructor
+	Vector4( float x, float y, float z, float w );
+
+	//! Constructor
+	Vector4( float const v[ 4 ] );
+
+	//! Returns the length of the vector squared.
+	float				Length2()							const;
+
+	//! Returns the length of the vector.
+	float				Length()							const;
+
+	//! Returns the inverse of the length of the vector (or 1 if the length is 0)
+	float				ILength()							const;
+
+	//! Returns the inverse of the length squared of the vector (or 1 if the length is 0)
+	float				ILength2()							const;
+
+	//! Returns true if the vector is normalized (within a tolerance).
+	bool				IsNormalized()						const;
+
+	//! Negates the vector. Returns the result.
+	Vector4 const &	Negate();
+
+	//! Normalizes the vector. Returns the result.
+	Vector4 const &	Normalize();
+
+	//! Adds a vector. Returns the result.
+	Vector4 const &	Add( Vector4 const & b );
+
+	//! Subtracts a vector. Returns the result.
+	Vector4 const &	Subtract( Vector4 const & b );
+
+	//! Multiplies the vector by a scalar. Returns the result.
+	Vector4 const &	Scale( float scale );
+
+	//! Transforms the vector. Returns the result.
+	Vector4 const &	Transform( Matrix43 const & m );
+
+	//! Transforms the vector. Returns the result
+	Vector4 const &	Transform( Matrix44 const & m );
+
+	//! Rotates the vector around an axis. Returns the result.
+	Vector4 const &	Rotate( Vector4 const & axis, float angle );
+
+	//! Rotates the vector
+	Vector4 const &	Rotate( Quaternion const & q );
+
+	//! Adds a vector. Returns the result.
+	Vector4 const &	operator +=( Vector4 const & b );
+
+	//! Subtracts a vector. Returns the result.
+	Vector4 const &	operator -=( Vector4 const & b );
+
+	//! Scales the vector. Returns the result.
+	Vector4 const &	operator *=( float scale );
+
+	//! Transforms the vector. Returns the result.
+	Vector4 const &	operator *=( Matrix43 const & m );
+
+	//! Transforms the vector. Returns the result.
+	Vector4 const &	operator *=( Matrix44 const & m );
+
+	//! Returns the negative.
+	Vector4			operator -()							const;
+
+	union
+	{
+		float	m_V[ 4 ];	//!< Elements as an array {x, y, z, w}
+		struct
+		{
+			float	/** */m_X, m_Y, m_Z, m_W;
+		};
+	};
+
+	// Useful constants
+
+	//! Returns [0, 0, 0, 0].
+	static Vector4	Origin();
+
+	//! Returns [1, 0, 0, 0].
+	static Vector4	XAxis();
+
+	//! Returns [0, 1, 0, 0].
+	static Vector4	YAxis();
+
+	//! Returns [0, 0, 1, 0].
+	static Vector4	ZAxis();
+
+	//! Returns [0, 0, 0, 1].
+	static Vector4	WAxis();
+};
+
+#pragma warning( pop )
+
+//! @name Vector4 Binary Operators
+//! @ingroup Vectors
+//@{
+
+//! Returns the sum of @a a and @a b.
+Vector4 operator +( Vector4 const & a, Vector4 const & b );
+
+//! Returns the difference between @a a and @a b.
+Vector4 operator -( Vector4 const & a, Vector4 const & b );
+
+//! Returns the result of transforming @a v by @a m.
+Vector4 operator *( Vector4 const & v, Matrix43 const & m );
+
+//! Returns the result of transforming @a v by @a m.
+Vector4 operator *( Matrix43 const & m, Vector4 const & v );
+
+//! Returns the result of transforming @a v by @a m.
+Vector4 operator *( Vector4 const & v, Matrix44 const & m );
+
+//! Returns the result of transforming @a v by @a m.
+Vector4 operator *( Matrix44 const & m, Vector4 const & v );
+
+//! Returns the dot product of @a a and @a b.
+float	Dot( Vector4 const & a, Vector4 const & b );
+
+//! Returns the result of scaling @a v by @a s.
+Vector4	operator *( Vector4 const & v, float s );
+
+//! Returns the result of scaling @a v by @a s.
+Vector4	operator *( float s, Vector4 const & v );
+
+//@}
+
+// Inline functions
 
 #include "Math.h"
 
@@ -26,8 +178,8 @@
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3::Vector3( float x, float y, float z )
-	: m_X( x ), m_Y( y ), m_Z( z )
+inline Vector4::Vector4( float x, float y, float z, float w )
+	: m_X( x ), m_Y( y ), m_Z( z ), m_W( w )
 {
 }
 
@@ -36,8 +188,8 @@ inline Vector3::Vector3( float x, float y, float z )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3::Vector3( float const v[ 3 ] )
-	: m_X( v[ 0 ] ), m_Y( v[ 1 ] ), m_Z( v[ 2 ] )
+inline Vector4::Vector4( float const v[ 4 ] )
+	: m_X( v[ 0 ] ), m_Y( v[ 1 ] ), m_Z( v[ 2 ] ), m_W( v[ 3 ] )
 {
 }
 
@@ -46,61 +198,40 @@ inline Vector3::Vector3( float const v[ 3 ] )
 /*																													*/
 /********************************************************************************************************************/
 
-inline float Vector3::Length2() const
+inline float Vector4::Length2() const
 {
-//	return ( m_X * m_X + m_Y * m_Y + m_Z * m_Z ); 
+	return ( m_X * m_X + m_Y * m_Y + m_Z * m_Z + m_W * m_W ); 
+}
 
-	float	len2;
 
-	__asm
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline float Vector4::Length() const
+{
+	return sqrtf( Length2() ); 
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline float Vector4::ILength() const
+{
+	float const	len	= Length();
+
+	assert( !Math::IsCloseToZero( len, Math::DEFAULT_FLOAT_TOLERANCE ) );
+
+	if ( !Math::IsCloseToZero( len, Math::DEFAULT_FLOAT_TOLERANCE ) )
 	{
-		femms
-		mov 		eax,this
-		movq		mm0,[eax]
-		movd		mm1,[eax+8]
-		pfmul		mm0,mm0
-		pfmul		mm1,mm1
-		pfacc		mm0,mm0
-		pfadd		mm0,mm1
-		movd		len2,mm0
-		femms
+		return 1.0f / len;
 	}
-
-	return len2;
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline float Vector3::Length() const
-{
-//	return sqrtf( Length2() );
-
-	float	len;
-
-	__asm
+	else
 	{
-		femms
-		mov 		eax,this
-		movq		mm0,[eax]
-		movd		mm1,[eax+8]
-		pfmul		mm0,mm0
-		pfmul		mm1,mm1
-		pfacc		mm0,mm0
-		pfadd		mm0,mm1
-		pfrsqrt 	mm1,mm0
-		movq		mm2,mm1
-		pfmul		mm1,mm1
-		pfrsqit1	mm1,mm0
-		pfrcpit2	mm1,mm2
-		pfmul		mm0,mm1
-		movd		len,mm0
-		femms
+		return 1.0f; 
 	}
-
-	return len;
 }
 
 
@@ -108,36 +239,20 @@ inline float Vector3::Length() const
 /*																													*/
 /********************************************************************************************************************/
 
-inline float Vector3::ILength() const
+inline float Vector4::ILength2() const
 {
-//	float const len = Length();
-//
-//	assert( !Math::IsCloseToZero( len, Math::DEFAULT_FLOAT_TOLERANCE ) );
-//
-//	return ( !Math::IsCloseToZero( len ) ? 1.f / len : 1.f );
+	float const	len2	= Length2();
 
-	float	ilen;
+	assert( !Math::IsCloseToZero( len2, 2.0*Math::DEFAULT_FLOAT_TOLERANCE ) );
 
-	__asm
+	if ( !Math::IsCloseToZero( len2, 2.0*Math::DEFAULT_FLOAT_TOLERANCE ) )
 	{
-		femms
-		mov 		eax,this
-		movq		mm0,[eax]
-		movd		mm1,[eax+8]
-		pfmul		mm0,mm0
-		pfmul		mm1,mm1
-		pfacc		mm0,mm0
-		pfadd		mm0,mm1
-		pfrsqrt 	mm1,mm0
-		movq		mm2,mm1
-		pfmul		mm1,mm1
-		pfrsqit1	mm1,mm0
-		pfrcpit2	mm1,mm2
-		movd		ilen,mm1
-		femms
+		return 1.0f / len2;
 	}
-
-	return ilen;
+	else
+	{
+		return 1.0f; 
+	}
 }
 
 
@@ -145,42 +260,7 @@ inline float Vector3::ILength() const
 /*																													*/
 /********************************************************************************************************************/
 
-inline float Vector3::ILength2() const
-{
-//	float const len2 = Length2();
-//
-//	assert( !Math::IsCloseToZero( len2, 2.0*Math::DEFAULT_FLOAT_TOLERANCE ) );
-//
-//	return ( !Math::IsCloseToZero( len2 ) ? 1.f / len2 : 1.f );
-
-	float	ilen2;
-
-	__asm
-	{
-		femms
-		mov 		eax,this
-		movq		mm0,[eax]
-		movd		mm1,[eax+8]
-		pfmul		mm0,mm0
-		pfmul		mm1,mm1
-		pfacc		mm0,mm0
-		pfadd		mm0,mm1
-		pfrcp		mm1,mm0
-		pfrcpit1	mm0,mm1
-		pfrcpit2	mm0,mm1
-		movd		ilen2,mm0
-		femms
-	}
-
-	return ilen2;
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline bool Vector3::IsNormalized() const
+inline bool Vector4::IsNormalized() const
 {
 	return ( Math::IsCloseTo( Length2(), 1.0, 2.0*Math::DEFAULT_FLOAT_NORMALIZED_TOLERANCE ) );
 }
@@ -190,11 +270,12 @@ inline bool Vector3::IsNormalized() const
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 const & Vector3::Negate()
+inline Vector4 const & Vector4::Negate()
 {
 	m_X = -m_X;
 	m_Y = -m_Y;
 	m_Z = -m_Z;
+	m_W = -m_W;
 
 	return *this;
 }
@@ -204,36 +285,9 @@ inline Vector3 const & Vector3::Negate()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 const & Vector3::Normalize()
+inline Vector4 const & Vector4::Normalize()
 {
-//	return Scale( ILength() );
-
-	__asm
-	{
-		femms
-		mov 		eax,this
-		movq		mm0,[eax]
-		movd		mm1,[eax+8]
-		movq		mm4,mm0
-		movq		mm3,mm1
-		pfmul		mm0,mm0 
-		pfmul		mm1,mm1 
-		pfacc		mm0,mm0 
-		pfadd		mm0,mm1 
-		pfrsqrt 	mm1,mm0 
-		movq		mm2,mm1
-		pfmul		mm1,mm1
-		pfrsqit1	mm1,mm0
-		pfrcpit2	mm1,mm2
-		punpckldq	mm1,mm1
-		pfmul		mm3,mm1
-		pfmul		mm4,mm1
-		movd		[eax+8],mm3
-		movq		[eax],mm4
-		femms
-	}
-
-	return *this;
+	return Scale( ILength() );
 }
 
 
@@ -241,26 +295,12 @@ inline Vector3 const & Vector3::Normalize()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 const & Vector3::Add( Vector3 const & b )
+inline Vector4 const & Vector4::Add( Vector4 const & b )
 {
-//	m_X += b.m_X;
-//	m_Y += b.m_Y;
-//	m_Z += b.m_Z;
-
-	__asm
-	{
-		femms	
-		mov 	eax,this
-		mov 	edx,b
-		movq	mm0,[eax]
-		movd	mm1,[eax+8]
-		pfadd	mm0,[edx]
-		movd	mm2,[edx+8]
-		pfadd	mm1,mm2
-		movq	[eax],mm0
-		movd	[eax+8],mm1
-		femms	
-	}
+	m_X += b.m_X;
+	m_Y += b.m_Y;
+	m_Z += b.m_Z;
+	m_W += b.m_W;
 
 	return *this;
 }
@@ -270,26 +310,12 @@ inline Vector3 const & Vector3::Add( Vector3 const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 const & Vector3::Subtract( Vector3 const & b )
+inline Vector4 const & Vector4::Subtract( Vector4 const & b )
 {
-//	m_X -= b.m_X;
-//	m_Y -= b.m_Y;
-//	m_Z -= b.m_Z;
-
-	__asm
-	{
-		femms	
-		mov 	eax,this
-		mov 	edx,b
-		movq	mm0,[eax]
-		movd	mm1,[eax+8]
-		pfsub	mm0,[edx]
-		movd	mm2,[edx+8]
-		pfsub	mm1,mm2
-		movq	[eax],mm0
-		movd	[eax+8],mm1
-		femms	
-	}
+	m_X -= b.m_X;
+	m_Y -= b.m_Y;
+	m_Z -= b.m_Z;
+	m_W -= b.m_W;
 
 	return *this;
 }
@@ -299,27 +325,12 @@ inline Vector3 const & Vector3::Subtract( Vector3 const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 const & Vector3::Scale( float scale )
+inline Vector4 const & Vector4::Scale( float scale )
 {
-//	m_X *= scale;
-//	m_Y *= scale;
-//	m_Z *= scale;
-
-	__asm
-	{
-		femms
-		mov 		eax,this
-		movd		mm0,scale
-		movq		mm3,[eax]
-		punpckldq	mm0,mm0
-		movd		mm2,[eax+8]
-		movq		mm1,mm0
-		pfmul		mm0,mm3
-		pfmul		mm1,mm2 
-		movq		[eax],mm0
-		movd		[eax+8],mm1
-		femms
-	}
+	m_X *= scale;
+	m_Y *= scale;
+	m_Z *= scale;
+	m_W *= scale;
 
 	return *this;
 }
@@ -329,7 +340,7 @@ inline Vector3 const & Vector3::Scale( float scale )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 const & Vector3::operator +=( Vector3 const & b )
+inline Vector4 const & Vector4::operator +=( Vector4 const & b )
 {
 	return Add( b );
 }
@@ -339,7 +350,7 @@ inline Vector3 const & Vector3::operator +=( Vector3 const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 const & Vector3::operator -=( Vector3 const & b )
+inline Vector4 const & Vector4::operator -=( Vector4 const & b )
 {
 	return Subtract( b );
 }
@@ -349,7 +360,7 @@ inline Vector3 const & Vector3::operator -=( Vector3 const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 const & Vector3::operator *=( float scale )
+inline Vector4 const & Vector4::operator *=( float scale )
 {
 	return Scale( scale );
 }
@@ -359,20 +370,10 @@ inline Vector3 const & Vector3::operator *=( float scale )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 const & Vector3::operator *=( Matrix33 const & m )
-{
-	return Transform( m );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
 //!
-//! @note	In order to multiply, a 4th element with the value of 1 is implicit.
+//! @note	In order to multiply, a 4th column with a value of [0, 0, 0, 1] is implicit.
 
-inline Vector3 const & Vector3::operator *=( Matrix43 const & m )
+inline Vector4 const &	Vector4::operator *=( Matrix43 const & m )
 {
 	return Transform( m );
 }
@@ -382,9 +383,9 @@ inline Vector3 const & Vector3::operator *=( Matrix43 const & m )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 Vector3::operator -() const
+inline Vector4 const &	Vector4::operator *=( Matrix44 const & m )
 {
-	return Vector3( *this ).Negate();
+	return Transform( m );
 }
 
 
@@ -392,9 +393,18 @@ inline Vector3 Vector3::operator -() const
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 Vector3::Origin()
+inline Vector4 Vector4::operator -() const
 {
-	return Vector3( 0.0f, 0.0f, 0.0f );
+	return ( Vector4( *this ).Negate() );
+}
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector4 Vector4::Origin()
+{
+	return Vector4( 0.0f, 0.0f, 0.0f, 0.0f );
 }
 
 
@@ -402,9 +412,9 @@ inline Vector3 Vector3::Origin()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 Vector3::XAxis()
+inline Vector4 Vector4::XAxis()
 {
-	return Vector3( 1.0f, 0.0f, 0.0f );
+	return Vector4( 1.0f, 0.0f, 0.0f, 0.0f );
 }
 
 
@@ -412,9 +422,9 @@ inline Vector3 Vector3::XAxis()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 Vector3::YAxis()
+inline Vector4 Vector4::YAxis()
 {
-	return Vector3( 0.0f, 1.0f, 0.0f );
+	return Vector4( 0.0f, 1.0f, 0.0f, 0.0f );
 }
 
 
@@ -422,9 +432,9 @@ inline Vector3 Vector3::YAxis()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 Vector3::ZAxis()
+inline Vector4 Vector4::ZAxis()
 {
-	return Vector3( 0.0f, 0.0f, 1.0f );
+	return Vector4( 0.0f, 0.0f, 1.0f, 0.0f );
 }
 
 
@@ -432,9 +442,9 @@ inline Vector3 Vector3::ZAxis()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 operator +( Vector3 const & a, Vector3 const & b ) 
+inline Vector4 Vector4::WAxis()
 {
-	return Vector3( a ).Add( b );
+	return Vector4( 0.0f, 0.0f, 0.0f, 1.0f );
 }
 
 
@@ -442,9 +452,47 @@ inline Vector3 operator +( Vector3 const & a, Vector3 const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector3 operator -( Vector3 const & a, Vector3 const & b )
+inline Vector4 operator +( Vector4 const & a, Vector4 const & b )
 {
-	return Vector3( a ).Subtract( b );
+	return Vector4( a ).Add( b );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector4 operator -( Vector4 const & a, Vector4 const & b )
+{
+	return Vector4( a ).Subtract( b );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+//! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
+//!			only notational.
+//! @note	In order to multiply, a 4th column with a value of [0, 0, 0, 1] is implicit.
+
+inline Vector4 operator *( Vector4 const & v, Matrix43 const & m )
+{
+	return Vector4( v ).Transform( m );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+//! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
+//!			only notational.
+//! @note	In order to multiply, a 4th column with a value of [0, 0, 0, 1] is implicit.
+
+inline Vector4 operator *( Matrix43 const & m, Vector4 const & v )
+{
+	return Vector4( v ).Transform( m );
 }
 
 
@@ -455,9 +503,9 @@ inline Vector3 operator -( Vector3 const & a, Vector3 const & b )
 //! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
 //!			only notational.
 
-inline Vector3 operator *( Vector3 const & v, Matrix33 const & m )
+inline Vector4 operator *( Vector4 const & v, Matrix44 const & m )
 {
-	return Vector3( v ).Transform( m );
+	return Vector4( v ).Transform( m );
 }
 
 
@@ -468,9 +516,9 @@ inline Vector3 operator *( Vector3 const & v, Matrix33 const & m )
 //! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
 //!			only notational.
 
-inline Vector3 operator *( Matrix33 const &m , Vector3 const & v )
+inline Vector4 operator *( Matrix44 const & m, Vector4 const & v )
 {
-	return Vector3( v ).Transform( m );
+	return Vector4( v ).Transform( m );
 }
 
 
@@ -478,27 +526,9 @@ inline Vector3 operator *( Matrix33 const &m , Vector3 const & v )
 /*																													*/
 /********************************************************************************************************************/
 
-//! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
-//!			only notational.
-//! @note	In order to multiply, a 4th element with the value of 1 is implicit.
-
-inline Vector3 operator *( Vector3 const & v, Matrix43 const & m )
+inline float Dot( Vector4 const & a, Vector4 const & b )
 {
-	return Vector3( v ).Transform( m );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-//! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
-//!			only notational.
-//! @note	In order to multiply, a 4th element with the value of 1 is implicit.
-
-inline Vector3 operator *( Matrix43 const & m, Vector3 const & v )
-{
-	return Vector3( v ).Transform( m );
+	return ( a.m_X * b.m_X + a.m_Y * b.m_Y + a.m_Z * b.m_Z + a.m_W * b.m_W );
 }
 
 
@@ -509,10 +539,11 @@ inline Vector3 operator *( Matrix43 const & m, Vector3 const & v )
 //! @note	When multiplying a vector and a scalar, the operator is commutative since the order of the operands is
 //!			only notational.
 
-inline Vector3 operator *( Vector3 const & v, float s )
+inline Vector4 operator *( Vector4 const & v, float s )
 {
-	return Vector3( v ).Scale( s );
+	return Vector4( v ).Scale( s );
 }
+
 
 
 /********************************************************************************************************************/
@@ -522,7 +553,7 @@ inline Vector3 operator *( Vector3 const & v, float s )
 //! @note	When multiplying a vector and a scalar, the operator is commutative since the order of the operands is
 //!			only notational.
 
-inline Vector3 operator *( float s, Vector3 const & v )
+inline Vector4 operator *( float s, Vector4 const & v )
 {
-	return Vector3( v ).Scale( s );
+	return Vector4( v ).Scale( s );
 }

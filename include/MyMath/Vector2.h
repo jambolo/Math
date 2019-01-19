@@ -1,11 +1,11 @@
 /** @file *//********************************************************************************************************
 
-                                                     Vector2d.inl
+                                                      Vector2.h
 
 						                    Copyright 2003, John J. Bolton
 	--------------------------------------------------------------------------------------------------------------
 
-	$Header: //depot/Libraries/Math/Vector2d.inl#7 $
+	$Header: //depot/Libraries/Math/Vector2.h#13 $
 
 	$NoKeywords: $
 
@@ -14,7 +14,135 @@
 #pragma once
 
 
-#include "Vector2d.h"
+class Matrix22;
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+#pragma warning( push )
+#pragma warning( disable : 4201 )	// nonstandard extension used : nameless struct/union
+
+//! A 2D vector of floats.
+//
+//! @ingroup Vectors
+//!
+
+class Vector2
+{
+public:
+
+	//! Constructor
+	Vector2() {}
+
+	//! Constructor
+	Vector2( float x, float y );
+
+	//! Constructor
+	Vector2( float const v[ 2 ] );
+
+	//! Returns the length of the vector squared.
+	float			Length2()							const;
+
+	//! Returns the length of the vector.
+	float			Length()							const;
+
+	//! Returns the inverse of the length of the vector (or 1 if the length is 0).
+	float			ILength()							const;
+
+	//! Returns the inverse of the length squared of the vector (or 1 if the length is 0).
+	float			ILength2()							const;
+
+	//! Returns true if the vector is normalized (within a tolerance).
+	bool			IsNormalized()						const;
+
+	//! Negates the vector. Returns the result.
+	Vector2 const &	Negate();
+
+	//! Normalizes the vector. Returns the result.
+	Vector2 const &	Normalize();
+
+	//! Adds a vector. Returns the result.
+	Vector2 const &	Add( Vector2 const & b );
+
+	//! Subtracts a vector. Returns the result.
+	Vector2 const &	Subtract( Vector2 const & b );
+
+	//! Multiplies the vector by a scalar. Returns the result.
+	Vector2 const &	Scale( float scale );
+
+	//! Transforms the vector (vM). Returns the result.
+	Vector2 const &	Transform( Matrix22 const & m );
+
+	//! Rotates the vector. Returns the result.
+	Vector2 const &	Rotate( float angle );
+
+	//! Adds a vector. Returns the result.
+	Vector2 const &	operator +=( Vector2 const & b );
+
+	//! Subtracts a vector. Returns the result.
+	Vector2 const &	operator -=( Vector2 const & b );
+
+	//! Scales the vector. Returns the result.
+	Vector2 const &	operator *=( float scale );
+
+	//! Transforms the vector (vM). Returns the result.
+	Vector2 const &	operator *=( Matrix22 const & m );
+
+	//! Returns the negative.
+	Vector2			operator -()						const;
+
+	union
+	{
+		float	m_V[ 2 ];	//!< Elements as an array {x, y}
+		struct
+		{
+			float	/** */m_X, m_Y;
+		};
+	};
+
+	// Useful constants
+
+	//! Returns [0, 0].
+	static Vector2	Origin();
+
+	//! Returns [1, 0].
+	static Vector2	XAxis();
+
+	//! Returns [0, 1].
+	static Vector2	YAxis();
+};
+
+#pragma warning( pop )
+
+//! @name Vector2 Binary Operators
+//! @ingroup Vectors
+//@{
+
+//! Returns the sum of @a a and @a b.
+Vector2	operator +( Vector2 const & a, Vector2 const & b );
+
+//! Returns the difference between @a a and @a b.
+Vector2	operator -( Vector2 const & a, Vector2 const & b );
+
+//! Returns the result of transforming @a v by @a m.
+Vector2	operator *( Vector2 const & v, Matrix22 const & m );
+
+//! Returns the result of transforming @a v by @a m.
+Vector2	operator *( Matrix22 const & m, Vector2 const & v );
+
+//! Returns the dot product of @a a and @a b.
+float	Dot( Vector2 const & a, Vector2 const & b );
+
+//! Returns the result of scaling @a v by @a s.
+Vector2	operator *( Vector2 const & v, float s );
+
+//! Returns the result of scaling @a v by @a s.
+Vector2	operator *( float s, Vector2 const & v );
+
+//@}
+
+// Inline functions
 
 #include "Math.h"
 
@@ -26,7 +154,7 @@
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d::Vector2d( double x, double y )
+inline Vector2::Vector2( float x, float y )
 	: m_X( x ), m_Y( y )
 {
 }
@@ -36,7 +164,7 @@ inline Vector2d::Vector2d( double x, double y )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d::Vector2d( double const v[ 2 ] )
+inline Vector2::Vector2( float const v[ 2 ] )
 	: m_X( v[ 0 ] ), m_Y( v[ 1 ] )
 {
 }
@@ -46,40 +174,24 @@ inline Vector2d::Vector2d( double const v[ 2 ] )
 /*																													*/
 /********************************************************************************************************************/
 
-inline double Vector2d::Length2() const
+inline float Vector2::Length2() const
 {
-	return m_X * m_X + m_Y * m_Y; 
-}
+//	return m_X * m_X + m_Y * m_Y; 
 
+	float	len;
 
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline double Vector2d::Length() const
-{
-	return sqrt( Length2() ); 
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline double Vector2d::ILength() const
-{
-	double const	len	= Length();
-
-	assert( !Math::IsCloseToZero( len, Math::DEFAULT_DOUBLE_TOLERANCE ) );
-
-	if ( !Math::IsCloseToZero( len, Math::DEFAULT_DOUBLE_TOLERANCE ) )
+	__asm
 	{
-		return 1.0 / len;
+		femms
+		mov 		eax,this
+		movq		mm0,[eax]
+		pfmul		mm0,mm0
+		pfacc		mm0,mm0
+		movd		len,mm0
+		femms
 	}
-	else
-	{
-		return 1.0;
-	}
+
+	return len;
 }
 
 
@@ -87,20 +199,30 @@ inline double Vector2d::ILength() const
 /*																													*/
 /********************************************************************************************************************/
 
-inline double Vector2d::ILength2() const
+inline float Vector2::Length() const
 {
-	double const	len2	= Length2();
+//	return sqrtf( Length2() );
 
-	assert( !Math::IsCloseToZero( len2, 2.0*Math::DEFAULT_DOUBLE_TOLERANCE ) );
+	float	len;
 
-	if ( !Math::IsCloseToZero( len2, 2.0*Math::DEFAULT_DOUBLE_TOLERANCE ) )
+	__asm
 	{
-		return 1.0 / len2;
+		femms
+		mov 		eax,this
+		movq		mm0,[eax]
+		pfmul		mm0,mm0
+		pfacc		mm0,mm0
+		pfrsqrt 	mm1,mm0
+		movq		mm2,mm1
+		pfmul		mm1,mm1
+		pfrsqit1	mm1,mm0
+		pfrcpit2	mm1,mm2
+		pfmul		mm0,mm1
+		movd		len,mm0
+		femms
 	}
-	else
-	{
-		return 1.0;
-	}
+
+	return len;
 }
 
 
@@ -108,9 +230,33 @@ inline double Vector2d::ILength2() const
 /*																													*/
 /********************************************************************************************************************/
 
-inline bool Vector2d::IsNormalized() const
+inline float Vector2::ILength() const
 {
-	return Math::IsCloseTo( Length2(), 1.0, 2.0*Math::DEFAULT_DOUBLE_NORMALIZED_TOLERANCE );
+//	float const len = Length();
+//
+//	assert( !Math::IsCloseToZero( len ) );
+//
+//	return ( !Math::IsCloseToZero( len ) ? 1.f / len : 1.f );
+
+	float	ilen;
+
+	__asm
+	{
+		femms
+		mov 		eax,this
+		movq		mm0,[eax]
+		pfmul		mm0,mm0
+		pfacc		mm0,mm0
+		pfrsqrt 	mm1,mm0
+		movq		mm2,mm1
+		pfmul		mm1,mm1
+		pfrsqit1	mm1,mm0
+		pfrcpit2	mm1,mm2
+		movd		ilen,mm1
+		femms
+	}
+
+	return ilen;
 }
 
 
@@ -118,7 +264,49 @@ inline bool Vector2d::IsNormalized() const
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d const & Vector2d::Negate()
+inline float Vector2::ILength2() const
+{
+//	float const len2 = Length2();
+//
+//	assert( !Math::IsCloseToZero( len2, 2.0*Math::DEFAULT_FLOAT_NORMALIZED_TOLERANCE ) );
+//
+//	return ( !Math::IsCloseToZero( len2, 2.0*Math::DEFAULT_FLOAT_NORMALIZED_TOLERANCE ) ) ? 1.f / len : 1.f );
+
+	float	ilen2;
+
+	__asm
+	{
+		femms
+		mov 		eax,this
+		movq		mm0,[eax]
+		pfmul		mm0,mm0
+		pfacc		mm0,mm0
+		pfrcp		mm1,mm0
+		pfrcpit1	mm0,mm1
+		pfrcpit2	mm0,mm1
+		movd		ilen2,mm0
+		femms
+	}
+
+	return ilen2;
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline bool Vector2::IsNormalized() const
+{
+	return Math::IsCloseTo( Length2(), 1.0, 2.0*Math::DEFAULT_FLOAT_NORMALIZED_TOLERANCE );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector2 const & Vector2::Negate()
 {
 	m_X = -m_X;
 	m_Y = -m_Y;
@@ -131,7 +319,7 @@ inline Vector2d const & Vector2d::Negate()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d const & Vector2d::Normalize()
+inline Vector2 const & Vector2::Normalize()
 {
 	return Scale( ILength() );
 }
@@ -141,7 +329,7 @@ inline Vector2d const & Vector2d::Normalize()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d const & Vector2d::Add( Vector2d const & b )
+inline Vector2 const & Vector2::Add( Vector2 const & b )
 {
 	m_X += b.m_X;
 	m_Y += b.m_Y;
@@ -154,7 +342,7 @@ inline Vector2d const & Vector2d::Add( Vector2d const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d const & Vector2d::Subtract( Vector2d const & b )
+inline Vector2 const & Vector2::Subtract( Vector2 const & b )
 {
 	m_X -= b.m_X;
 	m_Y -= b.m_Y;
@@ -167,7 +355,7 @@ inline Vector2d const & Vector2d::Subtract( Vector2d const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d const & Vector2d::Scale( double scale )
+inline Vector2 const & Vector2::Scale( float scale )
 {
 	m_X *= scale;
 	m_Y *= scale;
@@ -180,7 +368,7 @@ inline Vector2d const & Vector2d::Scale( double scale )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d const & Vector2d::operator +=( Vector2d const & b )
+inline Vector2 const & Vector2::operator +=( Vector2 const & b )
 {
 	return Add( b );
 }
@@ -190,7 +378,7 @@ inline Vector2d const & Vector2d::operator +=( Vector2d const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d const & Vector2d::operator -=( Vector2d const & b )
+inline Vector2 const & Vector2::operator -=( Vector2 const & b )
 {
 	return Subtract( b );
 }
@@ -200,7 +388,7 @@ inline Vector2d const & Vector2d::operator -=( Vector2d const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d const & Vector2d::operator *=( double scale )
+inline Vector2 const & Vector2::operator *=( float scale )
 {
 	return Scale( scale );
 }
@@ -210,7 +398,7 @@ inline Vector2d const & Vector2d::operator *=( double scale )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d const & Vector2d::operator *=( Matrix22d const & m )
+inline Vector2 const & Vector2::operator *=( Matrix22 const & m )
 {
 	return Transform( m );
 }
@@ -220,9 +408,9 @@ inline Vector2d const & Vector2d::operator *=( Matrix22d const & m )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d Vector2d::operator -() const
+inline Vector2 Vector2::operator -() const
 {
-	return Vector2d( *this ).Negate();
+	return Vector2( *this ).Negate();
 }
 
 
@@ -230,9 +418,9 @@ inline Vector2d Vector2d::operator -() const
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d Vector2d::Origin()
+inline Vector2 Vector2::Origin()
 {
-	return Vector2d( 0.0, 0.0 );
+	return Vector2( 0.0f, 0.0f );
 }
 
 
@@ -240,9 +428,9 @@ inline Vector2d Vector2d::Origin()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d Vector2d::XAxis()
+inline Vector2 Vector2::XAxis()
 {
-	return Vector2d( 1.0, 0.0 );
+	return Vector2( 1.0f, 0.0f );
 }
 
 
@@ -250,9 +438,9 @@ inline Vector2d Vector2d::XAxis()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d Vector2d::YAxis()
+inline Vector2 Vector2::YAxis()
 {
-	return Vector2d( 0.0, 1.0 );
+	return Vector2( 0.0f, 1.0f );
 }
 
 
@@ -260,9 +448,9 @@ inline Vector2d Vector2d::YAxis()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d operator +( Vector2d const & a, Vector2d const & b )
+inline Vector2 operator +( Vector2 const & a, Vector2 const & b )
 {
-	return Vector2d( a ).Add( b );
+	return Vector2( a ).Add( b );
 }
 
 
@@ -270,22 +458,9 @@ inline Vector2d operator +( Vector2d const & a, Vector2d const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector2d operator -( Vector2d const & a, Vector2d const & b )
+inline Vector2 operator -( Vector2 const & a, Vector2 const & b )
 {
-	return Vector2d( a ).Subtract( b );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-//! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
-//!			only notational.
-
-inline Vector2d operator *( Vector2d const & v, Matrix22d const & m )
-{
-	return Vector2d( v ).Transform( m );
+	return Vector2( a ).Subtract( b );
 }
 
 
@@ -296,9 +471,9 @@ inline Vector2d operator *( Vector2d const & v, Matrix22d const & m )
 //! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
 //!			only notational.
 
-inline Vector2d operator *( Matrix22d const & m, Vector2d const & v )
+inline Vector2 operator *( Vector2 const & v, Matrix22 const & m )
 {
-	return Vector2d( v ).Transform( m );
+	return Vector2( v ).Transform( m );
 }
 
 
@@ -306,9 +481,22 @@ inline Vector2d operator *( Matrix22d const & m, Vector2d const & v )
 /*																													*/
 /********************************************************************************************************************/
 
-inline double Dot( Vector2d const & a, Vector2d const & b )
+//! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
+//!			only notational.
+
+inline Vector2 operator *( Matrix22 const & m, Vector2 const & v )
 {
-	return a.m_X * b.m_X + a.m_Y * b.m_Y;
+	return Vector2( v ).Transform( m );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline float Dot( Vector2 const & a, Vector2 const & b )
+{
+	return ( a.m_X * b.m_X + a.m_Y * b.m_Y );
 }
 
 
@@ -319,9 +507,9 @@ inline double Dot( Vector2d const & a, Vector2d const & b )
 //! @note	When multiplying a vector and a scalar, the operator is commutative since the order of the operands is
 //!			only notational.
 
-inline Vector2d operator *( Vector2d const & v, double s )
+inline Vector2 operator *( Vector2 const & v, float s )
 {
-	return Vector2d( v ).Scale( s );
+	return Vector2( v ).Scale( s );
 }
 
 
@@ -332,7 +520,7 @@ inline Vector2d operator *( Vector2d const & v, double s )
 //! @note	When multiplying a vector and a scalar, the operator is commutative since the order of the operands is
 //!			only notational.
 
-inline Vector2d operator *( double s, Vector2d const & v )
+inline Vector2 operator *( float s, Vector2 const & v )
 {
-	return Vector2d( v ).Scale( s );
+	return Vector2( v ).Scale( s );
 }

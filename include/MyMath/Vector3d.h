@@ -1,11 +1,11 @@
 /** @file *//********************************************************************************************************
 
-                                                     Vector4d.inl
+                                                      Vector3d.h
 
 						                    Copyright 2003, John J. Bolton
 	--------------------------------------------------------------------------------------------------------------
 
-	$Header: //depot/Libraries/Math/Vector4d.inl#8 $
+	$Header: //depot/Libraries/Math/Vector3d.h#9 $
 
 	$NoKeywords: $
 
@@ -15,7 +15,158 @@
 
 
 
-#include "Vector4d.h"
+class Matrix33d;
+class Matrix43d;
+class Quaternion;
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+#pragma warning( push )
+#pragma warning( disable : 4201 )	// nonstandard extension used : nameless struct/union
+
+//! A 3D vector of doubles.
+//
+//! @ingroup Vectors
+//!
+
+class Vector3d
+{
+public:
+
+	//! Constructor
+	Vector3d() {}
+
+	//! Constructor
+	Vector3d( double x, double y, double z );
+
+	//! Constructor
+	Vector3d( double const v[ 3 ] );
+
+	//! Returns the length of the vector squared.
+	double				Length2()							const;
+
+	//! Returns the length of the vector.
+	double				Length()							const;
+
+	//! Returns the inverse of the length of the vector (or 1. if the length is 0)
+	double				ILength()							const;
+
+	//! Returns the inverse of the length squared of the vector (or 1. if the length is 0)
+	double				ILength2()							const;
+
+	//! Returns true if the vector is normalized (within a tolerance).
+	bool				IsNormalized()						const;
+
+	//! Negates the vector. Returns the result.
+	Vector3d const &	Negate();
+
+	//! Normalizes the vector. Returns the result.
+	Vector3d const &	Normalize();
+
+	//! Adds a vector. Returns the result.
+	Vector3d const &	Add( Vector3d const & b );
+
+	//! Subtracts a vector. Returns the result.
+	Vector3d const &	Subtract( Vector3d const & b );
+
+	//! Multiplies the vector by a scalar. Returns the result.
+	Vector3d const &	Scale( double scale );
+
+	//! Transforms the vector (vM). Returns the result.
+	Vector3d const &	Transform( Matrix43d const & m );
+
+	//! Transforms the vector (vM). Returns the result.
+	Vector3d const &	Transform( Matrix33d const & m );
+
+	//! Rotates the vector around an axis. Returns the result.
+	Vector3d const &	Rotate( Vector3d const & axis, double angle );
+
+	//! Rotates the vector. Returns the result.
+	Vector3d const &	Rotate( Quaternion const & q );
+
+	//! Adds a vector. Returns the result.
+	Vector3d const &	operator +=( Vector3d const & b );
+
+	//! Subtracts a vector. Returns the result.
+	Vector3d const &	operator -=( Vector3d const & b );
+
+	//! Multiplies the vector by a scalar. Returns the result.
+	Vector3d const &	operator *=( double scale );
+
+	//! Transforms the vector (vM). Returns the result.
+	Vector3d const &	operator *=( Matrix43d const & m );
+
+	//! Transforms the vector (vM). Returns the result.
+	Vector3d const &	operator *=( Matrix33d const & m );
+
+	//! Returns the negative.
+	Vector3d			operator -()						const;
+
+	union
+	{
+		double	m_V[ 3 ];	//!< Elements as an array {x, y, z}
+		struct
+		{
+			double	/** */m_X, m_Y, m_Z;
+		};
+	};
+
+	// Useful constants
+
+	//! Returns [0, 0, 0].
+	static Vector3d	Origin();
+
+	//! Returns [1, 0, 0].
+	static Vector3d	XAxis();
+
+	//! Returns [0, 1, 0].
+	static Vector3d	YAxis();
+
+	//! Returns [0, 0, 1].
+	static Vector3d	ZAxis();
+};
+
+#pragma warning( pop )
+
+//! @name Vector3d Binary Operators
+//! @ingroup Vectors
+//@{
+
+//! Returns the sum of @a a and @a b.
+Vector3d operator +( Vector3d const & a, Vector3d const & b );
+
+//! Returns the difference between @a a and @a b.
+Vector3d operator -( Vector3d const & a, Vector3d const & b );
+
+//! Returns the result of transforming @a v by @a m.
+Vector3d operator *( Vector3d const & v, Matrix43d const & m );
+
+//! Returns the result of transforming @a v by @a m.
+Vector3d operator *( Matrix43d const & m, Vector3d const & v );
+
+//! Returns the result of transforming @a v by @a m.
+Vector3d operator *( Vector3d const & v, Matrix33d const & m );
+
+//! Returns the result of transforming @a v by @a m.
+Vector3d operator *( Matrix33d const & m, Vector3d const & v );
+
+//! Returns the dot product of @a a and @a b.
+double Dot( Vector3d const & a, Vector3d const & b );
+
+//! Returns the cross product of @a a and @a b.
+Vector3d Cross( Vector3d const & a, Vector3d const & b );
+
+//! Returns the result of scaling @a v by @a s.
+Vector3d operator *( Vector3d const & v, double s );
+
+//! Returns the result of scaling @a v by @a s.
+Vector3d operator *( double s, Vector3d const & v );
+
+//@}
+
+// Inline functions
 
 #include "Math.h"
 
@@ -27,8 +178,8 @@
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d::Vector4d( double x, double y, double z, double w )
-	: m_X( x ), m_Y( y ), m_Z( z ), m_W( w )
+inline Vector3d::Vector3d( double x, double y, double z )
+	: m_X( x ), m_Y( y ), m_Z( z )
 {
 }
 
@@ -37,8 +188,8 @@ inline Vector4d::Vector4d( double x, double y, double z, double w )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d::Vector4d( double const v[ 4 ] )
-	: m_X( v[ 0 ] ), m_Y( v[ 1 ] ), m_Z( v[ 2 ] ), m_W( v[ 3 ] )
+inline Vector3d::Vector3d( double const v[ 3 ] )
+	: m_X( v[ 0 ] ), m_Y( v[ 1 ] ), m_Z( v[ 2 ] )
 {
 }
 
@@ -47,9 +198,9 @@ inline Vector4d::Vector4d( double const v[ 4 ] )
 /*																													*/
 /********************************************************************************************************************/
 
-inline double Vector4d::Length2() const
+inline double Vector3d::Length2() const
 {
-	return ( m_X * m_X + m_Y * m_Y + m_Z * m_Z + m_W * m_W ); 
+	return ( m_X * m_X + m_Y * m_Y + m_Z * m_Z ); 
 }
 
 
@@ -57,7 +208,7 @@ inline double Vector4d::Length2() const
 /*																													*/
 /********************************************************************************************************************/
 
-inline double Vector4d::Length() const
+inline double Vector3d::Length() const
 {
 	return sqrt( Length2() ); 
 }
@@ -67,7 +218,7 @@ inline double Vector4d::Length() const
 /*																													*/
 /********************************************************************************************************************/
 
-inline double Vector4d::ILength() const
+inline double Vector3d::ILength() const
 {
 	double const	len	= Length();
 
@@ -80,7 +231,7 @@ inline double Vector4d::ILength() const
 	else
 	{
 		return 1.0;
-	}
+	} 
 }
 
 
@@ -88,7 +239,7 @@ inline double Vector4d::ILength() const
 /*																													*/
 /********************************************************************************************************************/
 
-inline double Vector4d::ILength2() const
+inline double Vector3d::ILength2() const
 {
 	double const	len2	= Length2();
 
@@ -101,7 +252,7 @@ inline double Vector4d::ILength2() const
 	else
 	{
 		return 1.0;
-	}
+	} 
 }
 
 
@@ -109,9 +260,9 @@ inline double Vector4d::ILength2() const
 /*																													*/
 /********************************************************************************************************************/
 
-inline bool Vector4d::IsNormalized() const
+inline bool Vector3d::IsNormalized() const
 {
-	return ( Math::IsCloseTo( Length2(), 1.0, 2.0*Math::DEFAULT_DOUBLE_NORMALIZED_TOLERANCE ) );
+	return ( Math::IsCloseTo( Length2(), 1., 2.*Math::DEFAULT_DOUBLE_NORMALIZED_TOLERANCE ) );
 }
 
 
@@ -119,12 +270,11 @@ inline bool Vector4d::IsNormalized() const
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d const & Vector4d::Negate()
+inline Vector3d const & Vector3d::Negate()
 {
 	m_X = -m_X;
 	m_Y = -m_Y;
 	m_Z = -m_Z;
-	m_W = -m_W;
 
 	return *this;
 }
@@ -134,7 +284,7 @@ inline Vector4d const & Vector4d::Negate()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d const & Vector4d::Normalize()
+inline Vector3d const & Vector3d::Normalize()
 {
 	return Scale( ILength() );
 }
@@ -144,12 +294,11 @@ inline Vector4d const & Vector4d::Normalize()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d const & Vector4d::Add( Vector4d const & b )
+inline Vector3d const & Vector3d::Add( Vector3d const & b )
 {
 	m_X += b.m_X;
 	m_Y += b.m_Y;
 	m_Z += b.m_Z;
-	m_W += b.m_W;
 
 	return *this;
 }
@@ -159,12 +308,11 @@ inline Vector4d const & Vector4d::Add( Vector4d const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d const & Vector4d::Subtract( Vector4d const & b )
+inline Vector3d const & Vector3d::Subtract( Vector3d const & b )
 {
 	m_X -= b.m_X;
 	m_Y -= b.m_Y;
 	m_Z -= b.m_Z;
-	m_W -= b.m_W;
 
 	return *this;
 }
@@ -174,12 +322,11 @@ inline Vector4d const & Vector4d::Subtract( Vector4d const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d const & Vector4d::Scale( double scale )
+inline Vector3d const & Vector3d::Scale( double scale )
 {
 	m_X *= scale;
 	m_Y *= scale;
 	m_Z *= scale;
-	m_W *= scale;
 
 	return *this;
 }
@@ -189,7 +336,7 @@ inline Vector4d const & Vector4d::Scale( double scale )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d const & Vector4d::operator +=( Vector4d const & b )
+inline Vector3d const & Vector3d::operator +=( Vector3d const & b )
 {
 	return Add( b );
 }
@@ -199,7 +346,7 @@ inline Vector4d const & Vector4d::operator +=( Vector4d const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d const & Vector4d::operator -=( Vector4d const & b )
+inline Vector3d const & Vector3d::operator -=( Vector3d const & b )
 {
 	return Subtract( b );
 }
@@ -209,7 +356,7 @@ inline Vector4d const & Vector4d::operator -=( Vector4d const & b )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d const & Vector4d::operator *=( double scale )
+inline Vector3d const & Vector3d::operator *=( double scale )
 {
 	return Scale( scale );
 }
@@ -219,10 +366,20 @@ inline Vector4d const & Vector4d::operator *=( double scale )
 /*																													*/
 /********************************************************************************************************************/
 
+inline Vector3d const &	Vector3d::operator *=( Matrix33d const & m )
+{
+	return Transform( m );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
 //!
-//! @note	In order to multiply, a 4th row/column with a value of [0, 0, 0, 1] is implicit.
+//! @note	In order to multiply, a 4th element with the value of 1 is implicit.
 
-inline Vector4d const &	Vector4d::operator *=( Matrix43d const & m )
+inline Vector3d const &	Vector3d::operator *=( Matrix43d const & m )
 {
 	return Transform( m );
 }
@@ -232,9 +389,9 @@ inline Vector4d const &	Vector4d::operator *=( Matrix43d const & m )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d const &	Vector4d::operator *=( Matrix44d const & m )
+inline Vector3d Vector3d::operator -() const
 {
-	return Transform( m );
+	return Vector3d( *this ).Negate();
 }
 
 
@@ -242,18 +399,9 @@ inline Vector4d const &	Vector4d::operator *=( Matrix44d const & m )
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d Vector4d::operator -() const
+inline Vector3d Vector3d::Origin()
 {
-	return Vector4d( *this ).Negate();
-}
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline Vector4d Vector4d::Origin()
-{
-	return Vector4d( 0.0, 0.0, 0.0, 0.0 );
+	return Vector3d( 0.0, 0.0, 0.0 );
 }
 
 
@@ -261,9 +409,9 @@ inline Vector4d Vector4d::Origin()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d Vector4d::XAxis()
+inline Vector3d Vector3d::XAxis()
 {
-	return Vector4d( 1.0, 0.0, 0.0, 0.0 );
+	return Vector3d( 1.0, 0.0, 0.0 );
 }
 
 
@@ -271,9 +419,9 @@ inline Vector4d Vector4d::XAxis()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d Vector4d::YAxis()
+inline Vector3d Vector3d::YAxis()
 {
-	return Vector4d( 0.0, 1.0, 0.0, 0.0 );
+	return Vector3d( 0.0, 1.0, 0.0 );
 }
 
 
@@ -281,9 +429,9 @@ inline Vector4d Vector4d::YAxis()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d Vector4d::ZAxis()
+inline Vector3d Vector3d::ZAxis()
 {
-	return Vector4d( 0.0, 0.0, 1.0, 0.0 );
+	return Vector3d( 0.0, 0.0, 1.0 );
 }
 
 
@@ -291,9 +439,9 @@ inline Vector4d Vector4d::ZAxis()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d Vector4d::WAxis()
+inline Vector3d operator +( Vector3d const & a, Vector3d const & b )
 {
-	return Vector4d( 0.0, 0.0, 0.0, 1.0 );
+	return Vector3d( a ).Add( b );
 }
 
 
@@ -301,47 +449,9 @@ inline Vector4d Vector4d::WAxis()
 /*																													*/
 /********************************************************************************************************************/
 
-inline Vector4d operator +( Vector4d const & a, Vector4d const & b )
+inline Vector3d operator -( Vector3d const & a, Vector3d const & b )
 {
-	return Vector4d( a ).Add( b );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline Vector4d operator -( Vector4d const & a, Vector4d const & b )
-{
-	return Vector4d( a ).Subtract( b );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-//! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
-//!			only notational.
-//! @note	In order to multiply, a 4th column with a value of [0, 0, 0, 1] is implicit.
-
-inline Vector4d operator *( Vector4d const & v, Matrix43d const & m )
-{
-	return Vector4d( v ).Transform( m );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-//! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
-//!			only notational.
-//! @note	In order to multiply, a 4th column with a value of [0, 0, 0, 1] is implicit.
-
-inline Vector4d operator *( Matrix43d const & m, Vector4d const & v )
-{
-	return Vector4d( v ).Transform( m );
+	return Vector3d( a ).Subtract( b );
 }
 
 
@@ -352,9 +462,9 @@ inline Vector4d operator *( Matrix43d const & m, Vector4d const & v )
 //! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
 //!			only notational.
 
-inline Vector4d operator *( Vector4d const & v, Matrix44d const & m )
+inline Vector3d operator *( Vector3d const & v, Matrix33d const & m )
 {
-	return Vector4d( v ).Transform( m );
+	return Vector3d( v ).Transform( m );
 }
 
 
@@ -365,9 +475,9 @@ inline Vector4d operator *( Vector4d const & v, Matrix44d const & m )
 //! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
 //!			only notational.
 
-inline Vector4d operator *( Matrix44d const & m, Vector4d const & v )
+inline Vector3d operator *( Matrix33d const & m, Vector3d const & v )
 {
-	return Vector4d( v ).Transform( m );
+	return Vector3d( v ).Transform( m );
 }
 
 
@@ -375,9 +485,49 @@ inline Vector4d operator *( Matrix44d const & m, Vector4d const & v )
 /*																													*/
 /********************************************************************************************************************/
 
-inline double Dot( Vector4d const & a, Vector4d const & b )
+//! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
+//!			only notational.
+//! @note	In order to multiply, a 4th element with the value of 1 is implicit.
+
+inline Vector3d operator *( Vector3d const & v, Matrix43d const & m )
 {
-	return ( a.m_X * b.m_X + a.m_Y * b.m_Y + a.m_Z * b.m_Z + a.m_W * b.m_W );
+	return Vector3d( v ).Transform( m );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+//! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
+//!			only notational.
+//! @note	In order to multiply, a 4th element with the value of 1 is implicit.
+
+inline Vector3d operator *( Matrix43d const & m, Vector3d const & v )
+{
+	return Vector3d( v ).Transform( m );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline double Dot( Vector3d const & a, Vector3d const & b )
+{
+	return ( a.m_X * b.m_X + a.m_Y * b.m_Y + a.m_Z * b.m_Z );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector3d Cross( Vector3d const & a, Vector3d const & b )
+{
+	return Vector3d( a.m_Y * b.m_Z - a.m_Z * b.m_Y,
+					 a.m_Z * b.m_X - a.m_X * b.m_Z,
+					 a.m_X * b.m_Y - a.m_Y * b.m_X );
 }
 
 
@@ -388,9 +538,9 @@ inline double Dot( Vector4d const & a, Vector4d const & b )
 //! @note	When multiplying a vector and a scalar, the operator is commutative since the order of the operands is
 //!			only notational.
 
-inline Vector4d operator *( Vector4d const & v, double s )
+inline Vector3d operator *( Vector3d const & v, double s )
 {
-	return Vector4d( v ).Scale( s );
+	return Vector3d( v ).Scale( s );
 }
 
 
@@ -401,7 +551,7 @@ inline Vector4d operator *( Vector4d const & v, double s )
 //! @note	When multiplying a vector and a scalar, the operator is commutative since the order of the operands is
 //!			only notational.
 
-inline Vector4d operator *( double s, Vector4d const & v )
+inline Vector3d operator *( double s, Vector3d const & v )
 {
-	return Vector4d( v ).Scale( s );
+	return Vector3d( v ).Scale( s );
 }

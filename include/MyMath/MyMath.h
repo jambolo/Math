@@ -1,16 +1,3 @@
-/** @file *//********************************************************************************************************
-
-                                                     Math.h
-
-						                    Copyright 2003, John J. Bolton
-	--------------------------------------------------------------------------------------------------------------
-
-	$Header: //depot/Libraries/Math/Math.h#7 $
-
-	$NoKeywords: $
-
- ********************************************************************************************************************/
-
 #pragma once
 
 #include "Constants.h"
@@ -35,11 +22,6 @@
 
 namespace Math
 {
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
 
 //! @defgroup	Conversion	Units Conversion
 //! @ingroup	Miscellaneous
@@ -70,11 +52,6 @@ inline float ToRadians( float degrees )
 }
 
 //@}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
 
 //! @defgroup	FloatComparison		Floating-Point Comparison
 //! @ingroup	Miscellaneous
@@ -117,7 +94,7 @@ double const	DEFAULT_DOUBLE_ORTHONORMAL_TOLERANCE	= .00001;
 //! Returns true if @a x is very close to 0.
 inline bool IsCloseToZero( double x, double tolerance = DEFAULT_FLOAT_TOLERANCE )
 {
-	return ( fabs( x ) < tolerance );
+	return ( std::fabs( x ) < tolerance );
 }
 
 //! Returns true if @a x is very close to @a y in absolute terms.
@@ -139,11 +116,6 @@ inline bool IsRelativelyCloseTo( double x, double y, double tolerance = DEFAULT_
 }
 
 //@}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
 
 //! @defgroup	Functions	Miscellaneous Functions
 //! @ingroup	Miscellaneous

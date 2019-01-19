@@ -1,11 +1,11 @@
 /** @file *//********************************************************************************************************
 
-                                                      Plane.inl
+                                                      Vector2i.h
 
-						                    Copyright 2003, John J. Bolton
+						                    Copyright 2004, John J. Bolton
 	--------------------------------------------------------------------------------------------------------------
 
-	$Header: //depot/Libraries/Math/Plane.inl#13 $
+	$Header: //depot/Libraries/Math/Vector2i.h#4 $
 
 	$NoKeywords: $
 
@@ -14,106 +14,121 @@
 #pragma once
 
 
-#include "Plane.h"
-
-#include "Vector3.h"
-#include "Point.h"
-
-
 /********************************************************************************************************************/
 /*																													*/
 /********************************************************************************************************************/
 
-inline Plane::Plane()
-{
-}
+#pragma warning( push )
+#pragma warning( disable : 4201 )	// nonstandard extension used : nameless struct/union
 
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-//! This function constructs a plane whose distance from the origin is the length of @a distance, and whose normal
-//! points in the direction of @a distance.
+//! A 2D vector of integers.
+//
+//! @ingroup Vectors
 //!
-//! @param	distance	A vector describing the orientation of the plane and its distance from the origin
 
-inline Plane::Plane( Vector3 const & distance )
+class Vector2i
 {
-	float const	length	= distance.Length();
+public:
 
-	if ( !Math::IsCloseToZero( length ) )
+	//! Constructor
+	Vector2i() {}
+
+	//! Constructor
+	Vector2i( int x, int y );
+
+	//! Constructor
+	Vector2i( int const v[ 2 ] );
+
+	//! Negates the vector. Returns the result.
+	Vector2i const &	Negate();
+
+	//! Adds a vector. Returns the result.
+	Vector2i const &	Add( Vector2i const & b );
+
+	//! Subtracts a vector. Returns the result.
+	Vector2i const &	Subtract( Vector2i const & b );
+
+	//! Multiplies the vector by a scalar. Returns the result.
+	Vector2i const &	Scale( int scale );
+
+	//! Adds a vector. Returns the result.
+	Vector2i const &	operator +=( Vector2i const & b );
+
+	//! Subtracts a vector. Returns the result.
+	Vector2i const &	operator -=( Vector2i const & b );
+
+	//! Scales the vector. Returns the result.
+	Vector2i const &	operator *=( int scale );
+
+	//! Returns the negative.
+	Vector2i			operator -()						const;
+
+	union
 	{
-		m_D = -length;
-		m_N = distance;
-		m_N *= 1.f / length;
-	}
-	else
-	{
-		m_D = 0.;
-		m_N = Vector3::XAxis();
-	}
-}
+		int	m_V[ 2 ];	//!< Elements as an array {x, y}
+		struct
+		{
+			int	/** */m_X, m_Y;
+		};
+	};
+
+	// Useful constants
+
+	//! Returns [0, 0].
+	static Vector2i	Origin();
+
+	//! Returns [1, 0].
+	static Vector2i	XAxis();
+
+	//! Returns [0, 1].
+	static Vector2i	YAxis();
+};
+
+#pragma warning( pop )
+
+//! @name Vector2i Binary Operators
+//! @ingroup Vectors
+//@{
+
+//! Returns the sum of @a a and @a b.
+Vector2i	operator +( Vector2i const & a, Vector2i const & b );
+
+//! Returns the difference between @a a and @a b.
+Vector2i	operator -( Vector2i const & a, Vector2i const & b );
+
+//! Returns the result of scaling @a v by @a s.
+Vector2i	operator *( Vector2i const & v, int s );
+
+//! Returns the result of scaling @a v by @a s.
+Vector2i	operator *( int s, Vector2i const & v );
+
+//@}
+
+//! @name Vector3i Insert/Extract Operators
+//! @ingroup Vectors
+//@{
+
+//! Extracts a Vector3i from a stream
+std::istream & operator >>( std::istream & in, Vector2i & v );
+
+
+//! Inserts a Vector3i into a stream
+std::ostream & operator <<( std::ostream & out, Vector2i const & v );
+
+//@}
+
+// Inline functions
+
+#include <cassert>
+#include <cmath>
 
 
 /********************************************************************************************************************/
 /*																													*/
 /********************************************************************************************************************/
 
-//! This function constructs a plane with the given normal and distance from the origin.
-//!
-//! @param	normal	The plane's normal. This vector must be normalized.
-//! @param	d		Distance from the origin (in the direction of the normal)
-
-inline Plane::Plane( Vector3 const & normal, float d )
-	: m_N( normal ), m_D( -d )
-{
-	assert( normal.IsNormalized() );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-//! This function constructs a plane given the normal and the position of a point in the plane.
-//!
-//! @param	normal		The plane's normal. This vector must be normalized.
-//! @param	point		The position of a point in the plane
-
-inline Plane::Plane( Vector3 const & normal, Point const & point )
-	: m_N( normal ), m_D( Dot( normal, point ) )
-{
-	assert( normal.IsNormalized() );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-//! This function constructs a plane that is described by the formula <em>a</em>x + <em>b</em>y + <em>c</em>z +
-//! <em>d</em> = 0. The function normalizes the parameters before storing them.
-//!
-//! @param	a,b,c,d		Plane parameters
-
-inline Plane::Plane( float a, float b, float c, float d )
-	: m_N( a, b, c ), m_D( d )
-{
-	assert( !Math::IsCloseToZero( m_N.Length() ) );
-
-	float const	ilength	= m_N.ILength();
-
-	m_D *= ilength;
-	m_N *= ilength;
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline Plane::~Plane()
+inline Vector2i::Vector2i( int x, int y )
+	: m_X( x ), m_Y( y )
 {
 }
 
@@ -122,106 +137,8 @@ inline Plane::~Plane()
 /*																													*/
 /********************************************************************************************************************/
 
-//!
-//! @param	point	Point to reflect
-
-inline Point Plane::Reflect( Point const & point ) const
-{
-	return point - m_N * ( DirectedDistance( point ) * 2.f );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-//!
-//! @param	v	Vector to reflect
-
-inline Vector3 Plane::ReflectVector( Vector3 const & v ) const
-{
-	return v - m_N * ( Dot( m_N, v ) * 2.f );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-//!
-//! @param	point	Point to project
-
-inline Point Plane::Project( Point const & point ) const
-{
-	return Point( point - m_N * DirectedDistance( point ) );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-//! @param	point	Point to project
-//! @param	v		Vector to project along
-
-inline Point Plane::Project( Point const & point, Vector3 const & v ) const
-{
-	float const	nDotV	= Dot( m_N, v );
-
-	return ( Math::IsCloseToZero( nDotV ) ) ?
-				point - v * DirectedDistance( point ) :
-				point - v * ( DirectedDistance( point ) / nDotV );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-//!
-//! @param	v		Vector to project
-
-inline Vector3 Plane::ProjectVector( Vector3 const & v ) const
-{
-	return v - m_N * Dot( m_N, v );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline bool Plane::IsInFrontOf( Point const & v ) const
-{
-	return DirectedDistance( v ) > 0.f;
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline bool Plane::IsBehind( Point const & v ) const
-{
-	return DirectedDistance( v ) < 0.f;
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline float Plane::DirectedDistance( Point const & point ) const
-{
-	return ( Dot( m_N, point ) + m_D );
-}
-
-
-/********************************************************************************************************************/
-/*																													*/
-/********************************************************************************************************************/
-
-inline HalfSpace::HalfSpace()
+inline Vector2i::Vector2i( int const v[ 2 ] )
+	: m_X( v[ 0 ] ), m_Y( v[ 1 ] )
 {
 }
 
@@ -230,9 +147,12 @@ inline HalfSpace::HalfSpace()
 /*																													*/
 /********************************************************************************************************************/
 
-inline HalfSpace::HalfSpace( Plane const & plane )
-	: m_Plane( plane )
+inline Vector2i const & Vector2i::Negate()
 {
+	m_X = -m_X;
+	m_Y = -m_Y;
+
+	return *this;
 }
 
 
@@ -240,6 +160,152 @@ inline HalfSpace::HalfSpace( Plane const & plane )
 /*																													*/
 /********************************************************************************************************************/
 
-inline HalfSpace::~HalfSpace()
+inline Vector2i const & Vector2i::Add( Vector2i const & b )
 {
+	m_X += b.m_X;
+	m_Y += b.m_Y;
+
+	return *this;
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector2i const & Vector2i::Subtract( Vector2i const & b )
+{
+	m_X -= b.m_X;
+	m_Y -= b.m_Y;
+
+	return *this;
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector2i const & Vector2i::Scale( int scale )
+{
+	m_X *= scale;
+	m_Y *= scale;
+
+	return *this;
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector2i const & Vector2i::operator +=( Vector2i const & b )
+{
+	return Add( b );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector2i const & Vector2i::operator -=( Vector2i const & b )
+{
+	return Subtract( b );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector2i const & Vector2i::operator *=( int scale )
+{
+	return Scale( scale );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector2i Vector2i::operator -() const
+{
+	return Vector2i( *this ).Negate();
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector2i Vector2i::Origin()
+{
+	return Vector2i( 0, 0 );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector2i Vector2i::XAxis()
+{
+	return Vector2i( 1, 0 );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector2i Vector2i::YAxis()
+{
+	return Vector2i( 0, 1 );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector2i operator +( Vector2i const & a, Vector2i const & b )
+{
+	return Vector2i( a ).Add( b );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+inline Vector2i operator -( Vector2i const & a, Vector2i const & b )
+{
+	return Vector2i( a ).Subtract( b );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+//! @note	When multiplying a vector and a scalar, the operator is commutative since the order of the operands is
+//!			only notational.
+
+inline Vector2i operator *( Vector2i const & v, int s )
+{
+	return Vector2i( v ).Scale( s );
+}
+
+
+/********************************************************************************************************************/
+/*																													*/
+/********************************************************************************************************************/
+
+//! @note	When multiplying a vector and a scalar, the operator is commutative since the order of the operands is
+//!			only notational.
+
+inline Vector2i operator *( int s, Vector2i const & v )
+{
+	return Vector2i( v ).Scale( s );
 }
