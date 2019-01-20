@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                      Matrix44d.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Matrix44d.h#10 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_MATRIX44D_H)
+#define MYMATH_MATRIX44D_H
 
 #include "Vector3d.h"
 
@@ -33,7 +23,7 @@ class Matrix44d
 public:
 
     //! Constructor
-    Matrix44d() {}
+    Matrix44d() = default;
 
     //! Constructor
     Matrix44d(double Xx, double Xy, double Xz, double Xw,
@@ -57,22 +47,22 @@ public:
     explicit Matrix44d(Matrix44 const & m44);
 
     //! Returns the X vector.
-    Vector4d const & GetX()                              const;
+    Vector4d const & GetX() const;
 
     //! Returns the Y vector.
-    Vector4d const & GetY()                              const;
+    Vector4d const & GetY() const;
 
     //! Returns the Z vector.
-    Vector4d const & GetZ()                              const;
+    Vector4d const & GetZ() const;
 
     //! Returns the T (or W) vector.
-    Vector4d const & GetT()                              const;
+    Vector4d const & GetT() const;
 
     //! Returns the determinant.
-    double Determinant()                       const;
+    double Determinant() const;
 
     //! Returns true if the matrix is orthonormal (within a tolerance)
-    bool IsOrthonormal()                     const;
+    bool IsOrthonormal() const;
 
     //! Transposes the matrix. Returns the result.
     Matrix44d & Transpose();
@@ -90,7 +80,7 @@ public:
     Matrix44d & operator *=(Matrix44d const & b);
 
     //! Returns the inverse.
-    Matrix44d operator ~()                        const;
+    Matrix44d operator ~() const;
 
     //! Matrix elements individually or as an array
     union
@@ -201,3 +191,5 @@ inline Matrix44d Matrix44d::Identity()
                      0.0, 0.0, 1.0, 0.0,
                      0.0, 0.0, 0.0, 1.0);
 }
+
+#endif // !defined(MYMATH_MATRIX44D_H)

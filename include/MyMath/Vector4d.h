@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                      Vector4d.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Vector4d.h#9 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_VECTOR4D_H)
+#define MYMATH_VECTOR4D_H
 
 class Matrix43d;
 class Matrix44d;
@@ -30,7 +20,7 @@ class Vector4d
 public:
 
     //! Constructor
-    Vector4d() {}
+    Vector4d() = default;
 
     //! Constructor
     Vector4d(double x, double y, double z, double w);
@@ -39,64 +29,64 @@ public:
     Vector4d(double const v[4]);
 
     //! Returns the length of the vector squared.
-    double Length2()                           const;
+    double Length2() const;
 
     //! Returns the length of the vector.
-    double Length()                            const;
+    double Length() const;
 
     //! Returns the inverse of the length of the vector (or 1 if the length is 0)
-    double ILength()                           const;
+    double ILength() const;
 
     //! Returns the inverse of the length squared of the vector (or 1 if the length is 0)
-    double ILength2()                          const;
+    double ILength2() const;
 
     //! Returns true if the vector is normalized (within a tolerance).
-    bool IsNormalized()                      const;
+    bool IsNormalized() const;
 
-    //! Negates the vector. Returns the result.
+    //! Negates the vector and returns the result.
     Vector4d const & Negate();
 
-    //! Normalizes the vector. Returns the result.
+    //! Normalizes the vector and returns the result.
     Vector4d const & Normalize();
 
-    //! Adds a vector. Returns the result.
+    //! Adds a vector and returns the result.
     Vector4d const & Add(Vector4d const & b);
 
-    //! Subtracts a vector. Returns the result.
+    //! Subtracts a vector and returns the result.
     Vector4d const & Subtract(Vector4d const & b);
 
-    //! Multiplies the vector by a scalar. Returns the result.
+    //! Multiplies the vector by a scalar and returns the result.
     Vector4d const & Scale(double scale);
 
-    //! Transforms the vector (vM). Returns the result.
+    //! Transforms the vector (vM) and returns the result.
     Vector4d const & Transform(Matrix43d const & m);
 
-    //! Transforms the vector (vM). Returns the result.
+    //! Transforms the vector (vM) and returns the result.
     Vector4d const & Transform(Matrix44d const & m);
 
-    //! Rotates the vector around an axis. Returns the result.
+    //! Rotates the vector around an axis and returns the result.
     Vector4d const & Rotate(Vector4d const & axis, double angle);
 
-    //! Rotates the vector. Returns the result.
+    //! Rotates the vector and returns the result.
     Vector4d const & Rotate(Quaternion const & q);
 
-    //! Adds a vector. Returns the result.
+    //! Adds a vector and returns the result.
     Vector4d const & operator +=(Vector4d const & b);
 
-    //! Subtracts a vector. Returns the result.
+    //! Subtracts a vector and returns the result.
     Vector4d const & operator -=(Vector4d const & b);
 
-    //! Multiplies the vector by a scalar. Returns the result.
+    //! Multiplies the vector by a scalar and returns the result.
     Vector4d const & operator *=(double scale);
 
-    //! Transforms the vector. Returns the result.
+    //! Transforms the vector and returns the result.
     Vector4d const & operator *=(Matrix43d const & m);
 
-    //! Transforms the vector. Returns the result.
+    //! Transforms the vector and returns the result.
     Vector4d const & operator *=(Matrix44d const & m);
 
     //! Returns the negative.
-    Vector4d operator -()                        const;
+    Vector4d operator -() const;
 
     union
     {
@@ -389,3 +379,5 @@ inline Vector4d operator *(double s, Vector4d const & v)
 {
     return Vector4d(v).Scale(s);
 }
+
+#endif // !defined(MYMATH_VECTOR4D_H)

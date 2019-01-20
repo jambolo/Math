@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                       Range.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Range.h#9 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_RANGE_H)
+#define MYMATH_RANGE_H
 
 #include "Misc/Assert.h"
 
@@ -160,3 +150,5 @@ bool operator !=(T const & a, Range<T, lower_closed, upper_closed> const & b)
 
 //@}
 } // namespace MyMath
+
+#endif // !defined(MYMATH_RANGE_H)

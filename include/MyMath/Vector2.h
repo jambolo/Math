@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                      Vector2.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Vector2.h#13 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_VECTOR2_H)
+#define MYMATH_VECTOR2_H
 
 class Matrix22;
 
@@ -28,7 +18,7 @@ class Vector2
 public:
 
     //! Constructor
-    Vector2() {}
+    Vector2() = default;
 
     //! Constructor
     Vector2(float x, float y);
@@ -37,19 +27,19 @@ public:
     Vector2(float const v[2]);
 
     //! Returns the length of the vector squared.
-    float Length2()                           const;
+    float Length2() const;
 
     //! Returns the length of the vector.
-    float Length()                            const;
+    float Length() const;
 
     //! Returns the inverse of the length of the vector (or 1 if the length is 0).
-    float ILength()                           const;
+    float ILength() const;
 
     //! Returns the inverse of the length squared of the vector (or 1 if the length is 0).
-    float ILength2()                          const;
+    float ILength2() const;
 
     //! Returns true if the vector is normalized (within a tolerance).
-    bool IsNormalized()                      const;
+    bool IsNormalized() const;
 
     //! Negates the vector. Returns the result.
     Vector2 const & Negate();
@@ -85,7 +75,7 @@ public:
     Vector2 const & operator *=(Matrix22 const & m);
 
     //! Returns the negative.
-    Vector2 operator -()                        const;
+    Vector2 operator -() const;
 
     union
     {
@@ -386,3 +376,5 @@ inline Vector2 operator *(float s, Vector2 const & v)
 {
     return Vector2(v).Scale(s);
 }
+
+#endif // !defined(MYMATH_VECTOR2_H)

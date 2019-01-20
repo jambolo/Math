@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                     Matrix43.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Matrix43.h#14 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_MATRIX43_H)
+#define MYMATH_MATRIX43_H
 
 #include "Vector3.h"
 
@@ -32,7 +22,7 @@ class Matrix43
 public:
 
     //! Constructor
-    Matrix43() {}
+    Matrix43() = default;
 
     //! Constructor
     Matrix43(float Xx, float Xy, float Xz,
@@ -59,22 +49,22 @@ public:
     explicit Matrix43(Matrix44 const & m44);
 
     //! Returns the X vector.
-    Vector3 const & GetX()                                  const;
+    Vector3 const & GetX() const;
 
     //! Returns the Y vector.
-    Vector3 const & GetY()                                  const;
+    Vector3 const & GetY() const;
 
     //! Returns the Z vector.
-    Vector3 const & GetZ()                                  const;
+    Vector3 const & GetZ() const;
 
     //! Returns the T vector.
-    Vector3 const & GetT()                                  const;
+    Vector3 const & GetT() const;
 
     //! Returns the determinant.
-    double Determinant()                           const;
+    double Determinant() const;
 
     //! Returns true if the matrix is orthonormal (within a tolerance)
-    bool IsOrthonormal()                         const;
+    bool IsOrthonormal() const;
 
     //! Inverts the matrix. Returns the result.
     Matrix43 & Invert();
@@ -89,11 +79,11 @@ public:
     Matrix43 & operator *=(Matrix43 const & b);
 
     //! Returns the inverse.
-    Matrix43 operator ~()                            const;
+    Matrix43 operator ~() const;
 
     union
     {
-        float m_M[4][3];                    //!< Elements as a 4x3 row-major array.
+        float m_M[4][3]; //!< Elements as a 4x3 row-major array.
         struct
         {
             //! @name	Matrix elements
@@ -192,3 +182,5 @@ inline Matrix43 Matrix43::Identity()
                     0.0f, 0.0f, 1.0f,
                     0.0f, 0.0f, 0.0f);
 }
+
+#endif // !defined(MYMATH_MATRIX43_H)

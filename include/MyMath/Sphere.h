@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                       Sphere.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Sphere.h#12 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_SPHERE_H)
+#define MYMATH_SPHERE_H
 
 #include "Intersectable.h"
 #include "Vector3.h"
@@ -26,31 +16,33 @@ class Sphere : public Intersectable
 public:
 
     //! Constructor
-    Sphere()                                                    {}
+    Sphere() = default;
 
     //! Constructor
     Sphere(Vector3 const & c, float r) : m_C(c)
         , m_R(r)   {}
 
     //! Destructor
-    ~Sphere()                                                   {}
+    virtual ~Sphere() override = default;
 
     //! @name Overrides Intersectable
     //@{
-    virtual IntersectionClass IntersectedBy(Intersectable const * pI) const { return pI->Intersects(*this);                       }
-    virtual IntersectionClass Intersects(Point const & point) const         { return Intersectable::Intersects(*this, point);     }
-    virtual IntersectionClass Intersects(Line const & line) const           { return Intersectable::Intersects(*this, line);      }
-    virtual IntersectionClass Intersects(Ray const & ray) const             { return Intersectable::Intersects(*this, ray);       }
-    virtual IntersectionClass Intersects(Segment const & segment) const     { return Intersectable::Intersects(*this, segment);   }
-    virtual IntersectionClass Intersects(Plane const & plane) const         { return Intersectable::Intersects(*this, plane);     }
-    virtual IntersectionClass Intersects(Poly const & poly) const           { return Intersectable::Intersects(*this, poly);      }
-    virtual IntersectionClass Intersects(Sphere const & sphere) const       { return Intersectable::Intersects(*this, sphere);    }
-    virtual IntersectionClass Intersects(Cone const & cone) const           { return Intersectable::Intersects(*this, cone);      }
-    virtual IntersectionClass Intersects(AABox const & aabox) const         { return Intersectable::Intersects(*this, aabox);     }
-    virtual IntersectionClass Intersects(Box const & box) const             { return Intersectable::Intersects(*this, box);       }
-    virtual IntersectionClass Intersects(Frustum const & frustum) const     { return Intersectable::Intersects(*this, frustum);   }
+    virtual Result IntersectedBy(Intersectable const * pI) const override { return pI->Intersects(*this);                       }
+    virtual Result Intersects(Point const & point) const override         { return Intersectable::Intersects(*this, point);     }
+    virtual Result Intersects(Line const & line) const override           { return Intersectable::Intersects(*this, line);      }
+    virtual Result Intersects(Ray const & ray) const override             { return Intersectable::Intersects(*this, ray);       }
+    virtual Result Intersects(Segment const & segment) const override     { return Intersectable::Intersects(*this, segment);   }
+    virtual Result Intersects(Plane const & plane) const override         { return Intersectable::Intersects(*this, plane);     }
+    virtual Result Intersects(Poly const & poly) const override           { return Intersectable::Intersects(*this, poly);      }
+    virtual Result Intersects(Sphere const & sphere) const override       { return Intersectable::Intersects(*this, sphere);    }
+    virtual Result Intersects(Cone const & cone) const override           { return Intersectable::Intersects(*this, cone);      }
+    virtual Result Intersects(AABox const & aabox) const override         { return Intersectable::Intersects(*this, aabox);     }
+    virtual Result Intersects(Box const & box) const override             { return Intersectable::Intersects(*this, box);       }
+    virtual Result Intersects(Frustum const & frustum) const override     { return Intersectable::Intersects(*this, frustum);   }
     //@}
 
     Vector3 m_C;        //!< Location of the center
     float m_R;          //!< Radius
 };
+
+#endif // !defined(MYMATH_SPHERE_H)

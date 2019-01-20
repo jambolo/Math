@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                        Line.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Line.h#15 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_LINE_H)
+#define MYMATH_LINE_H
 
 #include "Intersectable.h"
 
@@ -31,7 +21,7 @@ class Line : public Intersectable
 public:
 
     //! Constructor
-    Line() {}
+    Line() = default;
 
     //! Constructor
     Line(Vector3 const & m, Vector3 const & b);     // L = M * t + B
@@ -43,23 +33,23 @@ public:
     explicit Line(Ray const & ray);
 
     //! Destructor
-    virtual ~Line() {}
+    virtual ~Line() override = default;
 
     //! @name Overrides Intersectable
     //@{
-    virtual IntersectionClass IntersectedBy(Intersectable const * pI) const { return pI->Intersects(*this);                       }
-    virtual IntersectionClass Intersects(Point const & point) const         { return Intersectable::Intersects(*this, point);     }
-    virtual IntersectionClass Intersects(Line const & line) const           { return Intersectable::Intersects(*this, line);      }
-    virtual IntersectionClass Intersects(Ray const & ray) const             { return Intersectable::Intersects(*this, ray);       }
-    virtual IntersectionClass Intersects(Segment const & segment) const     { return Intersectable::Intersects(*this, segment);   }
-    virtual IntersectionClass Intersects(Plane const & plane) const         { return Intersectable::Intersects(*this, plane);     }
-    virtual IntersectionClass Intersects(HalfSpace const & halfspace) const { return Intersectable::Intersects(*this, halfspace); }
-    virtual IntersectionClass Intersects(Poly const & poly) const           { return Intersectable::Intersects(*this, poly);      }
-    virtual IntersectionClass Intersects(Sphere const & sphere) const       { return Intersectable::Intersects(*this, sphere);    }
-    virtual IntersectionClass Intersects(Cone const & cone) const           { return Intersectable::Intersects(*this, cone);      }
-    virtual IntersectionClass Intersects(AABox const & aabox) const         { return Intersectable::Intersects(*this, aabox);     }
-    virtual IntersectionClass Intersects(Box const & box) const             { return Intersectable::Intersects(*this, box);       }
-    virtual IntersectionClass Intersects(Frustum const & frustum) const     { return Intersectable::Intersects(*this, frustum);   }
+    virtual Result IntersectedBy(Intersectable const * pI) const override { return pI->Intersects(*this);                       }
+    virtual Result Intersects(Point const & point) const override         { return Intersectable::Intersects(*this, point);     }
+    virtual Result Intersects(Line const & line) const override           { return Intersectable::Intersects(*this, line);      }
+    virtual Result Intersects(Ray const & ray) const override             { return Intersectable::Intersects(*this, ray);       }
+    virtual Result Intersects(Segment const & segment) const override     { return Intersectable::Intersects(*this, segment);   }
+    virtual Result Intersects(Plane const & plane) const override         { return Intersectable::Intersects(*this, plane);     }
+    virtual Result Intersects(HalfSpace const & halfspace) const override { return Intersectable::Intersects(*this, halfspace); }
+    virtual Result Intersects(Poly const & poly) const override           { return Intersectable::Intersects(*this, poly);      }
+    virtual Result Intersects(Sphere const & sphere) const override       { return Intersectable::Intersects(*this, sphere);    }
+    virtual Result Intersects(Cone const & cone) const override           { return Intersectable::Intersects(*this, cone);      }
+    virtual Result Intersects(AABox const & aabox) const override         { return Intersectable::Intersects(*this, aabox);     }
+    virtual Result Intersects(Box const & box) const override             { return Intersectable::Intersects(*this, box);       }
+    virtual Result Intersects(Frustum const & frustum) const override     { return Intersectable::Intersects(*this, frustum);   }
     //@}
 
     //! Returns the location of a point projected onto the line (also the closest point on the line to the point).
@@ -81,29 +71,29 @@ class Ray : public Intersectable
 public:
 
     //! Constructor
-    Ray() {}
+    Ray() = default;
 
     //! Constructor
     Ray(Vector3 const & m, Vector3 const & b);      // L = M * t + B, t >= 0
 
     //! Destructor
-    virtual ~Ray() {}
+    virtual ~Ray() override = default;
 
     //! @name Overrides Intersectable
     //@{
-    virtual IntersectionClass IntersectedBy(Intersectable const * pI) const { return pI->Intersects(*this);                       }
-    virtual IntersectionClass Intersects(Point const & point) const         { return Intersectable::Intersects(*this, point);     }
-    virtual IntersectionClass Intersects(Line const & line) const           { return Intersectable::Intersects(*this, line);      }
-    virtual IntersectionClass Intersects(Ray const & ray) const             { return Intersectable::Intersects(*this, ray);       }
-    virtual IntersectionClass Intersects(Segment const & segment) const     { return Intersectable::Intersects(*this, segment);   }
-    virtual IntersectionClass Intersects(HalfSpace const & halfspace) const { return Intersectable::Intersects(*this, halfspace); }
-    virtual IntersectionClass Intersects(Plane const & plane) const         { return Intersectable::Intersects(*this, plane);     }
-    virtual IntersectionClass Intersects(Poly const & poly) const           { return Intersectable::Intersects(*this, poly);      }
-    virtual IntersectionClass Intersects(Sphere const & sphere) const       { return Intersectable::Intersects(*this, sphere);    }
-    virtual IntersectionClass Intersects(Cone const & cone) const           { return Intersectable::Intersects(*this, cone);      }
-    virtual IntersectionClass Intersects(AABox const & aabox) const         { return Intersectable::Intersects(*this, aabox);     }
-    virtual IntersectionClass Intersects(Box const & box) const             { return Intersectable::Intersects(*this, box);       }
-    virtual IntersectionClass Intersects(Frustum const & frustum) const     { return Intersectable::Intersects(*this, frustum);   }
+    virtual Result IntersectedBy(Intersectable const * pI) const override { return pI->Intersects(*this);                       }
+    virtual Result Intersects(Point const & point) const override         { return Intersectable::Intersects(*this, point);     }
+    virtual Result Intersects(Line const & line) const override           { return Intersectable::Intersects(*this, line);      }
+    virtual Result Intersects(Ray const & ray) const override             { return Intersectable::Intersects(*this, ray);       }
+    virtual Result Intersects(Segment const & segment) const override     { return Intersectable::Intersects(*this, segment);   }
+    virtual Result Intersects(HalfSpace const & halfspace) const override { return Intersectable::Intersects(*this, halfspace); }
+    virtual Result Intersects(Plane const & plane) const override         { return Intersectable::Intersects(*this, plane);     }
+    virtual Result Intersects(Poly const & poly) const override           { return Intersectable::Intersects(*this, poly);      }
+    virtual Result Intersects(Sphere const & sphere) const override       { return Intersectable::Intersects(*this, sphere);    }
+    virtual Result Intersects(Cone const & cone) const override           { return Intersectable::Intersects(*this, cone);      }
+    virtual Result Intersects(AABox const & aabox) const override         { return Intersectable::Intersects(*this, aabox);     }
+    virtual Result Intersects(Box const & box) const override             { return Intersectable::Intersects(*this, box);       }
+    virtual Result Intersects(Frustum const & frustum) const override     { return Intersectable::Intersects(*this, frustum);   }
     //@}
 
     //! Returns the location of a point projected onto the line which goes through the ray.
@@ -125,7 +115,7 @@ class Segment : public Intersectable
 public:
 
     //! Constructor
-    Segment() {}
+    Segment() = default;
 
     //! Constructor
     Segment(Vector3 const & p0, Vector3 const & p1);
@@ -134,23 +124,23 @@ public:
     Segment(Vector3 const & m, Vector3 const & b, float length);    // L = M * t + B, 0 <= t <= length
 
     //! Destructor
-    virtual ~Segment() {}
+    virtual ~Segment() = default;
 
     //! @name Overrides Intersectable
     //@{
-    virtual IntersectionClass IntersectedBy(Intersectable const * pI) const { return pI->Intersects(*this);                       }
-    virtual IntersectionClass Intersects(Point const & point) const         { return Intersectable::Intersects(*this, point);     }
-    virtual IntersectionClass Intersects(Line const & line) const           { return Intersectable::Intersects(*this, line);      }
-    virtual IntersectionClass Intersects(Ray const & ray) const             { return Intersectable::Intersects(*this, ray);       }
-    virtual IntersectionClass Intersects(Segment const & segment) const     { return Intersectable::Intersects(*this, segment);   }
-    virtual IntersectionClass Intersects(Plane const & plane) const         { return Intersectable::Intersects(*this, plane);     }
-    virtual IntersectionClass Intersects(HalfSpace const & halfspace) const { return Intersectable::Intersects(*this, halfspace); }
-    virtual IntersectionClass Intersects(Poly const & poly) const           { return Intersectable::Intersects(*this, poly);      }
-    virtual IntersectionClass Intersects(Sphere const & sphere) const       { return Intersectable::Intersects(*this, sphere);    }
-    virtual IntersectionClass Intersects(Cone const & cone) const           { return Intersectable::Intersects(*this, cone);      }
-    virtual IntersectionClass Intersects(AABox const & aabox) const         { return Intersectable::Intersects(*this, aabox);     }
-    virtual IntersectionClass Intersects(Box const & box) const             { return Intersectable::Intersects(*this, box);       }
-    virtual IntersectionClass Intersects(Frustum const & frustum) const     { return Intersectable::Intersects(*this, frustum);   }
+    virtual Result IntersectedBy(Intersectable const * pI) const override { return pI->Intersects(*this);                       }
+    virtual Result Intersects(Point const & point) const override         { return Intersectable::Intersects(*this, point);     }
+    virtual Result Intersects(Line const & line) const override           { return Intersectable::Intersects(*this, line);      }
+    virtual Result Intersects(Ray const & ray) const override             { return Intersectable::Intersects(*this, ray);       }
+    virtual Result Intersects(Segment const & segment) const override     { return Intersectable::Intersects(*this, segment);   }
+    virtual Result Intersects(Plane const & plane) const override         { return Intersectable::Intersects(*this, plane);     }
+    virtual Result Intersects(HalfSpace const & halfspace) const override { return Intersectable::Intersects(*this, halfspace); }
+    virtual Result Intersects(Poly const & poly) const override           { return Intersectable::Intersects(*this, poly);      }
+    virtual Result Intersects(Sphere const & sphere) const override       { return Intersectable::Intersects(*this, sphere);    }
+    virtual Result Intersects(Cone const & cone) const override           { return Intersectable::Intersects(*this, cone);      }
+    virtual Result Intersects(AABox const & aabox) const override         { return Intersectable::Intersects(*this, aabox);     }
+    virtual Result Intersects(Box const & box) const override             { return Intersectable::Intersects(*this, box);       }
+    virtual Result Intersects(Frustum const & frustum) const override     { return Intersectable::Intersects(*this, frustum);   }
     //@}
 
     //! Returns the location of a point projected onto the line which goes through the segment.
@@ -230,3 +220,5 @@ inline Segment::Segment(Vector3 const & m, Vector3 const & b, float length)
     m_M = m * length;
     m_B = b;
 }
+
+#endif // !defined(MYMATH_LINE_H)

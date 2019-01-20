@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                       Plane.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Plane.h#14 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_PLANE_H)
+#define MYMATH_PLANE_H
 
 #include "Intersectable.h"
 #include "Vector3.h"
@@ -30,38 +20,38 @@ class Plane : public Intersectable
 public:
 
     //! Constructor
-    Plane();
+    Plane() = default;
 
     //! Constructor
-    explicit Plane(Vector3 const & distance);                   // Vector from 0 to plane
+    explicit Plane(Vector3 const & distance); // Vector from 0 to plane
 
     //! Constructor
-    Plane(Vector3 const & normal, float d);                     // Normal and distance from 0
+    Plane(Vector3 const & normal, float d); // Normal and distance from 0
 
     //! Constructor
-    Plane(Vector3 const & normal, Point const & point);         // Normal and point in the plane
+    Plane(Vector3 const & normal, Point const & point); // Normal and point in the plane
 
     //! Constructor
-    Plane(float a, float b, float c, float d);                  // aX + bY +cZ + d = 0
+    Plane(float a, float b, float c, float d); // aX + bY +cZ + d = 0
 
     //! Destructor
-    virtual ~Plane();
+    virtual ~Plane() override = default;
 
     //! @name Overrides Intersectable
     //@{
-    virtual IntersectionClass IntersectedBy(Intersectable const * pI) const { return pI->Intersects(*this);                       }
-    virtual IntersectionClass Intersects(Point const & point) const         { return Intersectable::Intersects(*this, point);     }
-    virtual IntersectionClass Intersects(Line const & line) const           { return Intersectable::Intersects(*this, line);      }
-    virtual IntersectionClass Intersects(Ray const & ray) const             { return Intersectable::Intersects(*this, ray);       }
-    virtual IntersectionClass Intersects(Segment const & segment) const     { return Intersectable::Intersects(*this, segment);   }
-    virtual IntersectionClass Intersects(Plane const & plane) const         { return Intersectable::Intersects(*this, plane);     }
-    virtual IntersectionClass Intersects(HalfSpace const & halfspace) const { return Intersectable::Intersects(*this, halfspace); }
-    virtual IntersectionClass Intersects(Poly const & poly) const           { return Intersectable::Intersects(*this, poly);      }
-    virtual IntersectionClass Intersects(Sphere const & sphere) const       { return Intersectable::Intersects(*this, sphere);    }
-    virtual IntersectionClass Intersects(Cone const & cone) const           { return Intersectable::Intersects(*this, cone);      }
-    virtual IntersectionClass Intersects(AABox const & aabox) const         { return Intersectable::Intersects(*this, aabox);     }
-    virtual IntersectionClass Intersects(Box const & box) const             { return Intersectable::Intersects(*this, box);       }
-    virtual IntersectionClass Intersects(Frustum const & frustum) const     { return Intersectable::Intersects(*this, frustum);   }
+    virtual Result IntersectedBy(Intersectable const * pI) const override { return pI->Intersects(*this);                       }
+    virtual Result Intersects(Point const & point) const override         { return Intersectable::Intersects(*this, point);     }
+    virtual Result Intersects(Line const & line) const override           { return Intersectable::Intersects(*this, line);      }
+    virtual Result Intersects(Ray const & ray) const override             { return Intersectable::Intersects(*this, ray);       }
+    virtual Result Intersects(Segment const & segment) const override     { return Intersectable::Intersects(*this, segment);   }
+    virtual Result Intersects(Plane const & plane) const override         { return Intersectable::Intersects(*this, plane);     }
+    virtual Result Intersects(HalfSpace const & halfspace) const override { return Intersectable::Intersects(*this, halfspace); }
+    virtual Result Intersects(Poly const & poly) const override           { return Intersectable::Intersects(*this, poly);      }
+    virtual Result Intersects(Sphere const & sphere) const override       { return Intersectable::Intersects(*this, sphere);    }
+    virtual Result Intersects(Cone const & cone) const override           { return Intersectable::Intersects(*this, cone);      }
+    virtual Result Intersects(AABox const & aabox) const override         { return Intersectable::Intersects(*this, aabox);     }
+    virtual Result Intersects(Box const & box) const override             { return Intersectable::Intersects(*this, box);       }
+    virtual Result Intersects(Frustum const & frustum) const override     { return Intersectable::Intersects(*this, frustum);   }
     //@}
 
     //! Returns the distance to the point in the direction of the normal.
@@ -113,7 +103,7 @@ class Poly : public Plane
 public:
 
     //! Constructor
-    Poly();
+    Poly() = default;
 
     //! Constructor
     Poly(Vector3 const * paVertices, int nVertices);
@@ -122,23 +112,23 @@ public:
     Poly(Plane const & plane, Vector3 const * paVertices, int nVertices);
 
     //! Destructor
-    virtual ~Poly();
+    virtual ~Poly() override = default;
 
     //! @name Overrides Intersectable
     //@{
-    virtual IntersectionClass IntersectedBy(Intersectable const * pI) const { return pI->Intersects(*this);                       }
-    virtual IntersectionClass Intersects(Point const & point) const         { return Intersectable::Intersects(*this, point);     }
-    virtual IntersectionClass Intersects(Line const & line) const           { return Intersectable::Intersects(*this, line);      }
-    virtual IntersectionClass Intersects(Ray const & ray) const             { return Intersectable::Intersects(*this, ray);       }
-    virtual IntersectionClass Intersects(Segment const & segment) const     { return Intersectable::Intersects(*this, segment);   }
-    virtual IntersectionClass Intersects(Plane const & plane) const         { return Intersectable::Intersects(*this, plane);     }
-    virtual IntersectionClass Intersects(HalfSpace const & halfspace) const { return Intersectable::Intersects(*this, halfspace); }
-    virtual IntersectionClass Intersects(Poly const & poly) const           { return Intersectable::Intersects(*this, poly);      }
-    virtual IntersectionClass Intersects(Sphere const & sphere) const       { return Intersectable::Intersects(*this, sphere);    }
-    virtual IntersectionClass Intersects(Cone const & cone) const           { return Intersectable::Intersects(*this, cone);      }
-    virtual IntersectionClass Intersects(AABox const & aabox) const         { return Intersectable::Intersects(*this, aabox);     }
-    virtual IntersectionClass Intersects(Box const & box) const             { return Intersectable::Intersects(*this, box);       }
-    virtual IntersectionClass Intersects(Frustum const & frustum) const     { return Intersectable::Intersects(*this, frustum);   }
+    virtual Result IntersectedBy(Intersectable const * pI) const override { return pI->Intersects(*this);                       }
+    virtual Result Intersects(Point const & point) const override         { return Intersectable::Intersects(*this, point);     }
+    virtual Result Intersects(Line const & line) const override           { return Intersectable::Intersects(*this, line);      }
+    virtual Result Intersects(Ray const & ray) const override             { return Intersectable::Intersects(*this, ray);       }
+    virtual Result Intersects(Segment const & segment) const override     { return Intersectable::Intersects(*this, segment);   }
+    virtual Result Intersects(Plane const & plane) const override         { return Intersectable::Intersects(*this, plane);     }
+    virtual Result Intersects(HalfSpace const & halfspace) const override { return Intersectable::Intersects(*this, halfspace); }
+    virtual Result Intersects(Poly const & poly) const override           { return Intersectable::Intersects(*this, poly);      }
+    virtual Result Intersects(Sphere const & sphere) const override       { return Intersectable::Intersects(*this, sphere);    }
+    virtual Result Intersects(Cone const & cone) const override           { return Intersectable::Intersects(*this, cone);      }
+    virtual Result Intersects(AABox const & aabox) const override         { return Intersectable::Intersects(*this, aabox);     }
+    virtual Result Intersects(Box const & box) const override             { return Intersectable::Intersects(*this, box);       }
+    virtual Result Intersects(Frustum const & frustum) const override     { return Intersectable::Intersects(*this, frustum);   }
     //@}
 
     //! @name Overrides Plane
@@ -170,40 +160,36 @@ class HalfSpace : public Intersectable
 public:
 
     //! Constructor
-    HalfSpace();
+    HalfSpace() = default;
 
     //! Constructor
     HalfSpace(Plane const & plane);
 
     //! Destructor
-    virtual ~HalfSpace();
+    virtual ~HalfSpace() override = default;
 
     //! @name Overrides Intersectable
     //@{
-    virtual IntersectionClass IntersectedBy(Intersectable const * pI) const { return pI->Intersects(*this);                       }
-    virtual IntersectionClass Intersects(Point const & point) const         { return Intersectable::Intersects(*this, point);     }
-    virtual IntersectionClass Intersects(Line const & line) const           { return Intersectable::Intersects(*this, line);      }
-    virtual IntersectionClass Intersects(Ray const & ray) const             { return Intersectable::Intersects(*this, ray);       }
-    virtual IntersectionClass Intersects(Segment const & segment) const     { return Intersectable::Intersects(*this, segment);   }
-    virtual IntersectionClass Intersects(Plane const & plane) const         { return Intersectable::Intersects(*this, plane);     }
-    virtual IntersectionClass Intersects(HalfSpace const & halfspace) const { return Intersectable::Intersects(*this, halfspace); }
-    virtual IntersectionClass Intersects(Poly const & poly) const           { return Intersectable::Intersects(*this, poly);      }
-    virtual IntersectionClass Intersects(Sphere const & sphere) const       { return Intersectable::Intersects(*this, sphere);    }
-    virtual IntersectionClass Intersects(Cone const & cone) const           { return Intersectable::Intersects(*this, cone);      }
-    virtual IntersectionClass Intersects(AABox const & aabox) const         { return Intersectable::Intersects(*this, aabox);     }
-    virtual IntersectionClass Intersects(Box const & box) const             { return Intersectable::Intersects(*this, box);       }
-    virtual IntersectionClass Intersects(Frustum const & frustum) const     { return Intersectable::Intersects(*this, frustum);   }
+    virtual Result IntersectedBy(Intersectable const * pI) const override { return pI->Intersects(*this);                       }
+    virtual Result Intersects(Point const & point) const override         { return Intersectable::Intersects(*this, point);     }
+    virtual Result Intersects(Line const & line) const override           { return Intersectable::Intersects(*this, line);      }
+    virtual Result Intersects(Ray const & ray) const override             { return Intersectable::Intersects(*this, ray);       }
+    virtual Result Intersects(Segment const & segment) const override     { return Intersectable::Intersects(*this, segment);   }
+    virtual Result Intersects(Plane const & plane) const override         { return Intersectable::Intersects(*this, plane);     }
+    virtual Result Intersects(HalfSpace const & halfspace) const override { return Intersectable::Intersects(*this, halfspace); }
+    virtual Result Intersects(Poly const & poly) const override           { return Intersectable::Intersects(*this, poly);      }
+    virtual Result Intersects(Sphere const & sphere) const override       { return Intersectable::Intersects(*this, sphere);    }
+    virtual Result Intersects(Cone const & cone) const override           { return Intersectable::Intersects(*this, cone);      }
+    virtual Result Intersects(AABox const & aabox) const override         { return Intersectable::Intersects(*this, aabox);     }
+    virtual Result Intersects(Box const & box) const override             { return Intersectable::Intersects(*this, box);       }
+    virtual Result Intersects(Frustum const & frustum) const override     { return Intersectable::Intersects(*this, frustum);   }
     //@}
 
-    Plane m_Plane;          //!< The plane that defines the half-space.
+    Plane m_Plane; //!< The plane that defines the half-space.
 };
 
 #include "Point.h"
 #include "Vector3.h"
-
-inline Plane::Plane()
-{
-}
 
 //! This function constructs a plane whose distance from the origin is the length of @a distance, and whose normal
 //! points in the direction of @a distance.
@@ -246,7 +232,7 @@ inline Plane::Plane(Vector3 const & normal, float d)
 
 inline Plane::Plane(Vector3 const & normal, Point const & point)
     : m_N(normal)
-    , m_D(Dot(normal, point))
+    , m_D(Dot(normal, point.value_))
 {
     assert(normal.IsNormalized());
 }
@@ -268,16 +254,12 @@ inline Plane::Plane(float a, float b, float c, float d)
     m_N *= ilength;
 }
 
-inline Plane::~Plane()
-{
-}
-
 //!
 //! @param	point	Point to reflect
 
 inline Point Plane::Reflect(Point const & point) const
 {
-    return point - m_N * (DirectedDistance(point) * 2.f);
+    return point.value_ - m_N * (DirectedDistance(point) * 2.f);
 }
 
 //!
@@ -293,7 +275,7 @@ inline Vector3 Plane::ReflectVector(Vector3 const & v) const
 
 inline Point Plane::Project(Point const & point) const
 {
-    return Point(point - m_N * DirectedDistance(point));
+    return Point(point.value_ - m_N * DirectedDistance(point));
 }
 
 //! @param	point	Point to project
@@ -304,8 +286,8 @@ inline Point Plane::Project(Point const & point, Vector3 const & v) const
     float const nDotV = Dot(m_N, v);
 
     return (MyMath::IsCloseToZero(nDotV)) ?
-           point - v * DirectedDistance(point) :
-           point - v * (DirectedDistance(point) / nDotV);
+           point.value_ - v * DirectedDistance(point) :
+           point.value_ - v * (DirectedDistance(point) / nDotV);
 }
 
 //!
@@ -328,11 +310,7 @@ inline bool Plane::IsBehind(Point const & v) const
 
 inline float Plane::DirectedDistance(Point const & point) const
 {
-    return Dot(m_N, point) + m_D;
-}
-
-inline HalfSpace::HalfSpace()
-{
+    return Dot(m_N, point.value_) + m_D;
 }
 
 inline HalfSpace::HalfSpace(Plane const & plane)
@@ -340,6 +318,4 @@ inline HalfSpace::HalfSpace(Plane const & plane)
 {
 }
 
-inline HalfSpace::~HalfSpace()
-{
-}
+#endif // !defined(MYMATH_PLANE_H)

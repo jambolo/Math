@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                      Vector3.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Vector3.h#16 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_VECTOR3_H)
+#define MYMATH_VECTOR3_H
 
 #include <iosfwd>
 
@@ -32,7 +22,7 @@ class Vector3
 public:
 
     //! Constructor
-    Vector3() {}
+    Vector3() = default;
 
     //! Constructor
     Vector3(float x, float y, float z);
@@ -41,19 +31,19 @@ public:
     Vector3(float const v[3]);
 
     //! Returns the length of the vector squared.
-    float Length2()                           const;
+    float Length2() const;
 
     //! Returns the length of the vector.
-    float Length()                            const;
+    float Length() const;
 
     //! Returns the inverse of the length of the vector (or 1 if the length is 0)
-    float ILength()                           const;
+    float ILength() const;
 
     //! Returns the inverse of the length squared of the vector (or 1 if the length is 0)
-    float ILength2()                          const;
+    float ILength2() const;
 
     //! Returns true if the vector is normalized (within a tolerance).
-    bool IsNormalized()                      const;
+    bool IsNormalized() const;
 
     //! Negates the vector. Returns the result.
     Vector3 const & Negate();
@@ -98,7 +88,7 @@ public:
     Vector3 const & operator *=(Matrix33 const & m);
 
     //! Returns the negative.
-    Vector3 operator -()                        const;
+    Vector3 operator -() const;
 
     union
     {
@@ -112,16 +102,16 @@ public:
     // Useful constants
 
     //! Returns [0, 0, 0].
-    static Vector3 Origin();
+    static Vector3 Origin() { return { 0.0f, 0.0f, 0.0f }; }
 
     //! Returns [1, 0, 0].
-    static Vector3 XAxis();
+    static Vector3 XAxis() { return { 1.0f, 0.0f, 0.0f }; }
 
     //! Returns [0, 1, 0].
-    static Vector3 YAxis();
+    static Vector3 YAxis() { return { 0.0f, 1.0f, 0.0f }; }
 
     //! Returns [0, 0, 1].
-    static Vector3 ZAxis();
+    static Vector3 ZAxis() { return { 0.0f, 0.0f, 1.0f }; }
 };
 
 #pragma warning( pop )
@@ -131,10 +121,10 @@ public:
 //@{
 
 //! Returns the sum of @a a and @a b.
-Vector3 operator +(Vector3 const & a, Vector3 const & b);
+Vector3 operator +(Vector3 a, Vector3 const & b);
 
 //! Returns the difference between @a a and @a b.
-Vector3 operator -(Vector3 const & a, Vector3 const & b);
+Vector3 operator -(Vector3 a, Vector3 const & b);
 
 //! Returns the result of transforming @a v by @a m.
 Vector3 operator *(Vector3 const & v, Matrix43 const & m);
@@ -461,34 +451,14 @@ inline Vector3 Vector3::operator -() const
     return Vector3(*this).Negate();
 }
 
-inline Vector3 Vector3::Origin()
+inline Vector3 operator +(Vector3 a, Vector3 const & b)
 {
-    return Vector3(0.0f, 0.0f, 0.0f);
+    return a += b;
 }
 
-inline Vector3 Vector3::XAxis()
+inline Vector3 operator -(Vector3 a, Vector3 const & b)
 {
-    return Vector3(1.0f, 0.0f, 0.0f);
-}
-
-inline Vector3 Vector3::YAxis()
-{
-    return Vector3(0.0f, 1.0f, 0.0f);
-}
-
-inline Vector3 Vector3::ZAxis()
-{
-    return Vector3(0.0f, 0.0f, 1.0f);
-}
-
-inline Vector3 operator +(Vector3 const & a, Vector3 const & b)
-{
-    return Vector3(a).Add(b);
-}
-
-inline Vector3 operator -(Vector3 const & a, Vector3 const & b)
-{
-    return Vector3(a).Subtract(b);
+    return a -= b;
 }
 
 //! @note	When multiplying a vector and a matrix, the operator is commutative since the order of the operands is
@@ -540,3 +510,5 @@ inline Vector3 operator *(float s, Vector3 const & v)
 {
     return Vector3(v).Scale(s);
 }
+
+#endif // !defined(MYMATH_VECTOR3_H)

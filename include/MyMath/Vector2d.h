@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                      Vector2d.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Vector2d.h#9 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_VECTOR2D_H)
+#define MYMATH_VECTOR2D_H
 
 class Matrix22d;
 
@@ -28,7 +18,7 @@ class Vector2d
 public:
 
     //! Constructor
-    Vector2d() {}
+    Vector2d() = default;
 
     //! Constructor
     Vector2d(double x, double y);
@@ -37,19 +27,19 @@ public:
     Vector2d(double const v[2]);
 
     //! Returns the length of the vector squared.
-    double Length2()                           const;
+    double Length2() const;
 
     //! Returns the length of the vector.
-    double Length()                            const;
+    double Length() const;
 
     //! Returns the inverse of the length of the vector (or 1 if the length is 0)
-    double ILength()                           const;
+    double ILength() const;
 
     //! Returns the inverse of the length squared of the vector (or 1 if the length is 0)
-    double ILength2()                          const;
+    double ILength2() const;
 
     //! Returns true if the vector is normalized (within a tolerance).
-    bool IsNormalized()                      const;
+    bool IsNormalized() const;
 
     //! Negates the vector. Returns the result.
     Vector2d const & Negate();
@@ -85,7 +75,7 @@ public:
     Vector2d const & operator *=(Matrix22d const & m);
 
     //! Returns the negative.
-    Vector2d operator -()                        const;
+    Vector2d operator -() const;
 
     union
     {
@@ -318,3 +308,5 @@ inline Vector2d operator *(double s, Vector2d const & v)
 {
     return Vector2d(v).Scale(s);
 }
+
+#endif // !defined(MYMATH_VECTOR2D_H)

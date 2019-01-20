@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                    Determinant.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Determinant.h#9 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_DETERMINANT_H)
+#define MYMATH_DETERMINANT_H
 
 //! @name Determinant Computation
 //! @ingroup Matrices
@@ -45,3 +35,5 @@ double Determinant4(M const & m, int r0 = 0, int r1 = 1, int r2 = 2, int r3 = 3,
 }
 
 //@}
+
+#endif // !defined(MYMATH_DETERMINANT_H)

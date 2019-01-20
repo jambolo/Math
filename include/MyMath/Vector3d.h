@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                      Vector3d.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Vector3d.h#9 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_VECTOR3D_H)
+#define MYMATH_VECTOR3D_H
 
 class Matrix33d;
 class Matrix43d;
@@ -30,7 +20,7 @@ class Vector3d
 public:
 
     //! Constructor
-    Vector3d() {}
+    Vector3d() = default;
 
     //! Constructor
     Vector3d(double x, double y, double z);
@@ -39,19 +29,19 @@ public:
     Vector3d(double const v[3]);
 
     //! Returns the length of the vector squared.
-    double Length2()                           const;
+    double Length2() const;
 
     //! Returns the length of the vector.
-    double Length()                            const;
+    double Length() const;
 
     //! Returns the inverse of the length of the vector (or 1. if the length is 0)
-    double ILength()                           const;
+    double ILength() const;
 
     //! Returns the inverse of the length squared of the vector (or 1. if the length is 0)
-    double ILength2()                          const;
+    double ILength2() const;
 
     //! Returns true if the vector is normalized (within a tolerance).
-    bool IsNormalized()                      const;
+    bool IsNormalized() const;
 
     //! Negates the vector. Returns the result.
     Vector3d const & Negate();
@@ -96,7 +86,7 @@ public:
     Vector3d const & operator *=(Matrix33d const & m);
 
     //! Returns the negative.
-    Vector3d operator -()                        const;
+    Vector3d operator -() const;
 
     union
     {
@@ -385,3 +375,5 @@ inline Vector3d operator *(double s, Vector3d const & v)
 {
     return Vector3d(v).Scale(s);
 }
+
+#endif // !defined(MYMATH_VECTOR3D_H)

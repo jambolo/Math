@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                      Vector2i.h
-
-                                            Copyright 2004, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Vector2i.h#4 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_VECTOR2I_H)
+#define MYMATH_VECTOR2I_H
 
 #include <iosfwd>
 
@@ -28,7 +18,7 @@ class Vector2i
 public:
 
     //! Constructor
-    Vector2i() {}
+    Vector2i() = default;
 
     //! Constructor
     Vector2i(int x, int y);
@@ -58,7 +48,7 @@ public:
     Vector2i const & operator *=(int scale);
 
     //! Returns the negative.
-    Vector2i operator -()                        const;
+    Vector2i operator -() const;
 
     union
     {
@@ -72,13 +62,13 @@ public:
     // Useful constants
 
     //! Returns [0, 0].
-    static Vector2i Origin();
+    static Vector2i Origin() { return { 0, 0 }; }
 
     //! Returns [1, 0].
-    static Vector2i XAxis();
+    static Vector2i XAxis() { return { 1, 0 }; }
 
     //! Returns [0, 1].
-    static Vector2i YAxis();
+    static Vector2i YAxis() { return { 0, 1 }; }
 };
 
 #pragma warning( pop )
@@ -182,21 +172,6 @@ inline Vector2i Vector2i::operator -() const
     return Vector2i(*this).Negate();
 }
 
-inline Vector2i Vector2i::Origin()
-{
-    return Vector2i(0, 0);
-}
-
-inline Vector2i Vector2i::XAxis()
-{
-    return Vector2i(1, 0);
-}
-
-inline Vector2i Vector2i::YAxis()
-{
-    return Vector2i(0, 1);
-}
-
 inline Vector2i operator +(Vector2i const & a, Vector2i const & b)
 {
     return Vector2i(a).Add(b);
@@ -222,3 +197,5 @@ inline Vector2i operator *(int s, Vector2i const & v)
 {
     return Vector2i(v).Scale(s);
 }
+
+#endif // !defined(MYMATH_VECTOR2I_H)

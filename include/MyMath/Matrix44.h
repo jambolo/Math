@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                     Matrix44.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Matrix44.h#14 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_MATRIX44_H)
+#define MYMATH_MATRIX44_H
 
 #include "Vector3.h"
 
@@ -33,7 +23,7 @@ class Matrix44
 public:
 
     //! Constructor
-    Matrix44() {}
+    Matrix44() = default;
 
     //! Constructor
     Matrix44(float Xx, float Xy, float Xz, float Xw,
@@ -60,22 +50,22 @@ public:
     explicit Matrix44(Matrix44d const & m44d);
 
     //! Returns the X vector.
-    Vector4 const & GetX()                              const;
+    Vector4 const & GetX() const;
 
     //! Returns the Y vector.
-    Vector4 const & GetY()                              const;
+    Vector4 const & GetY() const;
 
     //! Returns the Z vector.
-    Vector4 const & GetZ()                              const;
+    Vector4 const & GetZ() const;
 
     //! Returns the T (or W) vector.
-    Vector4 const & GetT()                              const;
+    Vector4 const & GetT() const;
 
     //! Returns the determinant.
-    double Determinant()                       const;
+    double Determinant() const;
 
     //! Returns true if the matrix is orthonormal (within a tolerance)
-    bool IsOrthonormal()                     const;
+    bool IsOrthonormal() const;
 
     //! Transposes the matrix. Returns the result.
     Matrix44 & Transpose();
@@ -93,7 +83,7 @@ public:
     Matrix44 & operator *=(Matrix44 const & b);
 
     //! Returns the inverse.
-    Matrix44 operator ~()                        const;
+    Matrix44 operator ~() const;
 
     union
     {
@@ -204,3 +194,5 @@ inline Matrix44 Matrix44::Identity()
                     0.0f, 0.0f, 1.0f, 0.0f,
                     0.0f, 0.0f, 0.0f, 1.0f);
 }
+
+#endif // !defined(MYMATH_MATRIX44_H)

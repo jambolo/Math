@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                     Matrix33.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Matrix33.h#14 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_MATRIX33_H)
+#define MYMATH_MATRIX33_H
 
 class Vector3;
 class Matrix33d;
@@ -31,7 +21,7 @@ class Matrix33
 public:
 
     //! Constructor
-    Matrix33() {}
+    Matrix33() = default;
 
     //! Constructor
     Matrix33(float xx, float xy, float xz,
@@ -54,19 +44,19 @@ public:
     explicit Matrix33(Matrix44 const & m44);
 
     //! Returns the X vector.
-    Vector3 const & GetX()                              const;
+    Vector3 const & GetX() const;
 
     //! Returns the Y vector.
-    Vector3 const & GetY()                              const;
+    Vector3 const & GetY() const;
 
     //! returns the Z vector.
-    Vector3 const & GetZ()                              const;
+    Vector3 const & GetZ() const;
 
     //! Returns the determinant.
-    double Determinant()                       const;
+    double Determinant() const;
 
     //! Returns true if the matrix is orthonormal (within a tolerance)
-    bool IsOrthonormal()                     const;
+    bool IsOrthonormal() const;
 
     //! Tranposes the matrix. Returns the result.
     Matrix33 & Transpose();
@@ -84,7 +74,7 @@ public:
     Matrix33 & operator *=(Matrix33 const & b);
 
     //! Returns the inverse.
-    Matrix33 operator ~()                        const;
+    Matrix33 operator ~() const;
 
     union
     {
@@ -155,3 +145,5 @@ inline Matrix33 Matrix33::Identity()
                     0.0f, 1.0f, 0.0f,
                     0.0f, 0.0f, 1.0f);
 }
+
+#endif // !defined(MYMATH_MATRIX33_H)

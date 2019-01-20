@@ -1,5 +1,8 @@
 #pragma once
 
+#if !defined(MYMATH_MYMATH_H)
+#define MYMATH_MYMATH_H
+
 #include "Constants.h"
 #include <algorithm>
 #include <cassert>
@@ -153,3 +156,5 @@ T limit(T const & min, T const & v, T const & max)
 
 //@}
 } // namespace MyMath
+
+#endif // !defined(MYMATH_MYMATH_H)

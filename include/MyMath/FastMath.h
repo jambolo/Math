@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                      FastMath.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/FastMath.h#10 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_FASTMATH_H)
+#define MYMATH_FASTMATH_H
 
 #if 0
 
@@ -179,3 +169,5 @@ inline void fsinvers(float x, float * pSin, float * pVers)
 } // namespace MyMath
 
 #endif // if 0
+
+#endif // !defined(MYMATH_FASTMATH_H)

@@ -1,16 +1,3 @@
-/** @file *//********************************************************************************************************
-
-                                                  Intersectable.cpp
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Intersectable.cpp#20 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #include "PrecompiledHeaders.h"
 
 #include "Intersectable.h"
@@ -29,11 +16,11 @@
 //! @param	a		The point to test.
 //! @param	b		The point to test.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Point const & a, Point const & b)
+Intersectable::Result Intersectable::Intersects(Point const & a, Point const & b)
 {
-    if (  MyMath::IsRelativelyCloseTo(a.m_X, b.m_X)
-       && MyMath::IsRelativelyCloseTo(a.m_Y, b.m_Y)
-       && MyMath::IsRelativelyCloseTo(a.m_Z, b.m_Z))
+    if (  MyMath::IsRelativelyCloseTo(a.value_.m_X, b.value_.m_X)
+       && MyMath::IsRelativelyCloseTo(a.value_.m_Y, b.value_.m_Y)
+       && MyMath::IsRelativelyCloseTo(a.value_.m_Z, b.value_.m_Z))
     {
         return INTERSECTS;
     }
@@ -46,7 +33,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & a, Poin
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS
 
-Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, Line const & line)
+Intersectable::Result Intersectable::Intersects(Point const & point, Line const & line)
 {
 //	// The point is on the line if the distance is close to 0
 //
@@ -56,7 +43,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
     // point is on the line if the distance from m_B to point is the same as the distance from m_B to the projection
     // of point onto the line (which implies distance squared is a valid test, too).
 
-    Vector3 const pb = point - line.m_B;        // Vector from m_B to point
+    Vector3 const pb = point.value_ - line.m_B;        // Vector from m_B to point
     float const   d  = Dot(pb, line.m_M);       // Distance from m_B to the projection
 
     if (MyMath::IsRelativelyCloseTo(d * d, pb.Length2()))
@@ -70,7 +57,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, Ray const & ray)
+Intersectable::Result Intersectable::Intersects(Point const & point, Ray const & ray)
 {
 //	// The point is on the line if the distance is close to 0
 //
@@ -81,7 +68,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
     // of point onto the line (which implies distance squared is a valid test, too), and t >= 0. Note that t is the
     // distance from m_B to the projection of point onto the line. Zoinks!
 
-    Vector3 const pb = point - ray.m_B;         // Vector from m_B to point
+    Vector3 const pb = point.value_ - ray.m_B;         // Vector from m_B to point
     float const   t  = Dot(pb, ray.m_M);        // Also, distance from m_B to the projection
 
     if (t >= 0.f && MyMath::IsRelativelyCloseTo(t * t, pb.Length2()))
@@ -95,7 +82,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, Segment const & segment)
+Intersectable::Result Intersectable::Intersects(Point const & point, Segment const & segment)
 {
 //	// The point is on the segment if the distance is close to 0
 //
@@ -107,7 +94,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
     // length of m_M is the length of the segment in this case. Yowzer! That means the math is simple but it is not
     // so obvious.
 
-    Vector3 const pb = point - segment.m_B;         // Vector from m_B to point
+    Vector3 const pb = point.value_ - segment.m_B;         // Vector from m_B to point
     float const   s2 = segment.m_M.Length2();       // Length of segment squared
     float const   a  = Dot(pb, segment.m_M);        // t * s2
 
@@ -122,7 +109,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, Plane const & plane)
+Intersectable::Result Intersectable::Intersects(Point const & point, Plane const & plane)
 {
     if (MyMath::IsCloseToZero(Distance(point, plane)))
         return INTERSECTS;
@@ -135,7 +122,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, Poly const & poly)
+Intersectable::Result Intersectable::Intersects(Point const & point, Poly const & poly)
 {
     return NO_INTERSECTION;
 }
@@ -145,9 +132,9 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, Sphere const & sphere)
+Intersectable::Result Intersectable::Intersects(Point const & point, Sphere const & sphere)
 {
-    float const d2 = (point - sphere.m_C).Length2();    // Distance from center to point squared
+    float const d2 = (point.value_ - sphere.m_C).Length2();    // Distance from center to point squared
 
     if (d2 <= sphere.m_R * sphere.m_R)
         return INTERSECTS;
@@ -160,9 +147,9 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, Cone const & cone)
+Intersectable::Result Intersectable::Intersects(Point const & point, Cone const & cone)
 {
-    Vector3 const p   = point - cone.m_V;
+    Vector3 const p   = point.value_ - cone.m_V;
     float const   ddp = Dot(cone.m_D, p);
 
     if (ddp >= 0.f && ddp * ddp >= p.Length2() * cone.m_A * cone.m_A)
@@ -176,9 +163,9 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, AABox const & aabox)
+Intersectable::Result Intersectable::Intersects(Point const & point, AABox const & aabox)
 {
-    Vector3 const xpoint = point - aabox.m_Position;
+    Vector3 const xpoint = point.value_ - aabox.m_Position;
 
     if (  0 <= xpoint.m_X && xpoint.m_X <= aabox.m_Scale.m_X
        && 0 <= xpoint.m_Y && xpoint.m_Y <= aabox.m_Scale.m_Y
@@ -195,9 +182,9 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, Box const & box)
+Intersectable::Result Intersectable::Intersects(Point const & point, Box const & box)
 {
-    Vector3 const xpoint = box.m_InverseOrientation * (point - box.m_Position);
+    Vector3 const xpoint = box.m_InverseOrientation * (point.value_ - box.m_Position);
 
     if (  0 <= xpoint.m_X && xpoint.m_X <= box.m_Scale.m_X
        && 0 <= xpoint.m_Y && xpoint.m_Y <= box.m_Scale.m_Y
@@ -214,11 +201,11 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, Frustum const & frustum)
+Intersectable::Result Intersectable::Intersects(Point const & point, Frustum const & frustum)
 {
-    for (int i = 0; i < Frustum::NUM_SIDES; i++)
+    for (auto const & side : frustum.m_Sides)
     {
-        if (frustum.m_Sides[i].DirectedDistance(point) > 0.f)
+        if (side.DirectedDistance(point) > 0.f)
             return NO_INTERSECTION;
     }
 
@@ -230,7 +217,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Line const & a, Line const & b)
+Intersectable::Result Intersectable::Intersects(Line const & a, Line const & b)
 {
     if (MyMath::IsCloseToZero(Distance(a, b)))
         return INTERSECTS;
@@ -243,7 +230,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Line const & a, Line 
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Ray const & ray)
+Intersectable::Result Intersectable::Intersects(Line const & line, Ray const & ray)
 {
     return NO_INTERSECTION;
 }
@@ -253,7 +240,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Ra
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Segment const & segment)
+Intersectable::Result Intersectable::Intersects(Line const & line, Segment const & segment)
 {
     return NO_INTERSECTION;
 }
@@ -263,7 +250,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Se
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Plane const & plane)
+Intersectable::Result Intersectable::Intersects(Line const & line, Plane const & plane)
 {
     if (!MyMath::IsCloseToZero(Dot(line.m_M, plane.m_N)))
         return INTERSECTS;
@@ -276,7 +263,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Pl
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Poly const & poly)
+Intersectable::Result Intersectable::Intersects(Line const & line, Poly const & poly)
 {
     return NO_INTERSECTION;
 }
@@ -286,7 +273,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Po
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Sphere const & sphere)
+Intersectable::Result Intersectable::Intersects(Line const & line, Sphere const & sphere)
 {
     if (Distance(sphere.m_C, line) <= sphere.m_R)
         return INTERSECTS;
@@ -299,7 +286,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Sp
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Cone const & cone)
+Intersectable::Result Intersectable::Intersects(Line const & line, Cone const & cone)
 {
     return NO_INTERSECTION;
 }
@@ -309,7 +296,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Co
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, AABox const & aabox)
+Intersectable::Result Intersectable::Intersects(Line const & line, AABox const & aabox)
 {
     Vector3 const box_max = aabox.m_Position + aabox.m_Scale;   // Convenience and speed
 
@@ -408,7 +395,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, AA
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Box const & box)
+Intersectable::Result Intersectable::Intersects(Line const & line, Box const & box)
 {
     // Transform the line into the box's space (except for scale)
 
@@ -492,7 +479,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Bo
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Frustum const & frustum)
+Intersectable::Result Intersectable::Intersects(Line const & line, Frustum const & frustum)
 {
     return NO_INTERSECTION;
 }
@@ -502,7 +489,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Fr
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Ray const & a, Ray const & b)
+Intersectable::Result Intersectable::Intersects(Ray const & a, Ray const & b)
 {
     return NO_INTERSECTION;
 }
@@ -512,7 +499,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Ray const & a, Ray co
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Segment const & segment)
+Intersectable::Result Intersectable::Intersects(Ray const & ray, Segment const & segment)
 {
     return NO_INTERSECTION;
 }
@@ -522,7 +509,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Segm
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Plane const & plane)
+Intersectable::Result Intersectable::Intersects(Ray const & ray, Plane const & plane)
 {
     return NO_INTERSECTION;
 }
@@ -532,7 +519,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Plan
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Poly const & poly)
+Intersectable::Result Intersectable::Intersects(Ray const & ray, Poly const & poly)
 {
     return NO_INTERSECTION;
 }
@@ -542,7 +529,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Poly
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Sphere const & sphere)
+Intersectable::Result Intersectable::Intersects(Ray const & ray, Sphere const & sphere)
 {
     return NO_INTERSECTION;
 }
@@ -552,7 +539,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Sphe
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Cone const & cone)
+Intersectable::Result Intersectable::Intersects(Ray const & ray, Cone const & cone)
 {
     return NO_INTERSECTION;
 }
@@ -562,7 +549,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Cone
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, AABox const & aabox)
+Intersectable::Result Intersectable::Intersects(Ray const & ray, AABox const & aabox)
 {
     return NO_INTERSECTION;
 }
@@ -572,7 +559,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, AABo
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Box const & box)
+Intersectable::Result Intersectable::Intersects(Ray const & ray, Box const & box)
 {
     return NO_INTERSECTION;
 }
@@ -582,7 +569,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Box 
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Frustum const & frustum)
+Intersectable::Result Intersectable::Intersects(Ray const & ray, Frustum const & frustum)
 {
     return NO_INTERSECTION;
 }
@@ -592,7 +579,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Frus
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Segment const & a, Segment const & b)
+Intersectable::Result Intersectable::Intersects(Segment const & a, Segment const & b)
 {
     // First of all, reject if the AABoxes don't intersect.
 
@@ -694,7 +681,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Segment const & a, Se
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segment, Plane const & plane)
+Intersectable::Result Intersectable::Intersects(Segment const & segment, Plane const & plane)
 {
     float const da = plane.DirectedDistance(segment.m_B);
     float const db = plane.DirectedDistance(segment.m_B + segment.m_M);
@@ -709,7 +696,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segme
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segment, Poly const & poly)
+Intersectable::Result Intersectable::Intersects(Segment const & segment, Poly const & poly)
 {
     return NO_INTERSECTION;
 }
@@ -719,7 +706,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segme
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segment, Sphere const & sphere)
+Intersectable::Result Intersectable::Intersects(Segment const & segment, Sphere const & sphere)
 {
     return NO_INTERSECTION;
 }
@@ -729,7 +716,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segme
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segment, Cone const & cone)
+Intersectable::Result Intersectable::Intersects(Segment const & segment, Cone const & cone)
 {
     return NO_INTERSECTION;
 }
@@ -739,7 +726,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segme
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segment, AABox const & aabox)
+Intersectable::Result Intersectable::Intersects(Segment const & segment, AABox const & aabox)
 {
     return NO_INTERSECTION;
 }
@@ -749,7 +736,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segme
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segment, Box const & box)
+Intersectable::Result Intersectable::Intersects(Segment const & segment, Box const & box)
 {
     return NO_INTERSECTION;
 }
@@ -759,7 +746,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segme
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segment, Frustum const & frustum)
+Intersectable::Result Intersectable::Intersects(Segment const & segment, Frustum const & frustum)
 {
     return NO_INTERSECTION;
 }
@@ -769,7 +756,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segme
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Plane const & a, Plane const & b)
+Intersectable::Result Intersectable::Intersects(Plane const & a, Plane const & b)
 {
     float const dot = Dot(a.m_N, b.m_N);
 
@@ -784,7 +771,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Plane const & a, Plan
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, Poly const & poly)
+Intersectable::Result Intersectable::Intersects(Plane const & plane, Poly const & poly)
 {
     return NO_INTERSECTION;
 }
@@ -794,7 +781,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, 
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, Sphere const & sphere)
+Intersectable::Result Intersectable::Intersects(Plane const & plane, Sphere const & sphere)
 {
     if (Distance(sphere.m_C, plane) <= sphere.m_R)
         return INTERSECTS;
@@ -807,7 +794,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, 
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, Cone const & cone)
+Intersectable::Result Intersectable::Intersects(Plane const & plane, Cone const & cone)
 {
     return NO_INTERSECTION;
 }
@@ -817,7 +804,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, 
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, AABox const & aabox)
+Intersectable::Result Intersectable::Intersects(Plane const & plane, AABox const & aabox)
 {
     HalfSpace const halfspace(plane);
 
@@ -832,7 +819,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, 
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, Box const & box)
+Intersectable::Result Intersectable::Intersects(Plane const & plane, Box const & box)
 {
 //	// Plane equation:  z = - ( plane.m_D + plane.m_N.m_X * x + plane.m_N.m_Y * y ) / plane.m_N.m_Z
 
@@ -946,7 +933,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, 
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, Frustum const & frustum)
+Intersectable::Result Intersectable::Intersects(Plane const & plane, Frustum const & frustum)
 {
     return NO_INTERSECTION;
 }
@@ -956,7 +943,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, 
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Poly const & a, Poly const & b)
+Intersectable::Result Intersectable::Intersects(Poly const & a, Poly const & b)
 {
     return NO_INTERSECTION;
 }
@@ -966,7 +953,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Poly const & a, Poly 
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Poly const & poly, Sphere const & sphere)
+Intersectable::Result Intersectable::Intersects(Poly const & poly, Sphere const & sphere)
 {
     return NO_INTERSECTION;
 }
@@ -976,7 +963,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Poly const & poly, Sp
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Poly const & poly, Cone const & cone)
+Intersectable::Result Intersectable::Intersects(Poly const & poly, Cone const & cone)
 {
     return NO_INTERSECTION;
 }
@@ -986,7 +973,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Poly const & poly, Co
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Poly const & poly, AABox const & aabox)
+Intersectable::Result Intersectable::Intersects(Poly const & poly, AABox const & aabox)
 {
     return NO_INTERSECTION;
 }
@@ -996,7 +983,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Poly const & poly, AA
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Poly const & poly, Box const & box)
+Intersectable::Result Intersectable::Intersects(Poly const & poly, Box const & box)
 {
     return NO_INTERSECTION;
 }
@@ -1006,7 +993,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Poly const & poly, Bo
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Poly const & poly, Frustum const & frustum)
+Intersectable::Result Intersectable::Intersects(Poly const & poly, Frustum const & frustum)
 {
     return NO_INTERSECTION;
 }
@@ -1016,7 +1003,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Poly const & poly, Fr
 //!
 //! @return		Returns NO_INTERSECTION, INTERSECTS, ENCLOSES, or ENCLOSED_BY.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Sphere const & a, Sphere const & b)
+Intersectable::Result Intersectable::Intersects(Sphere const & a, Sphere const & b)
 {
     float const dc2 = (a.m_C - b.m_C).Length2();
 
@@ -1047,7 +1034,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Sphere const & a, Sph
 //!
 //! @warning	Not sure if this works
 
-Intersectable::IntersectionClass Intersectable::Intersects(Sphere const & sphere, Cone const & cone)
+Intersectable::Result Intersectable::Intersects(Sphere const & sphere, Cone const & cone)
 {
     float const   c2   = cone.m_A * cone.m_A;
     Vector3 const v1   = sphere.m_C - cone.m_V;
@@ -1071,7 +1058,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Sphere const & sphere
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Sphere const & sphere, AABox const & aabox)
+Intersectable::Result Intersectable::Intersects(Sphere const & sphere, AABox const & aabox)
 {
     return NO_INTERSECTION;
 }
@@ -1081,7 +1068,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Sphere const & sphere
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Sphere const & sphere, Box const & box)
+Intersectable::Result Intersectable::Intersects(Sphere const & sphere, Box const & box)
 {
     return NO_INTERSECTION;
 }
@@ -1094,12 +1081,12 @@ Intersectable::IntersectionClass Intersectable::Intersects(Sphere const & sphere
 //! @warning	This test returns false positives near the corners of the frustum.
 //! @warning	This function returns INTERSECTS when it should return ENCLOSES.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Sphere const & sphere, Frustum const & frustum)
+Intersectable::Result Intersectable::Intersects(Sphere const & sphere, Frustum const & frustum)
 {
-    IntersectionClass intersection = ENCLOSED_BY;
-    for (int i = 0; i < Frustum::NUM_SIDES; i++)
+    Result intersection = ENCLOSED_BY;
+    for (auto const & side : frustum.m_Sides)
     {
-        float const d = frustum.m_Sides[i].DirectedDistance(sphere.m_C);
+        float const d = side.DirectedDistance(sphere.m_C);
 
         if (d > sphere.m_R)
             return NO_INTERSECTION;
@@ -1115,7 +1102,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Sphere const & sphere
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Cone const & a, Cone const & b)
+Intersectable::Result Intersectable::Intersects(Cone const & a, Cone const & b)
 {
     return NO_INTERSECTION;
 }
@@ -1125,7 +1112,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Cone const & a, Cone 
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Cone const & cone, AABox const & aabox)
+Intersectable::Result Intersectable::Intersects(Cone const & cone, AABox const & aabox)
 {
     return NO_INTERSECTION;
 }
@@ -1135,7 +1122,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Cone const & cone, AA
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Cone const & cone, Box const & box)
+Intersectable::Result Intersectable::Intersects(Cone const & cone, Box const & box)
 {
     return NO_INTERSECTION;
 }
@@ -1145,7 +1132,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Cone const & cone, Bo
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Cone const & cone, Frustum const & frustum)
+Intersectable::Result Intersectable::Intersects(Cone const & cone, Frustum const & frustum)
 {
     return NO_INTERSECTION;
 }
@@ -1155,7 +1142,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Cone const & cone, Fr
 //!
 //! @return		Returns NO_INTERSECTION, INTERSECTS, ENCLOSES, or ENCLOSED_BY.
 
-Intersectable::IntersectionClass Intersectable::Intersects(AABox const & a, AABox const & b)
+Intersectable::Result Intersectable::Intersects(AABox const & a, AABox const & b)
 {
     float const ax0 = a.m_Position.m_X;
     float const ay0 = a.m_Position.m_Y;
@@ -1197,7 +1184,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(AABox const & a, AABo
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(AABox const & aabox, Box const & box)
+Intersectable::Result Intersectable::Intersects(AABox const & aabox, Box const & box)
 {
     return NO_INTERSECTION;
 }
@@ -1209,7 +1196,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(AABox const & aabox, 
 //!
 //! @warning	Returns INTERSECTS when it should return ENCLOSES.
 
-Intersectable::IntersectionClass Intersectable::Intersects(AABox const & aabox, Frustum const & frustum)
+Intersectable::Result Intersectable::Intersects(AABox const & aabox, Frustum const & frustum)
 {
     // from Moller, Thomas. Realtime Rendering, 2nd Ed., pp. 612-3
     //
@@ -1219,9 +1206,9 @@ Intersectable::IntersectionClass Intersectable::Intersects(AABox const & aabox, 
 
     bool intersectsAnyPlane = false;
 
-    for (int i = 0; i < Frustum::NUM_SIDES; i++)
+    for (auto const & side : frustum.m_Sides)
     {
-        IntersectionClass ic = Intersects(HalfSpace(frustum.m_Sides[i]), aabox);
+        Result ic = Intersects(HalfSpace(side), aabox);
         if (ic == NO_INTERSECTION)
             return NO_INTERSECTION;
         if (ic == INTERSECTS)
@@ -1242,7 +1229,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(AABox const & aabox, 
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Box const & a, Box const & b)
+Intersectable::Result Intersectable::Intersects(Box const & a, Box const & b)
 {
     return NO_INTERSECTION;
 }
@@ -1252,7 +1239,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Box const & a, Box co
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Box const & box, Frustum const & frustum)
+Intersectable::Result Intersectable::Intersects(Box const & box, Frustum const & frustum)
 {
     return NO_INTERSECTION;
 }
@@ -1262,7 +1249,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Box const & box, Frus
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Frustum const & a, Frustum const & b)
+Intersectable::Result Intersectable::Intersects(Frustum const & a, Frustum const & b)
 {
     return NO_INTERSECTION;
 }
@@ -1272,7 +1259,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Frustum const & a, Fr
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, HalfSpace const & halfspace)
+Intersectable::Result Intersectable::Intersects(Point const & point, HalfSpace const & halfspace)
 {
     if (halfspace.m_Plane.DirectedDistance(point) <= 0.0f)
         return INTERSECTS;
@@ -1285,7 +1272,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Point const & point, 
 //!
 //! @return		Returns NO_INTERSECTION or INTERSECTS.
 
-Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, HalfSpace const & halfspace)
+Intersectable::Result Intersectable::Intersects(Line const & line, HalfSpace const & halfspace)
 {
     if (MyMath::IsCloseToZero(Dot(line.m_M, halfspace.m_Plane.m_N)))
         return Intersects(Point(line.m_B), halfspace);
@@ -1298,7 +1285,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Line const & line, Ha
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, HalfSpace const & halfspace)
+Intersectable::Result Intersectable::Intersects(Ray const & ray, HalfSpace const & halfspace)
 {
     return NO_INTERSECTION;
 }
@@ -1308,7 +1295,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Ray const & ray, Half
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segment, HalfSpace const & halfspace)
+Intersectable::Result Intersectable::Intersects(Segment const & segment, HalfSpace const & halfspace)
 {
     return NO_INTERSECTION;
 }
@@ -1318,7 +1305,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Segment const & segme
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, HalfSpace const & halfspace)
+Intersectable::Result Intersectable::Intersects(Plane const & plane, HalfSpace const & halfspace)
 {
     return NO_INTERSECTION;
 }
@@ -1328,7 +1315,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(Plane const & plane, 
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & a, HalfSpace const & b)
+Intersectable::Result Intersectable::Intersects(HalfSpace const & a, HalfSpace const & b)
 {
     return NO_INTERSECTION;
 }
@@ -1338,7 +1325,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & a, 
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & halfspace, Poly const & poly)
+Intersectable::Result Intersectable::Intersects(HalfSpace const & halfspace, Poly const & poly)
 {
     return NO_INTERSECTION;
 }
@@ -1348,7 +1335,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & hal
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & halfspace, Sphere const & sphere)
+Intersectable::Result Intersectable::Intersects(HalfSpace const & halfspace, Sphere const & sphere)
 {
     return NO_INTERSECTION;
 }
@@ -1358,7 +1345,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & hal
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & halfspace, Cone const & cone)
+Intersectable::Result Intersectable::Intersects(HalfSpace const & halfspace, Cone const & cone)
 {
     return NO_INTERSECTION;
 }
@@ -1368,7 +1355,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & hal
 //!
 //! @return		Returns NO_INTERSECTION, INTERSECTS or ENCLOSES.
 
-Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & halfspace, AABox const & aabox)
+Intersectable::Result Intersectable::Intersects(HalfSpace const & halfspace, AABox const & aabox)
 {
     // from Moller, Thomas. Realtime Rendering, 2nd Ed., pp. 586-8
     //
@@ -1376,51 +1363,51 @@ Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & hal
     // one of the others. An optimization is to test only two vertexes along the diagonal most closely aligned
     // with the plane's normal.
 
-    Point v0;
-    Point v1;
+    Point p0;
+    Point p1;
 
-    // Find the diagonal of the box (with endpoints v0 and v1) most closely aligned with the plane's normal
+    // Find the diagonal of the box (with endpoints p0 and p1) most closely aligned with the plane's normal
 
     if (halfspace.m_Plane.m_N.m_X >= 0.0f)
     {
-        v0.m_X = aabox.m_Position.m_X;
-        v1.m_X = aabox.m_Position.m_X + aabox.m_Scale.m_X;
+        p0.value_.m_X = aabox.m_Position.m_X;
+        p1.value_.m_X = aabox.m_Position.m_X + aabox.m_Scale.m_X;
     }
     else
     {
-        v0.m_X = aabox.m_Position.m_X + aabox.m_Scale.m_X;
-        v1.m_X = aabox.m_Position.m_X;
+        p0.value_.m_X = aabox.m_Position.m_X + aabox.m_Scale.m_X;
+        p1.value_.m_X = aabox.m_Position.m_X;
     }
 
     if (halfspace.m_Plane.m_N.m_Y >= 0.0f)
     {
-        v0.m_Y = aabox.m_Position.m_Y;
-        v1.m_Y = aabox.m_Position.m_Y + aabox.m_Scale.m_Y;
+        p0.value_.m_Y = aabox.m_Position.m_Y;
+        p1.value_.m_Y = aabox.m_Position.m_Y + aabox.m_Scale.m_Y;
     }
     else
     {
-        v0.m_Y = aabox.m_Position.m_Y + aabox.m_Scale.m_Y;
-        v1.m_Y = aabox.m_Position.m_Y;
+        p0.value_.m_Y = aabox.m_Position.m_Y + aabox.m_Scale.m_Y;
+        p1.value_.m_Y = aabox.m_Position.m_Y;
     }
 
     if (halfspace.m_Plane.m_N.m_Z >= 0.0f)
     {
-        v0.m_Z = aabox.m_Position.m_Z;
-        v1.m_Z = aabox.m_Position.m_Z + aabox.m_Scale.m_Z;
+        p0.value_.m_Z = aabox.m_Position.m_Z;
+        p1.value_.m_Z = aabox.m_Position.m_Z + aabox.m_Scale.m_Z;
     }
     else
     {
-        v0.m_Z = aabox.m_Position.m_Z + aabox.m_Scale.m_Z;
-        v1.m_Z = aabox.m_Position.m_Z;
+        p0.value_.m_Z = aabox.m_Position.m_Z + aabox.m_Scale.m_Z;
+        p1.value_.m_Z = aabox.m_Position.m_Z;
     }
 
-    // If v0 is in front of the plane then the box is outside the half-space. If v1 is behind the plane then the
+    // If p0 is in front of the plane then the box is outside the half-space. If p1 is behind the plane then the
     // box is enclosed by the half-space. Otherwise, the box intersects the plane. Other cases do not need to be
-    // considered because in the direction of the normal v1 is always greater than v0.
+    // considered because in the direction of the normal p1 is always greater than p0.
 
-    if (halfspace.m_Plane.DirectedDistance(v0) > 0.0f)
+    if (halfspace.m_Plane.DirectedDistance(p0) > 0.0f)
         return NO_INTERSECTION;
-    else if (halfspace.m_Plane.DirectedDistance(v1) < 0.0f)
+    else if (halfspace.m_Plane.DirectedDistance(p1) < 0.0f)
         return ENCLOSES;
     else
         return INTERSECTS;
@@ -1431,7 +1418,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & hal
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & halfspace, Box const & box)
+Intersectable::Result Intersectable::Intersects(HalfSpace const & halfspace, Box const & box)
 {
     return NO_INTERSECTION;
 }
@@ -1441,7 +1428,7 @@ Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & hal
 //!
 //! @todo	Not implemented
 
-Intersectable::IntersectionClass Intersectable::Intersects(HalfSpace const & halfspace, Frustum const & frustum)
+Intersectable::Result Intersectable::Intersects(HalfSpace const & halfspace, Frustum const & frustum)
 {
     return NO_INTERSECTION;
 }
@@ -1635,7 +1622,7 @@ int Intersectable::Intersection(Plane const & a, Plane const & b, Line * pi)
 
 float Distance(Point const & a, Point const & b)
 {
-    return (a - b).Length();
+    return (a.value_ - b.value_).Length();
 }
 
 //! @param	point		The point to test.
@@ -1655,7 +1642,7 @@ float Distance(Point const & point, Line const & line)
     //
     // which is slightly faster
 
-    return Cross(point - line.m_B, line.m_M).Length();
+    return Cross(point.value_ - line.m_B, line.m_M).Length();
 }
 
 //! @param	point		The point to test.
@@ -1665,7 +1652,7 @@ float Distance(Point const & point, Line const & line)
 
 float Distance(Point const & point, Ray const & ray)
 {
-    float const t = Dot((point - ray.m_B), ray.m_M);
+    float const t = Dot((point.value_ - ray.m_B), ray.m_M);
 
     if (t <= 0.f)
         return Distance(point, ray.m_B);
@@ -1682,7 +1669,7 @@ float Distance(Point const & point, Segment const & segment)
 {
     assert(!MyMath::IsCloseToZero(segment.m_M.Length2()));
 
-    float const t = Dot((point - segment.m_B), segment.m_M) / segment.m_M.Length2();
+    float const t = Dot((point.value_ - segment.m_B), segment.m_M) / segment.m_M.Length2();
 
     if (t <= 0.f)
         return Distance(point, segment.m_B);
@@ -1699,7 +1686,7 @@ float Distance(Point const & point, Segment const & segment)
 
 float Distance(Point const & point, Plane const & plane)
 {
-    return fabsf(Dot(plane.m_N, point) + plane.m_D);
+    return fabsf(Dot(plane.m_N, point.value_) + plane.m_D);
 }
 
 //! @param	a		The line to test.

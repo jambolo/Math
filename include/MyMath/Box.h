@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                        Box.h
-
-                                            Copyright 2002, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Box.h#12 $
-
-    $NoKeywords: $
-
- *********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_BOX_H)
+#define MYMATH_BOX_H
 
 #include "Intersectable.h"
 #include "Matrix33.h"
@@ -27,29 +17,29 @@ class AABox : public Intersectable
 public:
 
     //! Default constructor
-    AABox() {}
+    AABox() = default;
 
     //! Constructor
     AABox(Vector3 const & position, Vector3 const & size);
 
     //! Destructor
-    ~AABox() {}
+    virtual ~AABox() override = default;
 
     //! @name Overrides Intersectable
     //@{
-    virtual IntersectionClass IntersectedBy(Intersectable const * pI) const { return pI->Intersects(*this);                       }
-    virtual IntersectionClass Intersects(Point const & point) const         { return Intersectable::Intersects(*this, point);     }
-    virtual IntersectionClass Intersects(Line const & line) const           { return Intersectable::Intersects(*this, line);      }
-    virtual IntersectionClass Intersects(Ray const & ray) const             { return Intersectable::Intersects(*this, ray);       }
-    virtual IntersectionClass Intersects(Segment const & segment) const     { return Intersectable::Intersects(*this, segment);   }
-    virtual IntersectionClass Intersects(Plane const & plane) const         { return Intersectable::Intersects(*this, plane);     }
-    virtual IntersectionClass Intersects(HalfSpace const & halfspace) const { return Intersectable::Intersects(*this, halfspace); }
-    virtual IntersectionClass Intersects(Poly const & poly) const           { return Intersectable::Intersects(*this, poly);      }
-    virtual IntersectionClass Intersects(Sphere const & sphere) const       { return Intersectable::Intersects(*this, sphere);    }
-    virtual IntersectionClass Intersects(Cone const & cone) const           { return Intersectable::Intersects(*this, cone);      }
-    virtual IntersectionClass Intersects(AABox const & aabox) const         { return Intersectable::Intersects(*this, aabox);     }
-    virtual IntersectionClass Intersects(Box const & box) const             { return Intersectable::Intersects(*this, box);       }
-    virtual IntersectionClass Intersects(Frustum const & frustum) const     { return Intersectable::Intersects(*this, frustum);   }
+    virtual Result IntersectedBy(Intersectable const * pI) const override { return pI->Intersects(*this);                       }
+    virtual Result Intersects(Point const & point) const override         { return Intersectable::Intersects(*this, point);     }
+    virtual Result Intersects(Line const & line) const override           { return Intersectable::Intersects(*this, line);      }
+    virtual Result Intersects(Ray const & ray) const override             { return Intersectable::Intersects(*this, ray);       }
+    virtual Result Intersects(Segment const & segment) const override     { return Intersectable::Intersects(*this, segment);   }
+    virtual Result Intersects(Plane const & plane) const override         { return Intersectable::Intersects(*this, plane);     }
+    virtual Result Intersects(HalfSpace const & halfspace) const override { return Intersectable::Intersects(*this, halfspace); }
+    virtual Result Intersects(Poly const & poly) const override           { return Intersectable::Intersects(*this, poly);      }
+    virtual Result Intersects(Sphere const & sphere) const override       { return Intersectable::Intersects(*this, sphere);    }
+    virtual Result Intersects(Cone const & cone) const override           { return Intersectable::Intersects(*this, cone);      }
+    virtual Result Intersects(AABox const & aabox) const override         { return Intersectable::Intersects(*this, aabox);     }
+    virtual Result Intersects(Box const & box) const override             { return Intersectable::Intersects(*this, box);       }
+    virtual Result Intersects(Frustum const & frustum) const override     { return Intersectable::Intersects(*this, frustum);   }
     //@}
 
     Vector3 m_Position;     //!< Location of the origin of the box
@@ -72,23 +62,23 @@ public:
     explicit Box(Matrix44 const & transform);
 
     //! Destructor
-    ~Box() {}
+    virtual ~Box() override = default;
 
     //! @name Overrides Intersectable
     //@{
-    virtual IntersectionClass IntersectedBy(Intersectable const * pI) const { return pI->Intersects(*this);                       }
-    virtual IntersectionClass Intersects(Point const & point) const         { return Intersectable::Intersects(*this, point);     }
-    virtual IntersectionClass Intersects(Line const & line) const           { return Intersectable::Intersects(*this, line);      }
-    virtual IntersectionClass Intersects(Ray const & ray) const             { return Intersectable::Intersects(*this, ray);       }
-    virtual IntersectionClass Intersects(Segment const & segment) const     { return Intersectable::Intersects(*this, segment);   }
-    virtual IntersectionClass Intersects(Plane const & plane) const         { return Intersectable::Intersects(*this, plane);     }
-    virtual IntersectionClass Intersects(HalfSpace const & halfspace) const { return Intersectable::Intersects(*this, halfspace); }
-    virtual IntersectionClass Intersects(Poly const & poly) const           { return Intersectable::Intersects(*this, poly);      }
-    virtual IntersectionClass Intersects(Sphere const & sphere) const       { return Intersectable::Intersects(*this, sphere);    }
-    virtual IntersectionClass Intersects(Cone const & cone) const           { return Intersectable::Intersects(*this, cone);      }
-    virtual IntersectionClass Intersects(AABox const & aabox) const         { return Intersectable::Intersects(*this, aabox);     }
-    virtual IntersectionClass Intersects(Box const & box) const             { return Intersectable::Intersects(*this, box);       }
-    virtual IntersectionClass Intersects(Frustum const & frustum) const     { return Intersectable::Intersects(*this, frustum);   }
+    virtual Result IntersectedBy(Intersectable const * pI) const override { return pI->Intersects(*this);                       }
+    virtual Result Intersects(Point const & point) const override         { return Intersectable::Intersects(*this, point);     }
+    virtual Result Intersects(Line const & line) const override           { return Intersectable::Intersects(*this, line);      }
+    virtual Result Intersects(Ray const & ray) const override             { return Intersectable::Intersects(*this, ray);       }
+    virtual Result Intersects(Segment const & segment) const override     { return Intersectable::Intersects(*this, segment);   }
+    virtual Result Intersects(Plane const & plane) const override         { return Intersectable::Intersects(*this, plane);     }
+    virtual Result Intersects(HalfSpace const & halfspace) const override { return Intersectable::Intersects(*this, halfspace); }
+    virtual Result Intersects(Poly const & poly) const override           { return Intersectable::Intersects(*this, poly);      }
+    virtual Result Intersects(Sphere const & sphere) const override       { return Intersectable::Intersects(*this, sphere);    }
+    virtual Result Intersects(Cone const & cone) const override           { return Intersectable::Intersects(*this, cone);      }
+    virtual Result Intersects(AABox const & aabox) const override         { return Intersectable::Intersects(*this, aabox);     }
+    virtual Result Intersects(Box const & box) const override             { return Intersectable::Intersects(*this, box);       }
+    virtual Result Intersects(Frustum const & frustum) const override     { return Intersectable::Intersects(*this, frustum);   }
     //@}
 
     //! Returns the orientation of the box
@@ -98,3 +88,5 @@ public:
     Vector3 m_Position;                 //!< Location of the origin of the box
     Vector3 m_Scale;                    //!< Size of the box
 };
+
+#endif // !defined(MYMATH_BOX_H)

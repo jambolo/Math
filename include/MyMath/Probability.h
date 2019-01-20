@@ -1,8 +1,13 @@
 #pragma once
 
-int Factorial( int n );
-__int64 Factorial64( int n );
+#if !defined(MYMATH_PROBABILITY_H)
+#define MYMATH_PROBABILITY_H
 
-int Combinations( int n, int r );
+int     Factorial(int n);
+__int64 Factorial64(int n);
 
-int Permutations( int n, int r );
+int Combinations(int n, int r);
+
+int Permutations(int n, int r);
+
+#endif // !defined(MYMATH_PROBABILITY_H)

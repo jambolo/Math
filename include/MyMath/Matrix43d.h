@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                      Matrix43d.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Matrix43d.h#10 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_MATRIX43D_H)
+#define MYMATH_MATRIX43D_H
 
 #include "Vector3d.h"
 
@@ -32,7 +22,7 @@ class Matrix43d
 public:
 
     //! Constructor
-    Matrix43d() {}
+    Matrix43d() = default;
 
     //! Constructor
     Matrix43d(double Xx, double Xy, double Xz,
@@ -56,22 +46,22 @@ public:
     explicit Matrix43d(Matrix44d const & m44);
 
     //! Returns the X vector.
-    Vector3d const & GetX()                                  const;
+    Vector3d const & GetX() const;
 
     //! Returns the Y vector.
-    Vector3d const & GetY()                                  const;
+    Vector3d const & GetY() const;
 
     //! Returns the Z vector.
-    Vector3d const & GetZ()                                  const;
+    Vector3d const & GetZ() const;
 
     //! Returns the T vector.
-    Vector3d const & GetT()                                  const;
+    Vector3d const & GetT() const;
 
     //! Returns the determinant.
-    double Determinant()                           const;
+    double Determinant() const;
 
     //! Returns true if the matrix is orthonormal (within a tolerance)
-    bool IsOrthonormal()                         const;
+    bool IsOrthonormal() const;
 
     //! Inverts the matrix. Returns the result.
     Matrix43d & Invert();
@@ -86,7 +76,7 @@ public:
     Matrix43d & operator *=(Matrix43d const & b);
 
     //! Returns the inverse.
-    Matrix43d operator ~()                            const;
+    Matrix43d operator ~() const;
 
     union
     {
@@ -189,3 +179,5 @@ inline Matrix43d Matrix43d::Identity()
                      0.0, 0.0, 1.0,
                      0.0, 0.0, 0.0);
 }
+
+#endif // !defined(MYMATH_MATRIX43D_H)

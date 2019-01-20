@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                     Quaternion.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Quaternion.h#12 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_QUATERNION_H)
+#define MYMATH_QUATERNION_H
 
 #include <iosfwd>
 
@@ -50,28 +40,28 @@ public:
     explicit Quaternion(Matrix33 const & m33);
 
     //! Returns an equivalent rotation matrix.
-    Matrix33 GetRotationMatrix33()                                  const;
+    Matrix33 GetRotationMatrix33() const;
 
     //! Returns an equivalent rotation axis and angle.
     void GetRotationAxisAndAngle(Vector3 * pAxis, float * pAngle) const;
 
     //! Returns the length of the quaternion squared.
-    float Length2()                                                 const;
+    float Length2() const;
 
     //! Returns the length of the quaternion.
-    float Length()                                                  const;
+    float Length() const;
 
     //! Returns the inverse of the length of the quaternion (or 1 if the length is 0).
-    float ILength()                                                 const;
+    float ILength() const;
 
     //! Returns the inverse of the length squared of the quaternion (or 1 if the length is 0).
-    float ILength2()                                                    const;
+    float ILength2() const;
 
     //! Returns true if the quaternion is normalized (within a tolerance).
-    bool IsNormalized()                                             const;
+    bool IsNormalized() const;
 
     //! Returns the result of raising the quaternion to a power.
-    Quaternion Pow(float b)                                       const;
+    Quaternion Pow(float b) const;
 
     //! Normalizes the quaternion. Returns the result.
     Quaternion const & Normalize();
@@ -104,7 +94,7 @@ public:
     Quaternion const & operator *=(Quaternion const & b);
 
     //! Returns the conjugate.
-    Quaternion operator -()                                         const;
+    Quaternion operator -() const;
 
     union
     {
@@ -302,3 +292,5 @@ inline Quaternion operator *(float s, Quaternion const & q)
 {
     return Quaternion(q).Scale(s);
 }
+
+#endif // !defined(MYMATH_QUATERNION_H)

@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                      Vector4.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Vector4.h#13 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_VECTOR4_H)
+#define MYMATH_VECTOR4_H
 
 class Matrix43;
 class Matrix44;
@@ -30,7 +20,7 @@ class Vector4
 public:
 
     //! Constructor
-    Vector4() {}
+    Vector4() = default;
 
     //! Constructor
     Vector4(float x, float y, float z, float w);
@@ -39,19 +29,19 @@ public:
     Vector4(float const v[4]);
 
     //! Returns the length of the vector squared.
-    float Length2()                           const;
+    float Length2() const;
 
     //! Returns the length of the vector.
-    float Length()                            const;
+    float Length() const;
 
     //! Returns the inverse of the length of the vector (or 1 if the length is 0)
-    float ILength()                           const;
+    float ILength() const;
 
     //! Returns the inverse of the length squared of the vector (or 1 if the length is 0)
-    float ILength2()                          const;
+    float ILength2() const;
 
     //! Returns true if the vector is normalized (within a tolerance).
-    bool IsNormalized()                      const;
+    bool IsNormalized() const;
 
     //! Negates the vector. Returns the result.
     Vector4 const & Negate();
@@ -96,7 +86,7 @@ public:
     Vector4 const & operator *=(Matrix44 const & m);
 
     //! Returns the negative.
-    Vector4 operator -()                            const;
+    Vector4 operator -() const;
 
     union
     {
@@ -389,3 +379,5 @@ inline Vector4 operator *(float s, Vector4 const & v)
 {
     return Vector4(v).Scale(s);
 }
+
+#endif // !defined(MYMATH_VECTOR4_H)

@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                      Matrix22d.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Matrix22d.h#10 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_MATRIX22D_H)
+#define MYMATH_MATRIX22D_H
 
 class Vector2d;
 class Matrix22;
@@ -29,7 +19,7 @@ class Matrix22d
 public:
 
     //! Constructor
-    Matrix22d() {}
+    Matrix22d() = default;
 
     //! Constructor
     Matrix22d(double Xx, double Xy,
@@ -45,16 +35,16 @@ public:
     explicit Matrix22d(Matrix22 const & m22);
 
     //! Returns the X vector.
-    Vector2d const & GetX()                              const;
+    Vector2d const & GetX() const;
 
     //! Returns the Y vector.
-    Vector2d const & GetY()                              const;
+    Vector2d const & GetY() const;
 
     //! Returns the determinant.
-    double Determinant()                       const;
+    double Determinant() const;
 
     //! Returns true if the matrix is orthonormal (within a tolerance)
-    bool IsOrthonormal()                     const;
+    bool IsOrthonormal() const;
 
     //! Transposes the matrix. Returns the result.
     Matrix22d & Transpose();
@@ -72,7 +62,7 @@ public:
     Matrix22d & operator *=(Matrix22d const & b);
 
     //! Returns the inverse.
-    Matrix22d operator ~()                        const;
+    Matrix22d operator ~() const;
 
     union
     {
@@ -130,3 +120,5 @@ inline Matrix22d Matrix22d::Identity()
     return Matrix22d(1.0, 0.0,
                      0.0, 1.0);
 }
+
+#endif // !defined(MYMATH_MATRIX22D_H)

@@ -1,17 +1,7 @@
-/** @file *//********************************************************************************************************
-
-                                                   Intersectable.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Intersectable.h#14 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
-
 #pragma once
+
+#if !defined(MYMATH_INTERSECTABLE_H)
+#define MYMATH_INTERSECTABLE_H
 
 #include "Misc/Assert.h"
 
@@ -71,8 +61,11 @@ class Intersectable
 {
 public:
 
+    Intersectable()          = default;
+    virtual ~Intersectable() = default;
+
     //! Values that describes an intersection
-    enum IntersectionClass
+    enum Result
     {
         NO_INTERSECTION,    //!< The two objects do not intersect
         INTERSECTS,         //!< The two objects intersect
@@ -81,43 +74,43 @@ public:
     };
 
     //! Returns the class of intersection between the other object and this object.
-    virtual IntersectionClass IntersectedBy(Intersectable const * pI) const = 0;
+    virtual Result IntersectedBy(Intersectable const * pI) const = 0;
 
     //! Returns the class of intersection between this object and the point.
-    virtual IntersectionClass Intersects(Point const & point) const = 0;
+    virtual Result Intersects(Point const & point) const = 0;
 
     //! Returns the class of intersection between this object and the line.
-    virtual IntersectionClass Intersects(Line const & line) const = 0;
+    virtual Result Intersects(Line const & line) const = 0;
 
     //! Returns the class of intersection between this object and the ray.
-    virtual IntersectionClass Intersects(Ray const & ray) const = 0;
+    virtual Result Intersects(Ray const & ray) const = 0;
 
     //! Returns the class of intersection between this object and the segment.
-    virtual IntersectionClass Intersects(Segment const & segment) const = 0;
+    virtual Result Intersects(Segment const & segment) const = 0;
 
     //! Returns the class of intersection between this object and the plane.
-    virtual IntersectionClass Intersects(Plane const & plane) const = 0;
+    virtual Result Intersects(Plane const & plane) const = 0;
 
     //! Returns the class of intersection between this object and the halfspace.
-    virtual IntersectionClass Intersects(HalfSpace const & halfspace) const = 0;
+    virtual Result Intersects(HalfSpace const & halfspace) const = 0;
 
     //! Returns the class of intersection between this object and the poly.
-    virtual IntersectionClass Intersects(Poly const & poly) const = 0;
+    virtual Result Intersects(Poly const & poly) const = 0;
 
     //! Returns the class of intersection between this object and the sphere.
-    virtual IntersectionClass Intersects(Sphere const & sphere) const = 0;
+    virtual Result Intersects(Sphere const & sphere) const = 0;
 
     //! Returns the class of intersection between this object and the cone.
-    virtual IntersectionClass Intersects(Cone const & cone) const = 0;
+    virtual Result Intersects(Cone const & cone) const = 0;
 
     //! Returns the class of intersection between this object and the AA box.
-    virtual IntersectionClass Intersects(AABox const & aabox) const = 0;
+    virtual Result Intersects(AABox const & aabox) const = 0;
 
     //! Returns the class of intersection between this object and the box.
-    virtual IntersectionClass Intersects(Box const & box) const = 0;
+    virtual Result Intersects(Box const & box) const = 0;
 
     //! Returns the class of intersection between this object and the frustum.
-    virtual IntersectionClass Intersects(Frustum const & frustum) const = 0;
+    virtual Result Intersects(Frustum const & frustum) const = 0;
 
 protected:
 
@@ -125,612 +118,677 @@ protected:
     //@{
 
     //! Returns the class of intersection between the points.
-    static IntersectionClass Intersects(Point const & a, Point const & b);
+    static Result Intersects(Point const & a, Point const & b);
 
     //! Returns the class of intersection between the point and the line.
-    static IntersectionClass Intersects(Point const & point, Line const & line);
+    static Result Intersects(Point const & point, Line const & line);
 
     //! Returns the class of intersection between the point and the ray.
-    static IntersectionClass Intersects(Point const & point, Ray const & ray);
+    static Result Intersects(Point const & point, Ray const & ray);
 
     //! Returns the class of intersection between the point and the segment.
-    static IntersectionClass Intersects(Point const & point, Segment const & segment);
+    static Result Intersects(Point const & point, Segment const & segment);
 
     //! Returns the class of intersection between the point and the plane.
-    static IntersectionClass Intersects(Point const & point, Plane const & plane);
+    static Result Intersects(Point const & point, Plane const & plane);
 
     //! Returns the class of intersection between the point and the half-space.
-    static IntersectionClass Intersects(Point const & point, HalfSpace const & halfspace);
+    static Result Intersects(Point const & point, HalfSpace const & halfspace);
 
     //! Returns the class of intersection between the point and the poly.
-    static IntersectionClass Intersects(Point const & point, Poly const & poly);
+    static Result Intersects(Point const & point, Poly const & poly);
 
     //! Returns the class of intersection between the point and the sphere.
-    static IntersectionClass Intersects(Point const & point, Sphere const & sphere);
+    static Result Intersects(Point const & point, Sphere const & sphere);
 
     //! Returns the class of intersection between the point and the sphere.
-    static IntersectionClass Intersects(Point const & point, Cone const & sphere);
+    static Result Intersects(Point const & point, Cone const & sphere);
 
     //! Returns the class of intersection between the point and the aabox.
-    static IntersectionClass Intersects(Point const & point, AABox const & aabox);
+    static Result Intersects(Point const & point, AABox const & aabox);
 
     //! Returns the class of intersection between the point and the box.
-    static IntersectionClass Intersects(Point const & point, Box const & box);
+    static Result Intersects(Point const & point, Box const & box);
 
     //! Returns the class of intersection between the point and the frustum.
-    static IntersectionClass Intersects(Point const & point, Frustum const & frustum);
+    static Result Intersects(Point const & point, Frustum const & frustum);
 
     //@}
     //! @name  Intersection with a Line Determination
     //@{
 
     //! Returns the class of intersection between the line and the point.
-    static IntersectionClass Intersects(Line const & line, Point const & point) {
+    static Result Intersects(Line const & line, Point const & point)
+    {
         return ReversedEnclosure(Intersects(point, line));
     }
 
     //! Returns the class of intersection between the lines.
-    static IntersectionClass Intersects(Line const & a, Line const & b);
+    static Result Intersects(Line const & a, Line const & b);
 
     //! Returns the class of intersection between the line and the ray.
-    static IntersectionClass Intersects(Line const & line, Ray const & ray);
+    static Result Intersects(Line const & line, Ray const & ray);
 
     //! Returns the class of intersection between the line and the segment.
-    static IntersectionClass Intersects(Line const & line, Segment const & segment);
+    static Result Intersects(Line const & line, Segment const & segment);
 
     //! Returns the class of intersection between the line and the plane.
-    static IntersectionClass Intersects(Line const & line, Plane const & plane);
+    static Result Intersects(Line const & line, Plane const & plane);
 
     //! Returns the class of intersection between the line and the half-space.
-    static IntersectionClass Intersects(Line const & line, HalfSpace const & halfspace);
+    static Result Intersects(Line const & line, HalfSpace const & halfspace);
 
     //! Returns the class of intersection between the line and the poly.
-    static IntersectionClass Intersects(Line const & line, Poly const & poly);
+    static Result Intersects(Line const & line, Poly const & poly);
 
     //! Returns the class of intersection between the line and the sphere.
-    static IntersectionClass Intersects(Line const & line, Sphere const & sphere);
+    static Result Intersects(Line const & line, Sphere const & sphere);
 
     //! Returns the class of intersection between the line and the cone.
-    static IntersectionClass Intersects(Line const & line, Cone const & cone);
+    static Result Intersects(Line const & line, Cone const & cone);
 
     //! Returns the class of intersection between the line and the aabox.
-    static IntersectionClass Intersects(Line const & line, AABox const & aabox);
+    static Result Intersects(Line const & line, AABox const & aabox);
 
     //! Returns the class of intersection between the line and the box.
-    static IntersectionClass Intersects(Line const & line, Box const & box);
+    static Result Intersects(Line const & line, Box const & box);
 
     //! Returns the class of intersection between the line and the frustum.
-    static IntersectionClass Intersects(Line const & line, Frustum const & frustum);
+    static Result Intersects(Line const & line, Frustum const & frustum);
 
     //@}
     //! @name  Intersection with a Ray Determination
     //@{
 
     //! Returns the class of intersection between the ray and the point.
-    static IntersectionClass Intersects(Ray const & ray, Point const & point) {
+    static Result Intersects(Ray const & ray, Point const & point)
+    {
         return ReversedEnclosure(Intersects(point, ray));
     }
 
     //! Returns the class of intersection between the ray and the line.
-    static IntersectionClass Intersects(Ray const & ray, Line const & line) {
+    static Result Intersects(Ray const & ray, Line const & line)
+    {
         return ReversedEnclosure(Intersects(line, ray));
     }
 
     //! Returns the class of intersection between the rays.
-    static IntersectionClass Intersects(Ray const & a, Ray const & b);
+    static Result Intersects(Ray const & a, Ray const & b);
 
     //! Returns the class of intersection between the ray and the segment.
-    static IntersectionClass Intersects(Ray const & ray, Segment const & segment);
+    static Result Intersects(Ray const & ray, Segment const & segment);
 
     //! Returns the class of intersection between the ray and the plane.
-    static IntersectionClass Intersects(Ray const & ray, Plane const & plane);
+    static Result Intersects(Ray const & ray, Plane const & plane);
 
     //! Returns the class of intersection between the ray and the half-space.
-    static IntersectionClass Intersects(Ray const & ray, HalfSpace const & halfspace);
+    static Result Intersects(Ray const & ray, HalfSpace const & halfspace);
 
     //! Returns the class of intersection between the ray and the poly.
-    static IntersectionClass Intersects(Ray const & ray, Poly const & poly);
+    static Result Intersects(Ray const & ray, Poly const & poly);
 
     //! Returns the class of intersection between the ray and the sphere.
-    static IntersectionClass Intersects(Ray const & ray, Sphere const & sphere);
+    static Result Intersects(Ray const & ray, Sphere const & sphere);
 
     //! Returns the class of intersection between the ray and the cone.
-    static IntersectionClass Intersects(Ray const & ray, Cone const & cone);
+    static Result Intersects(Ray const & ray, Cone const & cone);
 
     //! Returns the class of intersection between the ray and the aabox.
-    static IntersectionClass Intersects(Ray const & ray, AABox const & aabox);
+    static Result Intersects(Ray const & ray, AABox const & aabox);
 
     //! Returns the class of intersection between the ray and the box.
-    static IntersectionClass Intersects(Ray const & ray, Box const & box);
+    static Result Intersects(Ray const & ray, Box const & box);
 
     //! Returns the class of intersection between the ray and the frustum.
-    static IntersectionClass Intersects(Ray const & ray, Frustum const & frustum);
+    static Result Intersects(Ray const & ray, Frustum const & frustum);
 
     //@}
     //! @name  Intersection with a Segment Determination
     //@{
 
     //! Returns the class of intersection between the segment and the point.
-    static IntersectionClass Intersects(Segment const & segment, Point const & point) {
+    static Result Intersects(Segment const & segment, Point const & point)
+    {
         return ReversedEnclosure(Intersects(point, segment));
     }
 
     //! Returns the class of intersection between the segment and the line.
-    static IntersectionClass Intersects(Segment const & segment, Line const & line) {
+    static Result Intersects(Segment const & segment, Line const & line)
+    {
         return ReversedEnclosure(Intersects(line, segment));
     }
 
     //! Returns the class of intersection between the segment and the ray.
-    static IntersectionClass Intersects(Segment const & segment, Ray const & ray) {
+    static Result Intersects(Segment const & segment, Ray const & ray)
+    {
         return ReversedEnclosure(Intersects(ray, segment));
     }
 
     //! Returns the class of intersection between the segments.
-    static IntersectionClass Intersects(Segment const & a, Segment const & b);
+    static Result Intersects(Segment const & a, Segment const & b);
 
     //! Returns the class of intersection between the segment and the plane.
-    static IntersectionClass Intersects(Segment const & segment, Plane const & plane);
+    static Result Intersects(Segment const & segment, Plane const & plane);
 
     //! Returns the class of intersection between the segment and the half-space.
-    static IntersectionClass Intersects(Segment const & segment, HalfSpace const & halfspace);
+    static Result Intersects(Segment const & segment, HalfSpace const & halfspace);
 
     //! Returns the class of intersection between the segment and the poly.
-    static IntersectionClass Intersects(Segment const & segment, Poly const & poly);
+    static Result Intersects(Segment const & segment, Poly const & poly);
 
     //! Returns the class of intersection between the segment and the sphere.
-    static IntersectionClass Intersects(Segment const & segment, Sphere const & sphere);
+    static Result Intersects(Segment const & segment, Sphere const & sphere);
 
     //! Returns the class of intersection between the segment and the cone.
-    static IntersectionClass Intersects(Segment const & segment, Cone const & cone);
+    static Result Intersects(Segment const & segment, Cone const & cone);
 
     //! Returns the class of intersection between the segment and the aabox.
-    static IntersectionClass Intersects(Segment const & segment, AABox const & aabox);
+    static Result Intersects(Segment const & segment, AABox const & aabox);
 
     //! Returns the class of intersection between the segment and the box.
-    static IntersectionClass Intersects(Segment const & segment, Box const & box);
+    static Result Intersects(Segment const & segment, Box const & box);
 
     //! Returns the class of intersection between the segment and the frustum.
-    static IntersectionClass Intersects(Segment const & segment, Frustum const & frustum);
+    static Result Intersects(Segment const & segment, Frustum const & frustum);
 
     //@}
     //! @name  Intersection with a Plane Determination
     //@{
 
     //! Returns the class of intersection between the plane and the point.
-    static IntersectionClass Intersects(Plane const & plane, Point const & point) {
+    static Result Intersects(Plane const & plane, Point const & point)
+    {
         return ReversedEnclosure(Intersects(point, plane));
     }
 
     //! Returns the class of intersection between the plane and the line.
-    static IntersectionClass Intersects(Plane const & plane, Line const & line) {
+    static Result Intersects(Plane const & plane, Line const & line)
+    {
         return ReversedEnclosure(Intersects(line, plane));
     }
 
     //! Returns the class of intersection between the plane and the ray.
-    static IntersectionClass Intersects(Plane const & plane, Ray const & ray) {
+    static Result Intersects(Plane const & plane, Ray const & ray)
+    {
         return ReversedEnclosure(Intersects(ray, plane));
     }
 
     //! Returns the class of intersection between the plane and the segment.
-    static IntersectionClass Intersects(Plane const & plane, Segment const & segment) {
+    static Result Intersects(Plane const & plane, Segment const & segment)
+    {
         return ReversedEnclosure(Intersects(segment, plane));
     }
 
     //! Returns the class of intersection between the planes.
-    static IntersectionClass Intersects(Plane const & a, Plane const & b);
+    static Result Intersects(Plane const & a, Plane const & b);
 
     //! Returns the class of intersection between the plane and the half-space.
-    static IntersectionClass Intersects(Plane const & plane, HalfSpace const & halfspace);
+    static Result Intersects(Plane const & plane, HalfSpace const & halfspace);
 
     //! Returns the class of intersection between the plane and the poly.
-    static IntersectionClass Intersects(Plane const & plane, Poly const & poly);
+    static Result Intersects(Plane const & plane, Poly const & poly);
 
     //! Returns the class of intersection between the plane and the sphere.
-    static IntersectionClass Intersects(Plane const & plane, Sphere const & sphere);
+    static Result Intersects(Plane const & plane, Sphere const & sphere);
 
     //! Returns the class of intersection between the plane and the cone.
-    static IntersectionClass Intersects(Plane const & plane, Cone const & cone);
+    static Result Intersects(Plane const & plane, Cone const & cone);
 
     //! Returns the class of intersection between the plane and the aabox.
-    static IntersectionClass Intersects(Plane const & plane, AABox const & aabox);
+    static Result Intersects(Plane const & plane, AABox const & aabox);
 
     //! Returns the class of intersection between the plane and the box.
-    static IntersectionClass Intersects(Plane const & plane, Box const & box);
+    static Result Intersects(Plane const & plane, Box const & box);
 
     //! Returns the class of intersection between the plane and the frustum.
-    static IntersectionClass Intersects(Plane const & plane, Frustum const & frustum);
+    static Result Intersects(Plane const & plane, Frustum const & frustum);
 
     //@}
     //! @name  Intersection with a Half-Space Determination
     //@{
 
     //! Returns the class of intersection between the halfspace and the point.
-    static IntersectionClass Intersects(HalfSpace const & halfspace, Point const & point) {
+    static Result Intersects(HalfSpace const & halfspace, Point const & point)
+    {
         return ReversedEnclosure(Intersects(point, halfspace));
     }
 
     //! Returns the class of intersection between the halfspace and the line.
-    static IntersectionClass Intersects(HalfSpace const & halfspace, Line const & line) {
+    static Result Intersects(HalfSpace const & halfspace, Line const & line)
+    {
         return ReversedEnclosure(Intersects(line, halfspace));
     }
 
     //! Returns the class of intersection between the halfspace and the ray.
-    static IntersectionClass Intersects(HalfSpace const & halfspace, Ray const & ray) {
+    static Result Intersects(HalfSpace const & halfspace, Ray const & ray)
+    {
         return ReversedEnclosure(Intersects(ray, halfspace));
     }
 
     //! Returns the class of intersection between the halfspace and the segment.
-    static IntersectionClass Intersects(HalfSpace const & halfspace, Segment const & segment) {
+    static Result Intersects(HalfSpace const & halfspace, Segment const & segment)
+    {
         return ReversedEnclosure(Intersects(segment, halfspace));
     }
 
     //! Returns the class of intersection between the halfspaces.
-    static IntersectionClass Intersects(HalfSpace const & halfspace, Plane const & plane) {
+    static Result Intersects(HalfSpace const & halfspace, Plane const & plane)
+    {
         return ReversedEnclosure(Intersects(plane, halfspace));
     }
 
     //! Returns the class of intersection between the half-spaces.
-    static IntersectionClass Intersects(HalfSpace const & a, HalfSpace const & b);
+    static Result Intersects(HalfSpace const & a, HalfSpace const & b);
 
     //! Returns the class of intersection between the halfspace and the poly.
-    static IntersectionClass Intersects(HalfSpace const & halfspace, Poly const & poly);
+    static Result Intersects(HalfSpace const & halfspace, Poly const & poly);
 
     //! Returns the class of intersection between the halfspace and the sphere.
-    static IntersectionClass Intersects(HalfSpace const & halfspace, Sphere const & sphere);
+    static Result Intersects(HalfSpace const & halfspace, Sphere const & sphere);
 
     //! Returns the class of intersection between the halfspace and the cone.
-    static IntersectionClass Intersects(HalfSpace const & halfspace, Cone const & cone);
+    static Result Intersects(HalfSpace const & halfspace, Cone const & cone);
 
     //! Returns the class of intersection between the halfspace and the aabox.
-    static IntersectionClass Intersects(HalfSpace const & halfspace, AABox const & aabox);
+    static Result Intersects(HalfSpace const & halfspace, AABox const & aabox);
 
     //! Returns the class of intersection between the halfspace and the box.
-    static IntersectionClass Intersects(HalfSpace const & halfspace, Box const & box);
+    static Result Intersects(HalfSpace const & halfspace, Box const & box);
 
     //! Returns the class of intersection between the halfspace and the frustum.
-    static IntersectionClass Intersects(HalfSpace const & halfspace, Frustum const & frustum);
+    static Result Intersects(HalfSpace const & halfspace, Frustum const & frustum);
 
     //@}
     //! @name  Intersection with a Poly Determination
     //@{
 
     //! Returns the class of intersection between the poly and the point.
-    static IntersectionClass Intersects(Poly const & poly, Point const & point) {
+    static Result Intersects(Poly const & poly, Point const & point)
+    {
         return ReversedEnclosure(Intersects(point, poly));
     }
 
     //! Returns the class of intersection between the poly and the line.
-    static IntersectionClass Intersects(Poly const & poly, Line const & line) {
+    static Result Intersects(Poly const & poly, Line const & line)
+    {
         return ReversedEnclosure(Intersects(line, poly));
     }
 
     //! Returns the class of intersection between the poly and the ray.
-    static IntersectionClass Intersects(Poly const & poly, Ray const & ray) {
+    static Result Intersects(Poly const & poly, Ray const & ray)
+    {
         return ReversedEnclosure(Intersects(ray, poly));
     }
 
     //! Returns the class of intersection between the poly and the segment.
-    static IntersectionClass Intersects(Poly const & poly, Segment const & segment) {
+    static Result Intersects(Poly const & poly, Segment const & segment)
+    {
         return ReversedEnclosure(Intersects(segment, poly));
     }
 
     //! Returns the class of intersection between the poly and the plane.
-    static IntersectionClass Intersects(Poly const & poly, Plane const & plane) {
+    static Result Intersects(Poly const & poly, Plane const & plane) {
         return ReversedEnclosure(Intersects(plane, poly));
     }
 
     //! Returns the class of intersection between the poly and the half-space.
-    static IntersectionClass Intersects(Poly const & poly, HalfSpace const & halfspace) {
+    static Result Intersects(Poly const & poly, HalfSpace const & halfspace)
+    {
         return ReversedEnclosure(Intersects(halfspace, poly));
     }
 
     //! Returns the class of intersection between the polys.
-    static IntersectionClass Intersects(Poly const & a, Poly const & b);
+    static Result Intersects(Poly const & a, Poly const & b);
 
     //! Returns the class of intersection between the poly and the sphere.
-    static IntersectionClass Intersects(Poly const & poly, Sphere const & sphere);
+    static Result Intersects(Poly const & poly, Sphere const & sphere);
 
     //! Returns the class of intersection between the poly and the cone.
-    static IntersectionClass Intersects(Poly const & poly, Cone const & cone);
+    static Result Intersects(Poly const & poly, Cone const & cone);
 
     //! Returns the class of intersection between the poly and the aabox.
-    static IntersectionClass Intersects(Poly const & poly, AABox const & aabox);
+    static Result Intersects(Poly const & poly, AABox const & aabox);
 
     //! Returns the class of intersection between the poly and the box.
-    static IntersectionClass Intersects(Poly const & poly, Box const & box);
+    static Result Intersects(Poly const & poly, Box const & box);
 
     //! Returns the class of intersection between the poly and the frustum.
-    static IntersectionClass Intersects(Poly const & poly, Frustum const & frustum);
+    static Result Intersects(Poly const & poly, Frustum const & frustum);
 
     //@}
     //! @name  Intersection with a Sphere Determination
     //@{
 
     //! Returns the class of intersection between the sphere and the point.
-    static IntersectionClass Intersects(Sphere const & sphere, Point const & point) {
+    static Result Intersects(Sphere const & sphere, Point const & point)
+    {
         return ReversedEnclosure(Intersects(point, sphere));
     }
 
     //! Returns the class of intersection between the sphere and the line.
-    static IntersectionClass Intersects(Sphere const & sphere, Line const & line) {
+    static Result Intersects(Sphere const & sphere, Line const & line)
+    {
         return ReversedEnclosure(Intersects(line, sphere));
     }
 
     //! Returns the class of intersection between the sphere and the ray.
-    static IntersectionClass Intersects(Sphere const & sphere, Ray const & ray) {
+    static Result Intersects(Sphere const & sphere, Ray const & ray)
+    {
         return ReversedEnclosure(Intersects(ray, sphere));
     }
 
     //! Returns the class of intersection between the sphere and the segment.
-    static IntersectionClass Intersects(Sphere const & sphere, Segment const & segment) {
+    static Result Intersects(Sphere const & sphere, Segment const & segment)
+    {
         return ReversedEnclosure(Intersects(segment, sphere));
     }
 
     //! Returns the class of intersection between the sphere and the plane.
-    static IntersectionClass Intersects(Sphere const & sphere, Plane const & plane) {
+    static Result Intersects(Sphere const & sphere, Plane const & plane)
+    {
         return ReversedEnclosure(Intersects(plane, sphere));
     }
 
     //! Returns the class of intersection between the sphere and the half-space.
-    static IntersectionClass Intersects(Sphere const & sphere, HalfSpace const & halfspace) {
+    static Result Intersects(Sphere const & sphere, HalfSpace const & halfspace)
+    {
         return ReversedEnclosure(Intersects(halfspace, sphere));
     }
 
     //! Returns the class of intersection between the sphere and the poly.
-    static IntersectionClass Intersects(Sphere const & sphere, Poly const & poly) {
+    static Result Intersects(Sphere const & sphere, Poly const & poly)
+    {
         return ReversedEnclosure(Intersects(poly, sphere));
     }
 
     //! Returns the class of intersection between the spheres.
-    static IntersectionClass Intersects(Sphere const & a, Sphere const & b);
+    static Result Intersects(Sphere const & a, Sphere const & b);
 
     //! Returns the class of intersection between the sphere and the cone.
-    static IntersectionClass Intersects(Sphere const & a, Cone const & cone);
+    static Result Intersects(Sphere const & a, Cone const & cone);
 
     //! Returns the class of intersection between the sphere and the aabox.
-    static IntersectionClass Intersects(Sphere const & sphere, AABox const & aabox);
+    static Result Intersects(Sphere const & sphere, AABox const & aabox);
 
     //! Returns the class of intersection between the sphere and the box.
-    static IntersectionClass Intersects(Sphere const & sphere, Box const & box);
+    static Result Intersects(Sphere const & sphere, Box const & box);
 
     //! Returns the class of intersection between the sphere and the frustum.
-    static IntersectionClass Intersects(Sphere const & sphere, Frustum const & frustum);
+    static Result Intersects(Sphere const & sphere, Frustum const & frustum);
 
     //@}
     //! @name  Intersection with a Cone Determination
     //@{
 
     //! Returns the class of intersection between the cone and the point.
-    static IntersectionClass Intersects(Cone const & cone, Point const & point) {
+    static Result Intersects(Cone const & cone, Point const & point)
+    {
         return ReversedEnclosure(Intersects(point, cone));
     }
 
     //! Returns the class of intersection between the cone and the line.
-    static IntersectionClass Intersects(Cone const & cone, Line const & line) {
+    static Result Intersects(Cone const & cone, Line const & line)
+    {
         return ReversedEnclosure(Intersects(line, cone));
     }
 
     //! Returns the class of intersection between the cone and the ray.
-    static IntersectionClass Intersects(Cone const & cone, Ray const & ray) {
+    static Result Intersects(Cone const & cone, Ray const & ray)
+    {
         return ReversedEnclosure(Intersects(ray, cone));
     }
 
     //! Returns the class of intersection between the cone and the segment.
-    static IntersectionClass Intersects(Cone const & cone, Segment const & segment) {
+    static Result Intersects(Cone const & cone, Segment const & segment)
+    {
         return ReversedEnclosure(Intersects(segment, cone));
     }
 
     //! Returns the class of intersection between the cone and the plane.
-    static IntersectionClass Intersects(Cone const & cone, Plane const & plane) {
+    static Result Intersects(Cone const & cone, Plane const & plane)
+    {
         return ReversedEnclosure(Intersects(plane, cone));
     }
 
     //! Returns the class of intersection between the cone and the half-space.
-    static IntersectionClass Intersects(Cone const & cone, HalfSpace const & halfspace) {
+    static Result Intersects(Cone const & cone, HalfSpace const & halfspace)
+    {
         return ReversedEnclosure(Intersects(halfspace, cone));
     }
 
     //! Returns the class of intersection between the cone and the poly.
-    static IntersectionClass Intersects(Cone const & cone, Poly const & poly) {
+    static Result Intersects(Cone const & cone, Poly const & poly)
+    {
         return ReversedEnclosure(Intersects(poly, cone));
     }
 
     //! Returns the class of intersection between the cone and the sphere.
-    static IntersectionClass Intersects(Cone const & cone, Sphere const & sphere) {
+    static Result Intersects(Cone const & cone, Sphere const & sphere)
+    {
         return ReversedEnclosure(Intersects(sphere, cone));
     }
 
     //! Returns the class of intersection between the cones.
-    static IntersectionClass Intersects(Cone const & a, Cone const & b);
+    static Result Intersects(Cone const & a, Cone const & b);
 
     //! Returns the class of intersection between the cone and the aabox.
-    static IntersectionClass Intersects(Cone const & cone, AABox const & aabox);
+    static Result Intersects(Cone const & cone, AABox const & aabox);
 
     //! Returns the class of intersection between the cone and the box.
-    static IntersectionClass Intersects(Cone const & cone, Box const & box);
+    static Result Intersects(Cone const & cone, Box const & box);
 
     //! Returns the class of intersection between the cone and the frustum.
-    static IntersectionClass Intersects(Cone const & cone, Frustum const & frustum);
+    static Result Intersects(Cone const & cone, Frustum const & frustum);
 
     //@}
     //! @name  Intersection with an AABox Determination
     //@{
 
     //! Returns the class of intersection between the AA box and the point.
-    static IntersectionClass Intersects(AABox const & aabox, Point const & point) {
+    static Result Intersects(AABox const & aabox, Point const & point)
+    {
         return ReversedEnclosure(Intersects(point, aabox));
     }
 
     //! Returns the class of intersection between the AA box and the line.
-    static IntersectionClass Intersects(AABox const & aabox, Line const & line) {
+    static Result Intersects(AABox const & aabox, Line const & line)
+    {
         return ReversedEnclosure(Intersects(line, aabox));
     }
 
     //! Returns the class of intersection between the AA box and the ray.
-    static IntersectionClass Intersects(AABox const & aabox, Ray const & ray) {
+    static Result Intersects(AABox const & aabox, Ray const & ray)
+    {
         return ReversedEnclosure(Intersects(ray, aabox));
     }
 
     //! Returns the class of intersection between the AA box and the segment.
-    static IntersectionClass Intersects(AABox const & aabox, Segment const & segment) {
+    static Result Intersects(AABox const & aabox, Segment const & segment)
+    {
         return ReversedEnclosure(Intersects(segment, aabox));
     }
 
     //! Returns the class of intersection between the AA box and the plane.
-    static IntersectionClass Intersects(AABox const & aabox, Plane const & plane) {
+    static Result Intersects(AABox const & aabox, Plane const & plane)
+    {
         return ReversedEnclosure(Intersects(plane, aabox));
     }
 
     //! Returns the class of intersection between the AA box and the half-space.
-    static IntersectionClass Intersects(AABox const & aabox, HalfSpace const & halfspace) {
+    static Result Intersects(AABox const & aabox, HalfSpace const & halfspace)
+    {
         return ReversedEnclosure(Intersects(halfspace, aabox));
     }
 
     //! Returns the class of intersection between the AA box and the poly.
-    static IntersectionClass Intersects(AABox const & aabox, Poly const & poly) {
+    static Result Intersects(AABox const & aabox, Poly const & poly)
+    {
         return ReversedEnclosure(Intersects(poly, aabox));
     }
 
     //! Returns the class of intersection between the AA box and the sphere.
-    static IntersectionClass Intersects(AABox const & aabox, Sphere const & sphere) {
+    static Result Intersects(AABox const & aabox, Sphere const & sphere)
+    {
         return ReversedEnclosure(Intersects(sphere, aabox));
     }
 
     //! Returns the class of intersection between the AA box and the cone.
-    static IntersectionClass Intersects(AABox const & aabox, Cone const & cone) {
+    static Result Intersects(AABox const & aabox, Cone const & cone)
+    {
         return ReversedEnclosure(Intersects(cone, aabox));
     }
 
     //! Returns true if the AA boxes intersect.
-    static IntersectionClass Intersects(AABox const & a, AABox const & b);
+    static Result Intersects(AABox const & a, AABox const & b);
 
     //! Returns the class of intersection between the AA box and the box.
-    static IntersectionClass Intersects(AABox const & aabox, Box const & box);
+    static Result Intersects(AABox const & aabox, Box const & box);
 
     //! Returns the class of intersection between the AA box and the frustum.
-    static IntersectionClass Intersects(AABox const & aabox, Frustum const & frustum);
+    static Result Intersects(AABox const & aabox, Frustum const & frustum);
 
     //@}
     //! @name  Intersection with a Box Determination
     //@{
 
     //! Returns the class of intersection between the box and the point.
-    static IntersectionClass Intersects(Box const & box, Point const & point) {
+    static Result Intersects(Box const & box, Point const & point)
+    {
         return ReversedEnclosure(Intersects(point, box));
     }
 
     //! Returns the class of intersection between the box and the line.
-    static IntersectionClass Intersects(Box const & box, Line const & line) {
+    static Result Intersects(Box const & box, Line const & line)
+    {
         return ReversedEnclosure(Intersects(line, box));
     }
 
     //! Returns the class of intersection between the box and the ray.
-    static IntersectionClass Intersects(Box const & box, Ray const & ray) {
+    static Result Intersects(Box const & box, Ray const & ray)
+    {
         return ReversedEnclosure(Intersects(ray, box));
     }
 
     //! Returns the class of intersection between the box and the segment.
-    static IntersectionClass Intersects(Box const & box, Segment const & segment) {
+    static Result Intersects(Box const & box, Segment const & segment)
+    {
         return ReversedEnclosure(Intersects(segment, box));
     }
 
     //! Returns the class of intersection between the box and the plane.
-    static IntersectionClass Intersects(Box const & box, Plane const & plane) {
+    static Result Intersects(Box const & box, Plane const & plane)
+    {
         return ReversedEnclosure(Intersects(plane, box));
     }
 
     //! Returns the class of intersection between the box and the half-space.
-    static IntersectionClass Intersects(Box const & box, HalfSpace const & halfspace) {
+    static Result Intersects(Box const & box, HalfSpace const & halfspace)
+    {
         return ReversedEnclosure(Intersects(halfspace, box));
     }
 
     //! Returns the class of intersection between the box and the poly.
-    static IntersectionClass Intersects(Box const & box, Poly const & poly) {
+    static Result Intersects(Box const & box, Poly const & poly)
+    {
         return ReversedEnclosure(Intersects(poly, box));
     }
 
     //! Returns the class of intersection between the box and the sphere.
-    static IntersectionClass Intersects(Box const & box, Sphere const & sphere) {
+    static Result Intersects(Box const & box, Sphere const & sphere)
+    {
         return ReversedEnclosure(Intersects(sphere, box));
     }
 
     //! Returns the class of intersection between the box and the cone.
-    static IntersectionClass Intersects(Box const & box, Cone const & cone) {
+    static Result Intersects(Box const & box, Cone const & cone)
+    {
         return ReversedEnclosure(Intersects(cone, box));
     }
 
     //! Returns the class of intersection between the box and the aabox.
-    static IntersectionClass Intersects(Box const & box, AABox const & aabox) {
+    static Result Intersects(Box const & box, AABox const & aabox)
+    {
         return ReversedEnclosure(Intersects(aabox, box));
     }
 
     //! Returns the class of intersection between the boxes.
-    static IntersectionClass Intersects(Box const & a, Box const & b);
+    static Result Intersects(Box const & a, Box const & b);
 
     //! Returns the class of intersection between the box and the frustum.
-    static IntersectionClass Intersects(Box const & box, Frustum const & frustum);
+    static Result Intersects(Box const & box, Frustum const & frustum);
 
     //@}
     //! @name  Intersection with a Frustum Determination
     //@{
 
     //! Returns the class of intersection between the frustum and the point.
-    static IntersectionClass Intersects(Frustum const & frustum, Point const & point) {
+    static Result Intersects(Frustum const & frustum, Point const & point)
+    {
         return ReversedEnclosure(Intersects(point, frustum));
     }
 
     //! Returns the class of intersection between the frustum and the line.
-    static IntersectionClass Intersects(Frustum const & frustum, Line const & line) {
+    static Result Intersects(Frustum const & frustum, Line const & line)
+    {
         return ReversedEnclosure(Intersects(line, frustum));
     }
 
     //! Returns the class of intersection between the frustum and the ray.
-    static IntersectionClass Intersects(Frustum const & frustum, Ray const & ray) {
+    static Result Intersects(Frustum const & frustum, Ray const & ray)
+    {
         return ReversedEnclosure(Intersects(ray, frustum));
     }
 
     //! Returns the class of intersection between the frustum and the segment.
-    static IntersectionClass Intersects(Frustum const & frustum, Segment const & segment) {
+    static Result Intersects(Frustum const & frustum, Segment const & segment)
+    {
         return ReversedEnclosure(Intersects(segment, frustum));
     }
 
     //! Returns the class of intersection between the frustum and the plane.
-    static IntersectionClass Intersects(Frustum const & frustum, Plane const & plane) {
+    static Result Intersects(Frustum const & frustum, Plane const & plane)
+    {
         return ReversedEnclosure(Intersects(plane, frustum));
     }
 
     //! Returns the class of intersection between the frustum and the half-space.
-    static IntersectionClass Intersects(Frustum const & frustum, HalfSpace const & halfspace) {
+    static Result Intersects(Frustum const & frustum, HalfSpace const & halfspace)
+    {
         return ReversedEnclosure(Intersects(halfspace, frustum));
     }
 
     //! Returns the class of intersection between the frustum and the poly.
-    static IntersectionClass Intersects(Frustum const & frustum, Poly const & poly) {
+    static Result Intersects(Frustum const & frustum, Poly const & poly)
+    {
         return ReversedEnclosure(Intersects(poly, frustum));
     }
 
     //! Returns the class of intersection between the frustum and the sphere.
-    static IntersectionClass Intersects(Frustum const & frustum, Sphere const & sphere) {
+    static Result Intersects(Frustum const & frustum, Sphere const & sphere)
+    {
         return ReversedEnclosure(Intersects(sphere, frustum));
     }
 
     //! Returns the class of intersection between the frustum and the cone.
-    static IntersectionClass Intersects(Frustum const & frustum, Cone const & cone) {
+    static Result Intersects(Frustum const & frustum, Cone const & cone)
+    {
         return ReversedEnclosure(Intersects(cone, frustum));
     }
 
     //! Returns the class of intersection between the frustum and the aabox.
-    static IntersectionClass Intersects(Frustum const & frustum, AABox const & aabox) {
+    static Result Intersects(Frustum const & frustum, AABox const & aabox)
+    {
         return ReversedEnclosure(Intersects(aabox, frustum));
     }
 
     //! Returns the class of intersection between the frustum and the box.
-    static IntersectionClass Intersects(Frustum const & frustum, Box const & box) {
+    static Result Intersects(Frustum const & frustum, Box const & box)
+    {
         return ReversedEnclosure(Intersects(box, frustum));
     }
 
     //! Returns the class of intersection between the frustums.
-    static IntersectionClass Intersects(Frustum const & a, Frustum const & b);
+    static Result Intersects(Frustum const & a, Frustum const & b);
 
     //@}
     //! @name  Intersection Computation
@@ -758,15 +816,15 @@ protected:
 
 private:
 
-    static IntersectionClass ReversedEnclosure(unsigned c)
+    static Result ReversedEnclosure(Result c)
     {
         // This swaps ENCLOSES (2) and ENCLOSED_BY (3), but does nothing to NO_INTERSECTION (0)
         // and INTERSECTS (1).
 
-        assert(((NO_INTERSECTION & 2) == 0) && ((INTERSECTS & 2) == 0));
-        assert(((ENCLOSES & 2) != 0) && ((ENCLOSED_BY & 2) != 0));
+        assert(((static_cast<int>(NO_INTERSECTION) & 2) == 0) && ((static_cast<int>(INTERSECTS) & 2) == 0));
+        assert(((static_cast<int>(ENCLOSES) & 2) != 0) && ((static_cast<int>(ENCLOSED_BY) & 2) != 0));
 
-        return static_cast<IntersectionClass>(c ^ (c >> 1));
+        return static_cast<Result>(static_cast<int>(c) ^ (static_cast<int>(c) >> 1));
     }
 };
 
@@ -805,3 +863,5 @@ inline float Distance(Segment const & segment, Point const & point) { return Dis
 inline float Distance(Plane const & plane, Point const & point) { return Distance(point, plane); }
 
 //@}
+
+#endif // !defined(MYMATH_INTERSECTABLE_H)
