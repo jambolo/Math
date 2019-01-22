@@ -203,7 +203,7 @@ Intersectable::Result Intersectable::Intersects(Point const & point, Box const &
 
 Intersectable::Result Intersectable::Intersects(Point const & point, Frustum const & frustum)
 {
-    for (auto const & side : frustum.m_Sides)
+    for (auto const & side : frustum.sides_)
     {
         if (side.DirectedDistance(point) > 0.f)
             return NO_INTERSECTION;
@@ -1084,7 +1084,7 @@ Intersectable::Result Intersectable::Intersects(Sphere const & sphere, Box const
 Intersectable::Result Intersectable::Intersects(Sphere const & sphere, Frustum const & frustum)
 {
     Result intersection = ENCLOSED_BY;
-    for (auto const & side : frustum.m_Sides)
+    for (auto const & side : frustum.sides_)
     {
         float const d = side.DirectedDistance(sphere.m_C);
 
@@ -1206,7 +1206,7 @@ Intersectable::Result Intersectable::Intersects(AABox const & aabox, Frustum con
 
     bool intersectsAnyPlane = false;
 
-    for (auto const & side : frustum.m_Sides)
+    for (auto const & side : frustum.sides_)
     {
         Result ic = Intersects(HalfSpace(side), aabox);
         if (ic == NO_INTERSECTION)

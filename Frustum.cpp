@@ -8,10 +8,10 @@ Frustum::Frustum(Plane const & left, Plane const & right,
                  Plane const & bottom, Plane const & top,
                  Plane const & n, Plane const & f)
 {
-    m_Sides[LEFT_SIDE]   = left;
-    m_Sides[RIGHT_SIDE]  = right;
-    m_Sides[TOP_SIDE]    = top;
-    m_Sides[BOTTOM_SIDE] = bottom;
-    m_Sides[FRONT_SIDE]  = n;
-    m_Sides[BACK_SIDE]   = f;
+    sides_[LEFT_SIDE]   = left;
+    sides_[RIGHT_SIDE]  = right;
+    sides_[TOP_SIDE]    = top;
+    sides_[BOTTOM_SIDE] = bottom;
+    sides_[FRONT_SIDE]  = n;
+    sides_[BACK_SIDE]   = f;
 }

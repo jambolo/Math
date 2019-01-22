@@ -55,7 +55,7 @@ public:
     virtual Result Intersects(Frustum const & frustum) const override     { return Intersectable::Intersects(*this, frustum);   }
     //@}
 
-    Plane m_Sides[NUM_SIDES]; //!< Sides
+    Plane sides_[NUM_SIDES]; //!< Sides
 };
 
 #endif // !defined(MYMATH_FRUSTUM_H)

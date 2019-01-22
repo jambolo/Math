@@ -1,15 +1,3 @@
-/** @file *//********************************************************************************************************
-
-                                                        Cone.h
-
-                                            Copyright 2003, John J. Bolton
-    --------------------------------------------------------------------------------------------------------------
-
-    $Header: //depot/Libraries/Math/Cone.h#5 $
-
-    $NoKeywords: $
-
-********************************************************************************************************************/
 #pragma once
 
 #if !defined(MYMATH_CONE_H)
@@ -20,6 +8,8 @@
 #include "Constants.h"
 #include "Misc/Assert.h"
 #include "Vector3.h"
+#include <cassert>
+#include <DirectXMath.h>
 
 //! A cone that can detect and compute intersections with other intersectable objects.
 //
@@ -39,7 +29,7 @@ public:
         , m_D(d)
         , m_A(cosf(a))
     {
-        assert(a > 0.f && a < MyMath::PI_OVER_2);
+        assert(a > 0.f && a < DirectX::XM_PIDIV2);
     }
 
     //! Destructor

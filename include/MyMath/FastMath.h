@@ -3,94 +3,77 @@
 #if !defined(MYMATH_FASTMATH_H)
 #define MYMATH_FASTMATH_H
 
-#if 0
-
 namespace MyMath
 {
 //! @name AMD-Specific Implementations
 //! @ingroup	Miscellaneous
 //@{
 
-// #pragma warning( push )
-// #pragma warning( disable : 4035 )
-
+#if 0
 //! Returns 1.
-inline float fld1();
+inline float fld1()
+{
+    __asm fld1
+    ;
 
 //! Returns 0.
-inline float fldz();
+    inline float fldz()
+    {
+        __asm fldz
+    }
 
 //! Returns pi
-inline float fldpi();
+    inline float fldpi()
+    {
+        __asm fldpi
+    }
 
 //! Returns ln 2
-inline float fldln2();
+    inline float fldln2()
+    {
+        __asm fldln2
+    }
 
 //! Returns log2 e
-inline float fldl2e();
+    inline float fldl2e()
+    {
+        __asm fldl2e
+    }
 
 //! Returns log2 10
-inline float fldl2t();
+    inline float fldl2t()
+    {
+        __asm fldl2t
+    }
 
 //! Returns log10 2
-inline float fldlg2();
+    inline float fldlg2()
+    {
+        __asm fldlg2
+    }
 
-// #pragma warning( pop )
+#endif // if 0
 
 //! Returns the reciprocal square-root of @a x.
-float frsqrt(float x);
+float frsqrt(float x) { return 1.0f / sqrtf(x); }
 
 //! Returns the recipocal of @a x.
-float frcp(float x);
+float frcp(float x) { return 1.0f / x; }
 
 //! Returns sine and cosine of @a x.
-void fsincos(float x, float * pSin, float * pCos);
+void fsincos(float x, float * pSin, float * pCos) { *pSin = sinf(x); *pCos = cosf(x); }
 
 //! Returns sine and 1 - cosine of @a x.
-void fsinver(float x, float * pSin, float * pVers);
+void fsinver(float x, float * pSin, float * pVers) { *pSin = sinf(x); *pVers = 1.0f - cosf(x); }
 
 //@}
 } // namespace MyMath
 
 // Inline implementation
 
+#if 0
 namespace MyMath
 {
-inline float fld1()
-{
-    __asm fld1
-}
-
-inline float fldz()
-{
-    __asm fldz
-}
-
-inline float fldpi()
-{
-    __asm fldpi
-}
-
-inline float fldln2()
-{
-    __asm fldln2
-}
-
-inline float fldl2e()
-{
-    __asm fldl2e
-}
-
-inline float fldl2t()
-{
-    __asm fldl2t
-}
-
-inline float fldlg2()
-{
-    __asm fldlg2
-}
-
 //!
 //! @param	x		operand
 
