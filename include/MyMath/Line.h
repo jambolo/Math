@@ -154,7 +154,7 @@ public:
 
 // Inline functions
 
-#include "Misc/Assert.h"
+#include "Misc/Assertx.h"
 
 //! @param	m	Direction of the line. The vector must be normalized.
 //! @param	b	A point on the line

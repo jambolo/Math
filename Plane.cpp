@@ -1,5 +1,3 @@
-#include "PrecompiledHeaders.h"
-
 #include "Plane.h"
 
 #include "Matrix43.h"

@@ -1,5 +1,3 @@
-#include "PrecompiledHeaders.h"
-
 #include "Vector2.h"
 
 #include "Matrix22.h"

@@ -1,5 +1,3 @@
-#include "PrecompiledHeaders.h"
-
 #include "Vector2i.h"
 
 #include <iostream>

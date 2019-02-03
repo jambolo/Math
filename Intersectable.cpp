@@ -1,5 +1,3 @@
-#include "PrecompiledHeaders.h"
-
 #include "Intersectable.h"
 
 #include "Box.h"

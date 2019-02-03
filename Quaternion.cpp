@@ -1,5 +1,3 @@
-#include "PrecompiledHeaders.h"
-
 #include "Quaternion.h"
 
 #include "Matrix33.h"

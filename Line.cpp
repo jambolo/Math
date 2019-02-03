@@ -1,5 +1,3 @@
-#include "PrecompiledHeaders.h"
-
 #include "Line.h"
 #include "Point.h"
 

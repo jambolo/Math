@@ -1,5 +1,3 @@
-#include "PrecompiledHeaders.h"
-
 #include "Matrix44d.h"
 
 #include "Determinant.h"

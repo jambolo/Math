@@ -1,5 +1,3 @@
-#include "PrecompiledHeaders.h"
-
 #include "Frustum.h"
 
 #include "Plane.h"

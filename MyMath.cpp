@@ -1,5 +1,3 @@
-#include "PrecompiledHeaders.h"
-
 #include "Constants.h"
 #include "MyMath.h"
 

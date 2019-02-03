@@ -1,5 +1,3 @@
-#include "PrecompiledHeaders.h"
-
 #include "Box.h"
 
 #include "Matrix33.h"

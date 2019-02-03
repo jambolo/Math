@@ -6,7 +6,7 @@
 #include "Intersectable.h"
 
 #include "Constants.h"
-#include "Misc/Assert.h"
+#include "Misc/Assertx.h"
 #include "Vector3.h"
 #include <cassert>
 #include <DirectXMath.h>

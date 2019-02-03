@@ -3,7 +3,7 @@
 #if !defined(MYMATH_INTERSECTABLE_H)
 #define MYMATH_INTERSECTABLE_H
 
-#include "Misc/Assert.h"
+#include "Misc/Assertx.h"
 
 class Point;
 class Line;

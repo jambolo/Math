@@ -3,7 +3,7 @@
 #if !defined(MYMATH_RANGE_H)
 #define MYMATH_RANGE_H
 
-#include "Misc/Assert.h"
+#include "Misc/Assertx.h"
 
 namespace MyMath
 {
@@ -13,9 +13,9 @@ namespace MyMath
 
 //! A range between two values.
 //
-//! @param	T				Value type. @a T can be any type that implements @c operator== and @c operator<
-//! @param	lower_closed	If @c true, the lower end of the range is included in the range
-//! @param	upper_closed	If @c true, the upper end of the range is included in the range
+//! @param	T				Value type. @a T can be any type that implements operator== and operator<
+//! @param	lower_closed	If true, the lower end of the range is included in the range
+//! @param	upper_closed	If true, the upper end of the range is included in the range
 
 template <typename T, bool lower_closed = true, bool upper_closed = true>
 class Range
