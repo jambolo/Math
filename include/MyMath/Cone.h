@@ -12,7 +12,7 @@
 #include <DirectXMath.h>
 
 //! A cone that can detect and compute intersections with other intersectable objects.
-//
+//!
 //! @ingroup Geometry
 //!
 
@@ -20,10 +20,10 @@ class Cone : public Intersectable
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Cone() = default;
 
-    //! Constructor
+    //! Constructor.
     Cone(Vector3 const & v, Vector3 const & d, float a)
         : m_V(v)
         , m_D(d)
@@ -32,7 +32,7 @@ public:
         assert(a > 0.f && a < DirectX::XM_PIDIV2);
     }
 
-    //! Destructor
+    //! Destructor.
     virtual ~Cone() override = default;
 
     //! @name Overrides Intersectable

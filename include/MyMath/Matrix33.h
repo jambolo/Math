@@ -12,7 +12,7 @@ class Matrix44;
 #pragma warning( disable : 4201 )   // nonstandard extension used : nameless struct/union
 
 //! A 3x3 matrix of floats.
-//
+//!
 //! @ingroup Matrices
 //!
 
@@ -20,18 +20,18 @@ class Matrix33
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Matrix33() = default;
 
-    //! Constructor
+    //! Constructor.
     Matrix33(float xx, float xy, float xz,
              float yx, float yy, float yz,
              float zx, float zy, float zz);
 
-    //! Constructor
+    //! Constructor.
     explicit Matrix33(float const * pM);
 
-    //! Constructor
+    //! Constructor.
     Matrix33(Vector3 const & x, Vector3 const & y, Vector3 const & z);
 
     //! Conversion

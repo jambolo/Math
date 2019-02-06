@@ -7,7 +7,7 @@
 #include "Vector3.h"
 
 //! A point that can detect and compute intersections with other intersectable objects.
-//
+//!
 //! @ingroup Geometry
 //!
 
@@ -15,13 +15,13 @@ class Point : public Intersectable
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Point() = default;
 
-    //! Constructor
+    //! Constructor.
     Point(float x, float y, float z) : value_(x, y, z) {}
 
-    //! Constructor
+    //! Constructor.
     Point(float const v[3]) : value_(v) {}
 
     //! Conversion

@@ -14,7 +14,7 @@ class Matrix44;
 #pragma warning( disable : 4201 )   // nonstandard extension used : nameless struct/union
 
 //! A 4x4 matrix of doubles.
-//
+//!
 //! @ingroup Matrices
 //!
 
@@ -22,22 +22,22 @@ class Matrix44d
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Matrix44d() = default;
 
-    //! Constructor
+    //! Constructor.
     Matrix44d(double Xx, double Xy, double Xz, double Xw,
               double Yx, double Yy, double Yz, double Yw,
               double Zx, double Zy, double Zz, double Zw,
               double Tx, double Ty, double Tz, double Tw);
 
-    //! Constructor
+    //! Constructor.
     Matrix44d(Vector3d const & x, Vector3d const & y, Vector3d const & z, Vector3d const & t = Vector3d::Origin());
 
-    //! Constructor
+    //! Constructor.
     explicit Matrix44d(double const * pM);
 
-    //! Constructor
+    //! Constructor.
     Matrix44d(Matrix33d const & m33, Vector3d const & t = Vector3d::Origin());
 
     //! Conversion

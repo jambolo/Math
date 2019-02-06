@@ -10,7 +10,7 @@ class Matrix22;
 #pragma warning( disable : 4201 )   // nonstandard extension used : nameless struct/union
 
 //! A 2x2 matrix of doubles.
-//
+//!
 //! @ingroup Matrices
 //!
 
@@ -18,17 +18,17 @@ class Matrix22d
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Matrix22d() = default;
 
-    //! Constructor
+    //! Constructor.
     Matrix22d(double Xx, double Xy,
               double Yx, double Yy);
 
-    //! Constructor
+    //! Constructor.
     Matrix22d(Vector2d const & x,  Vector2d const & y);
 
-    //! Constructor
+    //! Constructor.
     explicit Matrix22d(double const * pM);
 
     //! Conversion

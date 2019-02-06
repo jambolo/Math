@@ -127,7 +127,7 @@ inline bool IsRelativelyCloseTo(double x, double y, double tolerance = DEFAULT_F
 double Stirling(double n);
 
 //! Returns the linear interpolation between two values
-//
+//!
 //! @param	y0	Value when x = 0
 //! @param	y1	Value when x = 1
 //! @param	x	Position to interpolate. The valid range is [0,1];

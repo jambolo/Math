@@ -13,7 +13,7 @@ class Matrix44d;
 #pragma warning( disable : 4201 )   // nonstandard extension used : nameless struct/union
 
 //! A 4x3 matrix of doubles.
-//
+//!
 //! @ingroup Matrices
 //!
 
@@ -21,22 +21,22 @@ class Matrix43d
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Matrix43d() = default;
 
-    //! Constructor
+    //! Constructor.
     Matrix43d(double Xx, double Xy, double Xz,
               double Yx, double Yy, double Yz,
               double Zx, double Zy, double Zz,
               double Tx, double Ty, double Tz);
 
-    //! Constructor
+    //! Constructor.
     Matrix43d(Vector3d const & x, Vector3d const & y, Vector3d const & z, Vector3d const & t = Vector3d::Origin());
 
-    //! Constructor
+    //! Constructor.
     explicit Matrix43d(double const * pM);
 
-    //! Constructor
+    //! Constructor.
     Matrix43d(Matrix33d const & m33, Vector3d const & t = Vector3d::Origin());
 
     //! Conversion

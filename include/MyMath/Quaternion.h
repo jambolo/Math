@@ -21,19 +21,19 @@ class Quaternion
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Quaternion() = default;
 
-    //! Constructor
+    //! Constructor.
     Quaternion(float x, float y, float z, float w);
 
-    //! Constructor
+    //! Constructor.
     Quaternion(float const q[4]);
 
-    //! Constructor
+    //! Constructor.
     Quaternion(Vector3 const & axis, float angle);
 
-    //! Constructor
+    //! Constructor.
     Quaternion(float yaw, float pitch, float roll);
 
     //! Conversion

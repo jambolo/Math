@@ -19,13 +19,13 @@ class Vector4d
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Vector4d() = default;
 
-    //! Constructor
+    //! Constructor.
     Vector4d(double x, double y, double z, double w);
 
-    //! Constructor
+    //! Constructor.
     Vector4d(double const v[4]);
 
     //! Returns the length of the vector squared.

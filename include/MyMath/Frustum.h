@@ -7,7 +7,7 @@
 #include "Plane.h"
 
 //! A frustum that can detect and compute intersections with other intersectables.
-//
+//!
 //! @ingroup Geometry
 //!
 
@@ -27,15 +27,15 @@ public:
     };
     static int constexpr NUM_SIDES = BACK_SIDE - LEFT_SIDE + 1;
 
-    //! Constructor
+    //! Constructor.
     Frustum() = default;
 
-    //! Constructor
+    //! Constructor.
     Frustum(Plane const & left, Plane const & right,
             Plane const & bottom, Plane const & top,
             Plane const & n, Plane const & f);
 
-    //! Destructor
+    //! Destructor.
     virtual ~Frustum() override = default;
 
     //! @name Overrides Intersectable

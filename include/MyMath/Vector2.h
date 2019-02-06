@@ -9,7 +9,7 @@ class Matrix22;
 #pragma warning( disable : 4201 )   // nonstandard extension used : nameless struct/union
 
 //! A 2D vector of floats.
-//
+//!
 //! @ingroup Vectors
 //!
 
@@ -17,13 +17,13 @@ class Vector2
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Vector2() = default;
 
-    //! Constructor
+    //! Constructor.
     Vector2(float x, float y);
 
-    //! Constructor
+    //! Constructor.
     Vector2(float const v[2]);
 
     //! Returns the length of the vector squared.

@@ -8,7 +8,7 @@
 #include "Vector3.h"
 
 //! Axis-aligned box that can detect and compute intersections with other intersectables.
-//
+//!
 //! @ingroup Geometry
 //!
 
@@ -19,10 +19,10 @@ public:
     //! Default constructor
     AABox() = default;
 
-    //! Constructor
+    //! Constructor.
     AABox(Vector3 const & position, Vector3 const & size);
 
-    //! Destructor
+    //! Destructor.
     virtual ~AABox() override = default;
 
     //! @name Overrides Intersectable
@@ -47,7 +47,7 @@ public:
 };
 
 //! Oriented box that can detect and compute intersections with other intersectables.
-//
+//!
 //! @ingroup Geometry
 //!
 
@@ -55,13 +55,13 @@ class Box : public Intersectable
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Box(Matrix33 const & orientation, Vector3 const & position, Vector3 const & scale);
 
     //! Conversion
     explicit Box(Matrix44 const & transform);
 
-    //! Destructor
+    //! Destructor.
     virtual ~Box() override = default;
 
     //! @name Overrides Intersectable

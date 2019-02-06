@@ -12,7 +12,7 @@ class Segment;
 class Ray;
 
 //! A line that can detect and compute intersections with other intersectables.
-//
+//!
 //! @ingroup Geometry
 //!
 
@@ -20,10 +20,10 @@ class Line : public Intersectable
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Line() = default;
 
-    //! Constructor
+    //! Constructor.
     Line(Vector3 const & m, Vector3 const & b);     // L = M * t + B
 
     //! Conversion
@@ -32,7 +32,7 @@ public:
     //! Conversion
     explicit Line(Ray const & ray);
 
-    //! Destructor
+    //! Destructor.
     virtual ~Line() override = default;
 
     //! @name Overrides Intersectable
@@ -62,7 +62,7 @@ public:
 };
 
 //! A ray that can detect and compute intersections with other intersectables.
-//
+//!
 //! @ingroup Geometry
 //!
 
@@ -70,13 +70,13 @@ class Ray : public Intersectable
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Ray() = default;
 
-    //! Constructor
+    //! Constructor.
     Ray(Vector3 const & m, Vector3 const & b);      // L = M * t + B, t >= 0
 
-    //! Destructor
+    //! Destructor.
     virtual ~Ray() override = default;
 
     //! @name Overrides Intersectable
@@ -106,7 +106,7 @@ public:
 };
 
 //! A line segment that can detect and compute intersections with other intersectables.
-//
+//!
 //! @ingroup Geometry
 //!
 
@@ -114,16 +114,16 @@ class Segment : public Intersectable
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Segment() = default;
 
-    //! Constructor
+    //! Constructor.
     Segment(Vector3 const & p0, Vector3 const & p1);
 
-    //! Constructor
+    //! Constructor.
     Segment(Vector3 const & m, Vector3 const & b, float length);    // L = M * t + B, 0 <= t <= length
 
-    //! Destructor
+    //! Destructor.
     virtual ~Segment() = default;
 
     //! @name Overrides Intersectable

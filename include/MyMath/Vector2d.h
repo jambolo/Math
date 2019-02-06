@@ -9,7 +9,7 @@ class Matrix22d;
 #pragma warning( disable : 4201 )   // nonstandard extension used : nameless struct/union
 
 //! A 2D vector of doubles.
-//
+//!
 //! @ingroup Vectors
 //!
 
@@ -17,13 +17,13 @@ class Vector2d
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Vector2d() = default;
 
-    //! Constructor
+    //! Constructor.
     Vector2d(double x, double y);
 
-    //! Constructor
+    //! Constructor.
     Vector2d(double const v[2]);
 
     //! Returns the length of the vector squared.

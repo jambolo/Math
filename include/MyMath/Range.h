@@ -12,7 +12,7 @@ namespace MyMath
 //@{
 
 //! A range between two values.
-//
+//!
 //! @param	T				Value type. @a T can be any type that implements operator== and operator<
 //! @param	lower_closed	If true, the lower end of the range is included in the range
 //! @param	upper_closed	If true, the upper end of the range is included in the range
@@ -22,7 +22,7 @@ class Range
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     //! @param	lower	Lower end of the range
     //! @param	upper	Upper end of the range
     //! @note	@a upper cannot be less then @a lower

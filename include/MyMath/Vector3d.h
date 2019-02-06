@@ -11,7 +11,7 @@ class Quaternion;
 #pragma warning( disable : 4201 )   // nonstandard extension used : nameless struct/union
 
 //! A 3D vector of doubles.
-//
+//!
 //! @ingroup Vectors
 //!
 
@@ -19,13 +19,13 @@ class Vector3d
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Vector3d() = default;
 
-    //! Constructor
+    //! Constructor.
     Vector3d(double x, double y, double z);
 
-    //! Constructor
+    //! Constructor.
     Vector3d(double const v[3]);
 
     //! Returns the length of the vector squared.

@@ -14,7 +14,7 @@ class Vector4;
 #pragma warning( disable : 4201 )   // nonstandard extension used : nameless struct/union
 
 //! A 4x4 matrix of floats.
-//
+//!
 //! @ingroup Matrices
 //!
 
@@ -22,25 +22,25 @@ class Matrix44
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Matrix44() = default;
 
-    //! Constructor
+    //! Constructor.
     Matrix44(float Xx, float Xy, float Xz, float Xw,
              float Yx, float Yy, float Yz, float Yw,
              float Zx, float Zy, float Zz, float Zw,
              float Tx, float Ty, float Tz, float Tw);
 
-    //! Constructor
+    //! Constructor.
     Matrix44(Vector3 const & x,
              Vector3 const & y,
              Vector3 const & z,
              Vector3 const & t = Vector3::Origin());
 
-    //! Constructor
+    //! Constructor.
     explicit Matrix44(float const * pM);
 
-    //! Constructor
+    //! Constructor.
     Matrix44(Matrix33 const & m33, Vector3 const & t = Vector3::Origin());
 
     //! Conversion

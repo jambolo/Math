@@ -21,13 +21,13 @@ class Vector3
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Vector3() = default;
 
-    //! Constructor
+    //! Constructor.
     Vector3(float x, float y, float z);
 
-    //! Constructor
+    //! Constructor.
     Vector3(float const v[3]);
 
     //! Returns the length of the vector squared.

@@ -10,7 +10,7 @@ class Matrix22d;
 #pragma warning( disable : 4201 )   // nonstandard extension used : nameless struct/union
 
 //! A 2x2 matrix of floats.
-//
+//!
 //! @ingroup Matrices
 //!
 
@@ -18,17 +18,17 @@ class Matrix22
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Matrix22() = default;
 
-    //! Constructor
+    //! Constructor.
     Matrix22(float xx, float xy,
              float yx, float yy);
 
-    //! Constructor
+    //! Constructor.
     Matrix22(Vector2 const & x,  Vector2 const & y);
 
-    //! Constructor
+    //! Constructor.
     explicit Matrix22(float const * pM);
 
     //! Conversion

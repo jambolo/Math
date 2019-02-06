@@ -19,13 +19,13 @@ class Vector4
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Vector4() = default;
 
-    //! Constructor
+    //! Constructor.
     Vector4(float x, float y, float z, float w);
 
-    //! Constructor
+    //! Constructor.
     Vector4(float const v[4]);
 
     //! Returns the length of the vector squared.

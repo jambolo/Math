@@ -19,8 +19,8 @@ class Box;
 class Frustum;
 class Vector3;
 
-//! A class that can detect and compute intersections with other instances
-//
+//! A class that can detect and compute intersections with other instances.
+//!
 //! @ingroup	Geometry
 //!
 //! The objects that are tested can be divided into two groups:

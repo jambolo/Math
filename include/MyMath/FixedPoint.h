@@ -4,7 +4,7 @@
 #define MYMATH_FIXEDPOINT_H
 
 //! Fixed point representation
-//
+//!
 //! @param	T	Underlying integer type. The type must be signed.
 //! @param	N	Number of bits in the fraction part
 
@@ -16,13 +16,13 @@ public:
     //! Default constructor (leaves the value uninitialized)
     FixedPoint() = default;
 
-    //! Constructor
+    //! Constructor.
     FixedPoint(double x)
     {
         value = T(ldexp(x, N) + 0.5);
     }
 
-    //! Constructor
+    //! Constructor.
     FixedPoint(int x)
     {
         value = x << N;
@@ -37,7 +37,7 @@ public:
             value = T(x.value / (1 << (M - N)));
     }
 
-    // Destructor
+    //! Destructor.
     ~FixedPoint() = default;
 
     //! Conversion to double

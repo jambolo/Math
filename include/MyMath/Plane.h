@@ -11,7 +11,7 @@ class Poly;
 class HalfSpace;
 
 //! A plane that can detect and compute intersections with other intersectable objects.
-//
+//!
 //! @ingroup Geometry
 //!
 
@@ -19,22 +19,22 @@ class Plane : public Intersectable
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Plane() = default;
 
-    //! Constructor
+    //! Constructor.
     explicit Plane(Vector3 const & distance); // Vector from 0 to plane
 
-    //! Constructor
+    //! Constructor.
     Plane(Vector3 const & normal, float d); // Normal and distance from 0
 
-    //! Constructor
+    //! Constructor.
     Plane(Vector3 const & normal, Point const & point); // Normal and point in the plane
 
-    //! Constructor
+    //! Constructor.
     Plane(float a, float b, float c, float d); // aX + bY +cZ + d = 0
 
-    //! Destructor
+    //! Destructor.
     virtual ~Plane() override = default;
 
     //! @name Overrides Intersectable
@@ -94,7 +94,7 @@ public:
 };
 
 //! A planar polygon that can detect and compute intersections with other intersectable objects
-//
+//!
 //! @ingroup Geometry
 //!
 
@@ -102,16 +102,16 @@ class Poly : public Plane
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Poly() = default;
 
-    //! Constructor
+    //! Constructor.
     Poly(Vector3 const * paVertices, int nVertices);
 
-    //! Constructor
+    //! Constructor.
     Poly(Plane const & plane, Vector3 const * paVertices, int nVertices);
 
-    //! Destructor
+    //! Destructor.
     virtual ~Poly() override = default;
 
     //! @name Overrides Intersectable
@@ -151,7 +151,7 @@ public:
 };
 
 //! A half-space that can detect and compute intersections with other intersectable objects
-//
+//!
 //! @ingroup Geometry
 //!
 
@@ -159,13 +159,13 @@ class HalfSpace : public Intersectable
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     HalfSpace() = default;
 
-    //! Constructor
+    //! Constructor.
     HalfSpace(Plane const & plane);
 
-    //! Destructor
+    //! Destructor.
     virtual ~HalfSpace() override = default;
 
     //! @name Overrides Intersectable

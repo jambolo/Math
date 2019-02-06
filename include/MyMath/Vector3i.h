@@ -9,7 +9,7 @@
 #pragma warning( disable : 4201 )   // nonstandard extension used : nameless struct/union
 
 //! A 3D vector of integers.
-//
+//!
 //! @ingroup Vectors
 //!
 
@@ -17,13 +17,13 @@ class Vector3i
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Vector3i() = default;
 
-    //! Constructor
+    //! Constructor.
     Vector3i(int x, int y, int z);
 
-    //! Constructor
+    //! Constructor.
     Vector3i(int const v[3]);
 
     //! Negates the vector. Returns the result.

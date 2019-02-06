@@ -7,7 +7,7 @@
 #include "Vector3.h"
 
 //! A sphere that can detect and compute intersections with other intersectable objects.
-//
+//!
 //! @ingroup Geometry
 //!
 
@@ -15,14 +15,14 @@ class Sphere : public Intersectable
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Sphere() = default;
 
-    //! Constructor
+    //! Constructor.
     Sphere(Vector3 const & c, float r) : m_C(c)
         , m_R(r)   {}
 
-    //! Destructor
+    //! Destructor.
     virtual ~Sphere() override = default;
 
     //! @name Overrides Intersectable

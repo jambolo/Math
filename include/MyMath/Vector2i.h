@@ -9,7 +9,7 @@
 #pragma warning( disable : 4201 )   // nonstandard extension used : nameless struct/union
 
 //! A 2D vector of integers.
-//
+//!
 //! @ingroup Vectors
 //!
 
@@ -17,13 +17,13 @@ class Vector2i
 {
 public:
 
-    //! Constructor
+    //! Constructor.
     Vector2i() = default;
 
-    //! Constructor
+    //! Constructor.
     Vector2i(int x, int y);
 
-    //! Constructor
+    //! Constructor.
     Vector2i(int const v[2]);
 
     //! Negates the vector. Returns the result.
