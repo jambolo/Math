@@ -2,8 +2,8 @@ cmake_minimum_required (VERSION 3.10)
 project(MyMath CXX)
 
 option(BUILD_SHARED_LIBS "Build libraries as DLLs" FALSE)
-set(${PROJECT_NAME}_DOXYGEN_OUTPUT_DIRECTORY "" CACHE PATH "Doxygen output directory (empty to disable)")
 
+set(${PROJECT_NAME}_DOXYGEN_OUTPUT_DIRECTORY "" CACHE PATH "Doxygen output directory (empty to disable)")
 if(${PROJECT_NAME}_DOXYGEN_OUTPUT_DIRECTORY)
     find_package(Doxygen)
     if(DOXYGEN_FOUND)
@@ -11,9 +11,9 @@ if(${PROJECT_NAME}_DOXYGEN_OUTPUT_DIRECTORY)
         configure_file(Doxyfile.in ${PROJECT_BINARY_DIR}/Doxyfile)
         add_custom_target(doxygen ALL ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-        COMMENT "Generating API documentation with Doxygen" VERBATIM
+            COMMENT "Generating API documentation with Doxygen" VERBATIM
             SOURCES ${PROJECT_BINARY_DIR}/Doxyfile
-    )
+        )
     endif(DOXYGEN_FOUND)
 endif()
 
